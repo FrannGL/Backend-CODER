@@ -1,5 +1,7 @@
+const fs = require("fs");
 class ProductManager {
   constructor() {
+    this.path = "products.JSON";
     this.products = [];
   }
   addProduct(title, description, price, thumbnail, code, stock) {
@@ -26,65 +28,129 @@ class ProductManager {
       stock,
     };
     this.products.push(product);
+    let productsStrings = JSON.stringify(this.products);
+    fs.writeFileSync(this.path, productsStrings);
     return product;
   }
 
   getProducts() {
-    return this.products;
+    let data = fs.readFileSync(this.path, "UTF-8");
+    console.log(JSON.parse(data));
+    return JSON.parse(data);
   }
 
   getProductsById(id) {
-    const product = this.products.find((prod) => prod.id === id);
-    if (!product) {
-      console.log("Not Found");
+    let data = fs.readFileSync(this.path, "UTF-8");
+    let dataParse = JSON.parse(data);
+    let productFound = dataParse.find((prod) => prod.id === id);
+    if (productFound) {
+      return console.log(productFound);
+    } else {
+      return console.log("Not Found");
     }
-    return product;
+  }
+
+  updateProduct(id, title, description, price, thumbnail, code, stock) {
+    let data = fs.readFileSync(this.path, "UTF-8");
+    let dataParse = JSON.parse(data);
+    let productFound = dataParse.findIndex((product) => product.id === id);
+    const updatedProduct = {
+      id,
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      stock,
+    };
+    dataParse[productFound] = updatedProduct;
+    fs.writeFileSync(this.path, JSON.stringify(dataParse));
+    console.log("The product has update succefully");
+    console.log(updatedProduct);
+  }
+
+  deleteProduct(id) {
+    let data = fs.readFileSync(this.path, "UTF-8");
+    let dataParse = JSON.parse(data);
+    let index = dataParse.findIndex((product) => product.id === id);
+    if (index === -1) {
+      console.log("product not found");
+    } else {
+      dataParse.splice(index, 1);
+      fs.writeFileSync(this.path, JSON.stringify(dataParse));
+      console.log("Product was deleted");
+    }
   }
 }
 
-const productManager = new ProductManager();
+const productManager = new ProductManager("products.json");
 
-// TEST DEL METODO getProducts() CON ARRAY VACIO
-console.log(productManager.getProducts());
+// 1) TEST DEL METODO getProducts() CON ARRAY VACIO
+// productManager.getProducts();
 
 // SE INSTANCIA Y TESTEA UN NUEVO PRODUCTO
-const product1 = productManager.addProduct(
-  "Campera",
-  "Cuero Vacuno",
-  1000,
-  "img.jpg",
-  1241414,
-  3
-);
+// const product1 = productManager.addProduct(
+//   "Campera",
+//   "Cuero Vacuno",
+//   1000,
+//   "img.jpg",
+//   1241414,
+//   3
+// );
 
-// SE MUESTRA EL PRODUCTO POR CONSOLA A TRAVES DEL METODO getProducts()
-console.log(productManager.getProducts());
+// 2) SE MUESTRA EL PRODUCTO POR CONSOLA A TRAVES DEL METODO getProducts()
+// productManager.getProducts();
 
-// SE INSTANCIA UN SEGUNDO PRODUCTO CON UN CODE YA UTILIZADO
-const product2 = productManager.addProduct(
-  "Camisa",
-  "Cuello Mao",
-  2000,
-  "img2.jpg",
-  1241414,
-  24
-);
+// 3) SE INSTANCIA UN SEGUNDO PRODUCTO CON UN CODE YA UTILIZADO
+// const product2 = productManager.addProduct(
+//   "Camisa",
+//   "Cuello Mao",
+//   2000,
+//   "img2.jpg",
+//   1241414,
+//   24
+// );
 
-// SE INSTANCIA UN TERCER PRODUCTO CON UN CODE Y UN ID NUEVOS
-const product3 = productManager.addProduct(
-  "Zapatillas",
-  "Tela",
-  1500,
-  "img3.jpg",
-  1241411,
-  24
-);
+// 4) SE INSTANCIAN DOS PRODUCTOS MAS CON UN CODE Y UN ID NUEVOS
+// const product3 = productManager.addProduct(
+//   "Zapatillas",
+//   "Tela",
+//   1500,
+//   "img3.jpg",
+//   1241411,
+//   24
+// );
 
-// SE LLAMA A UN PRODUCTO POR ALGUN ID VALIDO (1 o 2)
-console.log(productManager.getProductsById(1));
+// const product4 = productManager.addProduct(
+//   "Pantalon",
+//   "Jean",
+//   3500,
+//   "img4.jpg",
+//   1241434,
+//   12
+// );
 
-// SE LLAMA A UN PRODUCTO POR ALGUN ID NO VALIDO (3 o MAS)
-console.log(productManager.getProductsById(5));
+// productManager.getProducts();
 
-// SE LLAMA AL METODO getProducts() MOSTRANDO TODOS LOS PRODUCTOS
-console.log(productManager.getProducts());
+// 5) SE LLAMA A UN PRODUCTO POR ALGUN ID VALIDO (1,2,3)
+// productManager.getProductsById(1);
+
+// 6) SE LLAMA A UN PRODUCTO POR ALGUN ID NO VALIDO (4 o MAS)
+// productManager.getProductsById(5);
+
+// 7) SE LLAMA AL METODO getProducts() MOSTRANDO TODOS LOS PRODUCTOS
+// productManager.getProducts();
+
+// 8) SE ACTUALIZA UN PRODUCTO POR SU ID
+// productManager.updateProduct(
+//   1,
+//   "Fernet",
+//   "Branca",
+//   2200,
+//   "fernet.jpg",
+//   1241420,
+//   30
+// );
+
+// 9) SE ELIMINAR UN PRODUCTO POR SU ID
+// console.log(productManager.deleteProduct(1));
