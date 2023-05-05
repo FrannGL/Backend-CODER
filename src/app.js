@@ -13,15 +13,26 @@ app.get("/products", async (req, res) => {
   try {
     const data = await fs.readFile(productPath, "utf-8");
     const products = JSON.parse(data);
-    const queryLimit = parseInt(req.query.limit);
-    if (queryLimit && queryLimit > 0) {
-      res.json(products.slice(0, queryLimit));
+    const queryLimit = req.query.limit;
+    if (queryLimit && queryLimit <= 10) {
+      const search = products.slice(0, queryLimit);
+      res.status(200).json({
+        status: "success",
+        msg: `Mostrando los ${queryLimit} productos`,
+        data: search,
+      });
     } else {
-      res.json(products);
+      res.status(200).json({
+        status: "success",
+        msg: `Mostrando los ${products.length} productos`,
+        data: products,
+      });
     }
   } catch (err) {
-    console.error(err);
-    res.send({ error: "Error en el servidor" });
+    console.log(err);
+    res
+      .status(400)
+      .send({ status: "error", msg: "Error en el servidor", error: err });
   }
 });
 
@@ -31,13 +42,19 @@ app.get("/products/:id", async (req, res) => {
     const products = JSON.parse(data);
     const product = products.find((p) => p.id === parseInt(req.params.id));
     if (product) {
-      res.json(product);
+      res.json({
+        status: "success",
+        msg: `Mostrando el producto con ID ${product.id}`,
+        data: product,
+      });
     } else {
-      res.send({ error: "Producto no encontrado" });
+      res.status(404).send({ status: "error", msg: "Producto no encontrado" });
     }
   } catch (error) {
-    console.error(error);
-    res.send({ error: "Error en el servidor" });
+    console.log(error);
+    res
+      .status(400)
+      .send({ status: "error", msg: "Error en el servidor", error: err });
   }
 });
 
