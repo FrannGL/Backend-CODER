@@ -89,14 +89,14 @@ const productManager = new ProductManager("products.json");
 // productManager.getProducts();
 
 // SE INSTANCIA Y TESTEA UN NUEVO PRODUCTO
-// const product1 = productManager.addProduct(
-//   "Campera",
-//   "Cuero Vacuno",
-//   1000,
-//   "img.jpg",
-//   1241414,
-//   3
-// );
+const product1 = productManager.addProduct(
+  "Campera",
+  "Cuero Vacuno",
+  1000,
+  "img.jpg",
+  1241414,
+  3
+);
 
 // 2) SE MUESTRA EL PRODUCTO POR CONSOLA A TRAVES DEL METODO getProducts()
 // productManager.getProducts();
@@ -111,26 +111,89 @@ const productManager = new ProductManager("products.json");
 //   24
 // );
 
-// 4) SE INSTANCIAN DOS PRODUCTOS MAS CON UN CODE Y UN ID NUEVOS
-// const product3 = productManager.addProduct(
-//   "Zapatillas",
-//   "Tela",
-//   1500,
-//   "img3.jpg",
-//   1241411,
-//   24
-// );
+// 4) SE INSTANCIAN NUEVE PRODUCTOS MAS CON UN CODE Y UN ID NUEVOS
+const product3 = productManager.addProduct(
+  "Zapatillas",
+  "Tela",
+  1500,
+  "img3.jpg",
+  1241411,
+  24
+);
 
-// const product4 = productManager.addProduct(
-//   "Pantalon",
-//   "Jean",
-//   3500,
-//   "img4.jpg",
-//   1241434,
-//   12
-// );
+const product4 = productManager.addProduct(
+  "Pantalon",
+  "Jean",
+  3500,
+  "img4.jpg",
+  1241434,
+  12
+);
 
-// productManager.getProducts();
+const product5 = productManager.addProduct(
+  "Remera",
+  "Adidas",
+  1600,
+  "img5.jpg",
+  1241439,
+  11
+);
+
+const product6 = productManager.addProduct(
+  "Gorra",
+  "Nike",
+  1100,
+  "img6.jpg",
+  1241441,
+  17
+);
+
+const product7 = productManager.addProduct(
+  "Medias",
+  "Adidas",
+  500,
+  "img7.jpg",
+  1241446,
+  12
+);
+
+const product8 = productManager.addProduct(
+  "Anteojos",
+  "Rayban",
+  5000,
+  "img8.jpg",
+  1241447,
+  25
+);
+
+const product9 = productManager.addProduct(
+  "Perfume",
+  "Hugo Boss",
+  10100,
+  "img9.jpg",
+  1241448,
+  15
+);
+
+const product10 = productManager.addProduct(
+  "Cadena de Oro",
+  "GUCCI",
+  150000,
+  "img10.jpg",
+  1241449,
+  100
+);
+
+const product11 = productManager.addProduct(
+  "Reloj",
+  "Casio",
+  12000,
+  "img11.jpg",
+  1241450,
+  64
+);
+
+productManager.getProducts();
 
 // 5) SE LLAMA A UN PRODUCTO POR ALGUN ID VALIDO (1,2,3)
 // productManager.getProductsById(1);
