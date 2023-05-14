@@ -1,62 +1,25 @@
-const express = require("express");
-const fs = require("fs/promises");
+import express from "express";
+import { productsRouter } from "./routes/products.router.js";
 const app = express();
 const PORT = 8080;
 const productsMock = "../products.JSON";
-const productManager = require("./productManager");
+import productsManager from "../src/helpers/productManager.js";
+const productManager = new productsManager();
 
+app.use("/static", express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/products", async (req, res) => {
-  try {
-    const data = await fs.readFile(productsMock, "utf-8");
-    const products = JSON.parse(data);
-    const queryLimit = req.query.limit;
-    if (queryLimit && queryLimit <= 10) {
-      const search = products.slice(0, queryLimit);
-      res.status(200).json({
-        status: "success",
-        msg: `Mostrando los ${queryLimit} productos`,
-        data: search,
-      });
-    } else {
-      res.status(200).json({
-        status: "success",
-        msg: `Mostrando los ${products.length} productos`,
-        data: products,
-      });
-    }
-  } catch (err) {
-    console.log(err);
-    res
-      .status(400)
-      .send({ status: "error", msg: "Error en el servidor", error: err });
-  }
-});
-
-app.get("/products/:id", async (req, res) => {
-  try {
-    const data = await fs.readFile(productsMock, "utf-8");
-    const products = JSON.parse(data);
-    const product = products.find((p) => p.id === parseInt(req.params.id));
-    if (product) {
-      res.json({
-        status: "success",
-        msg: `Mostrando el producto con ID ${product.id}`,
-        data: product,
-      });
-    } else {
-      res.status(404).send({ status: "error", msg: "Producto no encontrado" });
-    }
-  } catch (error) {
-    console.log(error);
-    res
-      .status(400)
-      .send({ status: "error", msg: "Error en el servidor", error: err });
-  }
-});
+app.use("/products", productsRouter);
 
 app.listen(PORT, () => {
   console.log(`Levantando en puerto https://localhost:${PORT}`);
+});
+
+app.get("*", (req, res) => {
+  return res.status(404).json({
+    status: "Error",
+    msg: "No se ecuentra la ruta especificada",
+    data: {},
+  });
 });

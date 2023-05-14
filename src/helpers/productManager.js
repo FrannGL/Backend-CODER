@@ -1,5 +1,5 @@
-const fs = require("fs");
-class ProductManager {
+import fs from "fs/promises";
+export default class ProductManager {
   constructor() {
     this.path = "products.JSON";
     this.products = [];
@@ -83,20 +83,28 @@ class ProductManager {
   }
 }
 
+// module.exports = {
+//   addProduct: this.addProduct,
+//   getProducts: this.getProducts,
+//   getProductsById: this.getProductsById,
+//   updateProduct: this.updateProduct,
+//   deleteProduct: this.deleteProduct,
+// };
+
 const productManager = new ProductManager("products.json");
 
 // 1) TEST DEL METODO getProducts() CON ARRAY VACIO
 // productManager.getProducts();
 
 // SE INSTANCIA Y TESTEA UN NUEVO PRODUCTO
-const product1 = productManager.addProduct(
-  "Campera",
-  "Cuero Vacuno",
-  1000,
-  "img.jpg",
-  1241414,
-  3
-);
+// const product1 = productManager.addProduct(
+//   "Campera",
+//   "Cuero Vacuno",
+//   1000,
+//   "img.jpg",
+//   1241414,
+//   3
+// );
 
 // 2) SE MUESTRA EL PRODUCTO POR CONSOLA A TRAVES DEL METODO getProducts()
 // productManager.getProducts();
