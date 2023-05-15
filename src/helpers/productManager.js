@@ -1,5 +1,5 @@
-import fs from "fs/promises";
-export default class ProductManager {
+import fs from "fs";
+export class ProductManager {
   constructor() {
     this.path = "products.JSON";
     this.products = [];
