@@ -2,14 +2,15 @@ import express from "express";
 import fs from "fs/promises";
 const productsMock = "../products.JSON";
 export const productsRouter = express.Router();
+import ProductManager from "../helpers/productManager.js";
+const prodMan = new ProductManager("../data/Products.json");
 
 productsRouter.get("/", async (req, res) => {
   try {
-    const data = await fs.readFile(productsMock, "utf-8");
-    const products = JSON.parse(data);
+    const data = await prodMan.getProducts();
     const queryLimit = req.query.limit;
     if (queryLimit && queryLimit <= 10) {
-      const search = products.slice(0, queryLimit);
+      const search = data.slice(0, queryLimit);
       res.status(200).json({
         status: "success",
         msg: `Mostrando los ${queryLimit} productos`,
@@ -18,8 +19,8 @@ productsRouter.get("/", async (req, res) => {
     } else {
       res.status(200).json({
         status: "success",
-        msg: `Mostrando los ${products.length} productos`,
-        data: products,
+        msg: `Mostrando los ${data.length} productos`,
+        data: data,
       });
     }
   } catch (err) {
@@ -32,9 +33,9 @@ productsRouter.get("/", async (req, res) => {
 
 productsRouter.get("/:id", async (req, res) => {
   try {
-    const data = await fs.readFile(productsMock, "utf-8");
-    const products = JSON.parse(data);
-    const product = products.find((p) => p.id === parseInt(req.params.id));
+    let id = req.params.id;
+    const productoEncontrado = prodMan.getProductsById(id);
+    const product = productoEncontrado.find((p) => p.id === id);
     if (product) {
       res.json({
         status: "success",
@@ -48,39 +49,44 @@ productsRouter.get("/:id", async (req, res) => {
     console.log(error);
     res
       .status(400)
-      .send({ status: "error", msg: "Error en el servidor", error: err });
+      .send({ status: "error", msg: "Error en el servidor", error: error });
   }
 });
 
 productsRouter.delete("/:id", (req, res) => {
-  const id = req.params.id;
-  productsMock = productsMock.filter((p) => p.id != id);
-  return res
-    .status(200)
-    .json({ status: "success", msg: "Producto Eliminado", data: {} });
+  try {
+    let id = req.params.id;
+    let deleid = prodMan.deleteProduct(id);
+
+    if (deleid) {
+      return res.status(200).json({
+        status: "success",
+        msg: "Producto eliminado.",
+        data: {},
+      });
+    }
+  } catch (err) {
+    res.status(400).json({
+      status: "ERROR",
+      msg: "Error en el servidor",
+      data: {},
+    });
+  }
 });
 
-productsRouter.post("", (req, res) => {
-  const producto = req.body;
-  producto.id = (Math.random() * 100000).toFixed(0);
-  producto.createAd = Date.now();
-  productsMock.push(producto);
-  return res
-    .status(200)
-    .json({ status: "success", msg: "Producto Creado", data: producto });
+productsRouter.post("/", (req, res) => {
+  const prod = req.body;
+  const newProd = prodMan.addProduct(prod);
 });
 
 productsRouter.put("/:id", (req, res) => {
-  const id = req.params.id;
-  const producto = req.body;
-  const indiceEncontrado = productsMock.findIndex((p) => p.id == id);
-  productsMock[indiceEncontrado] = {
-    id: productsMock[indiceEncontrado].id,
-    ...producto,
-  };
-  return res.status(200).json({
-    status: "success",
-    msg: "Producto Modificado",
-    data: productsMock[indiceEncontrado],
-  });
+  let id = req.params.id;
+  let productModified = prodMan.updateProduct(id);
+  if (productModified) {
+    return res.status(200).json({
+      status: "success",
+      msg: "Producto modificado.",
+      data: productModified,
+    });
+  }
 });

@@ -3,7 +3,7 @@ import { productsRouter } from "./routes/products.router.js";
 // import { cartsRouter } from "./routes/products.router.js";
 const app = express();
 const PORT = 8080;
-import { ProductManager } from "../src/helpers/productManager.js";
+import ProductManager from "../src/helpers/productManager.js";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

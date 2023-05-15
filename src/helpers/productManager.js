@@ -1,5 +1,5 @@
 import fs from "fs";
-export class ProductManager {
+export default class ProductManager {
   constructor() {
     this.path = "products.JSON";
     this.products = [];
