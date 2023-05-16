@@ -55,9 +55,9 @@ productsRouter.get("/:id", async (req, res) => {
 productsRouter.delete("/:id", (req, res) => {
   try {
     let id = req.params.id;
-    let deleid = prodMan.deleteProduct(id);
+    let productoEliminado = prodMan.deleteProduct(id);
 
-    if (deleid) {
+    if (productoEliminado) {
       return res.status(200).json({
         status: "success",
         msg: "Producto eliminado.",

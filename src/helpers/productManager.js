@@ -5,6 +5,8 @@ export default class ProductManager {
     this.products = [];
   }
   addProduct(title, description, price, thumbnail, code, stock) {
+    let data = fs.readFileSync(this.path, "UTF-8");
+    let dataParse = JSON.parse(data);
     const productExist = this.products.find((prod) => prod.code === code);
 
     if (productExist) {
@@ -12,7 +14,7 @@ export default class ProductManager {
       return null;
     }
     let idMax = 0;
-    this.products.forEach((prod) => {
+    dataParse.forEach((prod) => {
       if (prod.id > idMax) {
         idMax = prod.id;
       }
@@ -27,8 +29,8 @@ export default class ProductManager {
       code,
       stock,
     };
-    this.products.push(product);
-    let productsStrings = JSON.stringify(this.products);
+    dataParse.push(product);
+    let productsStrings = JSON.stringify(dataParse);
     fs.writeFileSync(this.path, productsStrings);
     return product;
   }
@@ -44,7 +46,7 @@ export default class ProductManager {
     let dataParse = JSON.parse(data);
     let productFound = dataParse.find((prod) => +prod.id === +id);
     if (productFound) {
-      return console.log(productFound);
+      return productFound;
     } else {
       return console.log("Not Found");
     }
@@ -53,7 +55,7 @@ export default class ProductManager {
   updateProduct(id, title, description, price, thumbnail, code, stock) {
     let data = fs.readFileSync(this.path, "UTF-8");
     let dataParse = JSON.parse(data);
-    let productFound = dataParse.findIndex((product) => product.id === id);
+    let productFound = dataParse.findIndex((product) => +product.id === +id);
     const updatedProduct = {
       id,
       title,
@@ -72,7 +74,7 @@ export default class ProductManager {
   deleteProduct(id) {
     let data = fs.readFileSync(this.path, "UTF-8");
     let dataParse = JSON.parse(data);
-    let index = dataParse.findIndex((product) => product.id === id);
+    let index = dataParse.findIndex((product) => +product.id === +id);
     if (index === -1) {
       console.log("product not found");
     } else {
