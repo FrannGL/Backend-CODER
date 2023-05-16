@@ -35,12 +35,11 @@ productsRouter.get("/:id", async (req, res) => {
   try {
     let id = req.params.id;
     const productoEncontrado = prodMan.getProductsById(id);
-    const product = productoEncontrado.find((p) => p.id === id);
-    if (product) {
-      res.json({
+    if (productoEncontrado) {
+      res.status(200).json({
         status: "success",
-        msg: `Mostrando el producto con ID ${product.id}`,
-        data: product,
+        msg: `Mostrando el producto con ID ${productoEncontrado.id}`,
+        data: productoEncontrado,
       });
     } else {
       res.status(404).send({ status: "error", msg: "Producto no encontrado" });

@@ -42,7 +42,7 @@ export default class ProductManager {
   getProductsById(id) {
     let data = fs.readFileSync(this.path, "UTF-8");
     let dataParse = JSON.parse(data);
-    let productFound = dataParse.find((prod) => prod.id === id);
+    let productFound = dataParse.find((prod) => +prod.id === +id);
     if (productFound) {
       return console.log(productFound);
     } else {
