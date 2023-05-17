@@ -74,8 +74,10 @@ productsRouter.delete("/:id", (req, res) => {
 });
 
 productsRouter.post("/", (req, res) => {
-  const prod = req.body;
-  const newProd = prodMan.addProduct(prod);
+  const product = req.body;
+  console.log(product);
+  prodMan.addProduct(product);
+  res.status(201).json(product);
 });
 
 productsRouter.put("/:id", (req, res) => {

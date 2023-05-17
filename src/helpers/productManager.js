@@ -7,7 +7,7 @@ export default class ProductManager {
   addProduct(title, description, price, thumbnail, code, stock) {
     let data = fs.readFileSync(this.path, "UTF-8");
     let dataParse = JSON.parse(data);
-    const productExist = this.products.find((prod) => prod.code === code);
+    const productExist = dataParse.find((prod) => prod.code === code);
 
     if (productExist) {
       console.log("El codigo del producto ya está en uso");
