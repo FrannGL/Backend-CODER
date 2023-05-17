@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/static", express.static("public"));
 
 app.listen(PORT, () => {
-  console.log(`Levantando en puerto https://localhost:${PORT}`);
+  console.log(`Levantando en puerto http://localhost:${PORT}`);
 });
 
 // ENDPOINTS

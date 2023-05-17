@@ -4,10 +4,10 @@ export default class ProductManager {
     this.path = "products.JSON";
     this.products = [];
   }
-  addProduct(title, description, price, thumbnail, code, stock) {
+  addProduct({ prod }) {
     let data = fs.readFileSync(this.path, "UTF-8");
     let dataParse = JSON.parse(data);
-    const productExist = dataParse.find((prod) => prod.code === code);
+    const productExist = dataParse.find((producto) => producto.code === prod.code);
 
     if (productExist) {
       console.log("El codigo del producto ya está en uso");
@@ -22,12 +22,12 @@ export default class ProductManager {
     idMax++;
     const product = {
       id: idMax,
-      title,
-      description,
-      price,
-      thumbnail,
-      code,
-      stock,
+      title: prod.title,
+      description: prod.description,
+      price: prod.price,
+      thumbnail: prod.thumbnail,
+      code: prod.code,
+      stock: prod.stock,
     };
     dataParse.push(product);
     let productsStrings = JSON.stringify(dataParse);
@@ -52,7 +52,7 @@ export default class ProductManager {
     }
   }
 
-  updateProduct(id, title, description, price, thumbnail, code, stock) {
+  updateProduct(id) {
     let data = fs.readFileSync(this.path, "UTF-8");
     let dataParse = JSON.parse(data);
     let productFound = dataParse.findIndex((product) => +product.id === +id);
