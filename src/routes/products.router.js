@@ -1,9 +1,7 @@
 import express from "express";
-import fs from "fs/promises";
-const productsMock = "../products.JSON";
 export const productsRouter = express.Router();
 import ProductManager from "../helpers/productManager.js";
-const prodMan = new ProductManager("../data/Products.json");
+const prodMan = new ProductManager();
 
 productsRouter.get("/", async (req, res) => {
   try {
@@ -77,17 +75,43 @@ productsRouter.post("/", (req, res) => {
   const product = req.body;
   console.log(product);
   prodMan.addProduct(product);
-  res.status(201).json(product);
+  res.status(201).send("Producto agregado Correctamente");
 });
 
-productsRouter.put("/:id", (req, res) => {
-  let id = req.params.id;
-  let productModified = prodMan.updateProduct(id);
-  if (productModified) {
-    return res.status(200).json({
-      status: "success",
-      msg: "Producto modificado.",
-      data: productModified,
+productsRouter.put("/:pid", async (req, res) => {
+  try {
+    const productId = req.params.pid;
+    const product = prodMan.getProductsById(productId);
+    if (product) {
+      const productModified = req.body;
+
+      if (productModified.id && productModified.id !== productId) {
+        return res.status(400).json({
+          status: "error",
+          msg: "No se permite modificar el ID del producto",
+          data: {},
+        });
+      }
+
+      prodMan.updateProduct(productId, productModified);
+      res.status(200).json({
+        status: "success",
+        msg: "Producto actualizado",
+        data: productModified,
+      });
+    } else {
+      res.status(400).json({
+        status: "error",
+        msg: "El producto no existe",
+        data: {},
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: "error",
+      msg: "Error en el servidor",
+      data: {},
     });
   }
 });

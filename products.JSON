@@ -1,1 +1,56 @@
-[{"id":4,"title":"Gorra","description":"Nike","price":1100,"thumbnail":"img6.jpg","code":1241441,"stock":17},{"id":5,"title":"Medias","description":"Adidas","price":500,"thumbnail":"img7.jpg","code":1241446,"stock":12},{"id":7,"title":"Perfume","description":"Hugo Boss","price":10100,"thumbnail":"img9.jpg","code":1241448,"stock":15},{"id":8,"title":"Cadena de Oro","description":"GUCCI","price":150000,"thumbnail":"img10.jpg","code":1241449,"stock":100},{"id":9,"title":"Reloj","description":"Casio","price":12000,"thumbnail":"img11.jpg","code":1241450,"stock":64}]
+[
+  {
+    "id": 4,
+    "title": "Gorra",
+    "description": "Nike",
+    "price": 1100,
+    "thumbnail": "img6.jpg",
+    "code": 1241441,
+    "stock": 17
+  },
+  {
+    "id": 5,
+    "title": "Medias",
+    "description": "Adidas",
+    "price": 500,
+    "thumbnail": "img7.jpg",
+    "code": 1241446,
+    "stock": 12
+  },
+  {
+    "id": 7,
+    "title": "Perfume",
+    "description": "Hugo Boss",
+    "price": 10100,
+    "thumbnail": "img9.jpg",
+    "code": 1241448,
+    "stock": 15
+  },
+  {
+    "id": 8,
+    "title": "Cadena de Oro",
+    "description": "GUCCI",
+    "price": 150000,
+    "thumbnail": "img10.jpg",
+    "code": 1241449,
+    "stock": 100
+  },
+  {
+    "id": 9,
+    "title": "Sombrero",
+    "description": "Caguan",
+    "price": 3500,
+    "thumbnail": "img16.jpg",
+    "code": 12414419,
+    "stock": 15
+  },
+  {
+    "id": 10,
+    "title": "Zapatos",
+    "description": "Gucci",
+    "price": 2000,
+    "thumbnail": "img15.jpg",
+    "code": 124144114,
+    "stock": 15
+  }
+]

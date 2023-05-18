@@ -4,10 +4,12 @@ export default class ProductManager {
     this.path = "products.JSON";
     this.products = [];
   }
-  addProduct({ prod }) {
+  addProduct(prod) {
     let data = fs.readFileSync(this.path, "UTF-8");
     let dataParse = JSON.parse(data);
-    const productExist = dataParse.find((producto) => producto.code === prod.code);
+    const productExist = dataParse.find(
+      (producto) => producto.code === prod.code
+    );
 
     if (productExist) {
       console.log("El codigo del producto ya está en uso");
@@ -37,7 +39,6 @@ export default class ProductManager {
 
   getProducts() {
     let data = fs.readFileSync(this.path, "UTF-8");
-    console.log(JSON.parse(data));
     return JSON.parse(data);
   }
 
@@ -52,23 +53,20 @@ export default class ProductManager {
     }
   }
 
-  updateProduct(id) {
+  updateProduct(id, updatedProduct) {
     let data = fs.readFileSync(this.path, "UTF-8");
     let dataParse = JSON.parse(data);
-    let productFound = dataParse.findIndex((product) => +product.id === +id);
-    const updatedProduct = {
-      id,
-      title,
-      description,
-      price,
-      thumbnail,
-      code,
-      stock,
-    };
-    dataParse[productFound] = updatedProduct;
-    fs.writeFileSync(this.path, JSON.stringify(dataParse));
-    console.log("The product has update succefully");
-    console.log(updatedProduct);
+    const productIndex = dataParse.findIndex((product) => product.id == id);
+    if (productIndex !== -1) {
+      dataParse[productIndex] = {
+        ...dataParse[productIndex],
+        ...updatedProduct,
+        id: dataParse[productIndex].id,
+      };
+    }
+    let productsStrings = JSON.stringify(dataParse);
+    fs.writeFileSync(this.path, productsStrings);
+    return null;
   }
 
   deleteProduct(id) {
@@ -85,15 +83,7 @@ export default class ProductManager {
   }
 }
 
-// module.exports = {
-//   addProduct: this.addProduct,
-//   getProducts: this.getProducts,
-//   getProductsById: this.getProductsById,
-//   updateProduct: this.updateProduct,
-//   deleteProduct: this.deleteProduct,
-// };
-
-const productManager = new ProductManager("products.json");
+// const productManager = new ProductManager("products.json");
 
 // 1) TEST DEL METODO getProducts() CON ARRAY VACIO
 // productManager.getProducts();
