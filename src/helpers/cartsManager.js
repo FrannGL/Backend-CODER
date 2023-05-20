@@ -1,8 +1,11 @@
 import fs from "fs";
+import { __dirname } from "../utils.js";
+const cartPath = `${__dirname}\/data/carts.JSON`;
 export default class CartsManager {
   constructor() {
-    this.path = "carts.JSON";
+    this.path = cartPath;
     this.products = [];
+    console.log(cartPath);
   }
 
   getCarts() {

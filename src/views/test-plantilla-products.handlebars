@@ -1,23 +1,22 @@
-<div>
-  <h1>Lista de Productos</h1>
-  {{#each data}}
-    <p>
-      id:
-      {{this.id}}
-      title:
-      {{this.title}}
-      description:
-      {{this.description}}
-      price:
-      {{this.price}}
-      thumbnail:
-      {{this.thumbnail}}
-      code:
-      {{this.code}}
-      stock:
-      {{this.stock}}
-    </p>
-    <hr />
-  {{/each}}
+<h1 class="text-center">Lista de Productos</h1>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col g-0 d-flex flex-wrap justify-content-center gap-3">
+      {{#each data}}
+        <div class="card" style="width: 12rem; border: 1px solid black">
+          <img src="{{this.thumbnail}}" class="card-img" alt="..." />
+          <div class="card-body text-center">
+            <h6 class="card-id">ID: {{this.id}}</h6>
+            <h5 class="card-title">Title: {{this.title}}</h5>
+            <p class="card-description">Description: {{this.description}}</p>
+            <p class="card-price">Price: {{this.price}}</p>
+            <p class="code">Code: {{this.code}}</p>
+            <p class="stock">Stock: {{this.stock}}</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
 
 </div>

@@ -1,7 +1,9 @@
 import fs from "fs";
+import { __dirname } from "../utils.js";
+const productPath = `${__dirname}/data/products.JSON`;
 export default class ProductManager {
   constructor() {
-    this.path = "products.JSON";
+    this.path = productPath;
     this.products = [];
   }
   addProduct(prod) {
