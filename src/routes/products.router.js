@@ -24,7 +24,7 @@ productsRouter.get("/", async (req, res) => {
   } catch (err) {
     console.log(err);
     res
-      .status(400)
+      .status(501)
       .send({ status: "error", msg: "Error en el servidor", error: err });
   }
 });
@@ -32,7 +32,7 @@ productsRouter.get("/", async (req, res) => {
 productsRouter.get("/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    const productoEncontrado = prodMan.getProductsById(id);
+    const productoEncontrado = await prodMan.getProductsById(id);
     if (productoEncontrado) {
       res.status(200).json({
         status: "success",
@@ -45,7 +45,7 @@ productsRouter.get("/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     res
-      .status(400)
+      .status(501)
       .send({ status: "error", msg: "Error en el servidor", error: error });
   }
 });
@@ -63,7 +63,7 @@ productsRouter.delete("/:id", (req, res) => {
       });
     }
   } catch (err) {
-    res.status(400).json({
+    res.status(501).json({
       status: "ERROR",
       msg: "Error en el servidor",
       data: {},
@@ -108,7 +108,7 @@ productsRouter.put("/:pid", async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({
+    res.status(501).json({
       status: "error",
       msg: "Error en el servidor",
       data: {},

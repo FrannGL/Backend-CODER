@@ -26,7 +26,7 @@ cartsRouter.get("/", async (req, res) => {
   } catch (err) {
     console.log(err);
     res
-      .status(400)
+      .status(501)
       .send({ status: "error", msg: "Error en el servidor", error: err });
   }
 });
@@ -47,7 +47,7 @@ cartsRouter.get("/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     res
-      .status(400)
+      .status(501)
       .send({ status: "error", msg: "Error en el servidor", error: error });
   }
 });
@@ -98,6 +98,6 @@ cartsRouter.post("/:cid/products/:pid", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(400).send({ status: "error", msg: "Error", error: error });
+    res.status(501).send({ status: "error", msg: "Error", error: error });
   }
 });
