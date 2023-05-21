@@ -1,18 +1,32 @@
-<h1 class="text-center">Lista de Productos</h1>
+<div class="title">
+  <img src="./images/logo.png" class="logo" alt="" />
+  <h1 class="text-center">Lista de Productos</h1>
+  <hr />
+</div>
 <div class="container-fluid">
   <div class="row">
-    <div class="col g-0 d-flex flex-wrap justify-content-center gap-3">
+    <div class="col g-0 d-flex flex-wrap justify-content-center gap-5">
       {{#each data}}
-        <div class="card" style="width: 12rem; border: 1px solid black">
-          <img src="{{this.thumbnail}}" class="card-img" alt="..." />
+        <div class="card" style="width: 15rem; border: 1px solid black">
+          <img src={{this.thumbnail}} class="card-img" alt="{{this.title}}" />
           <div class="card-body text-center">
             <h6 class="card-id">ID: {{this.id}}</h6>
-            <h5 class="card-title">Title: {{this.title}}</h5>
-            <p class="card-description">Description: {{this.description}}</p>
-            <p class="card-price">Price: {{this.price}}</p>
-            <p class="code">Code: {{this.code}}</p>
-            <p class="stock">Stock: {{this.stock}}</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <div class="card-title">
+              <h4>{{this.title}}</h4>
+            </div>
+            <div class="card-description">
+              <p>{{this.description}}</p>
+            </div>
+            <div class="card-price">
+              <p>$ {{this.price}}.-</p>
+            </div>
+            <div class="card-item-detail">
+              <p class="code"><b>Code:</b> {{this.code}}</p>
+              <p class="stock"><b>Stock:</b> {{this.stock}}</p>
+            </div>
+            <div class="btnContainer">
+              <a href="#" class="btn btn-dark">Agregar al Carrito</a>
+            </div>
           </div>
         </div>
       {{/each}}
@@ -20,3 +34,36 @@
   </div>
 
 </div>
+
+{{!-- <div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
+            <th scope="col">Thumbnail</th>
+            <th scope="col">Code</th>
+            <th scope="col">Stock</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each data}}
+            <tr>
+              <th scope="row">{{this.id}}</th>
+              <td>{{this.title}}</td>
+              <td>{{this.description}}</td>
+              <td>$ {{this.price}}</td>
+              <td>{{this.thumbnail}}</td>
+              <td>{{this.code}}</td>
+              <td>{{this.stock}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> --}}

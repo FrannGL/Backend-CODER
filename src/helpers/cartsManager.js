@@ -5,7 +5,6 @@ export default class CartsManager {
   constructor() {
     this.path = cartPath;
     this.products = [];
-    console.log(cartPath);
   }
 
   getCarts() {

@@ -1,0 +1,109 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #d7d7d7;
+}
+
+.title {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: auto;
+}
+
+.logo {
+  width: 200px;
+}
+
+.card {
+  border-radius: 10px 100px / 120px;
+  box-shadow: 10px 10px 30px #000;
+  overflow: hidden;
+  margin-bottom: 50px;
+}
+
+.card-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.card-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  width: 200px;
+}
+
+.card-title h4 {
+  font-size: 1.4rem;
+}
+
+.card-description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 60px;
+}
+
+.card-description p {
+  font-size: 0.8rem;
+}
+
+.card-price {
+  margin: 0;
+  padding: 0;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  margin-bottom: 10px;
+}
+
+.card-price p {
+  margin: 0;
+  padding: 0;
+}
+
+.card-item-detail {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.card-item-detail p {
+  font-size: 0.8rem;
+  margin: 0;
+  padding: 0;
+}
+
+.card-id {
+  font-size: 0.8rem;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.btnContainer {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+
+.btnContainer a {
+  width: 70%;
+  font-size: 0.8rem;
+}
