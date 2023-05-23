@@ -1,13 +1,12 @@
 import express from "express";
-export const plantillaProducts = express.Router();
+export const realTimeProductsRouter = express.Router();
 import ProductManager from "../helpers/productManager.js";
 const prodMan = new ProductManager();
 
-plantillaProducts.get("/", async (req, res) => {
+realTimeProductsRouter.get("/", async (req, res) => {
   try {
     const data = await prodMan.getProducts();
-    const title = "Listado de Productos";
-    return res.status(200).render("test-plantilla-products", { title, data });
+    return res.status(200).render("real-time-home", { data });
   } catch (err) {
     console.log(err);
     res

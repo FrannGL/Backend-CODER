@@ -1,0 +1,164 @@
+<div class="title">
+  <img src="./images/logo.png" class="logo" alt="" />
+  <h1 class="text-center">Lista de Productos en tiempo real</h1>
+  <hr />
+</div>
+<div class="container mb-5">
+  <div class="row">
+    <div class="col g-0">
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseOne"
+              aria-expanded="true"
+              aria-controls="collapseOne"
+            >
+              Agregar Producto
+            </button>
+          </h2>
+          <div
+            id="collapseOne"
+            class="accordion-collapse collapse"
+            data-bs-parent="#accordionExample"
+          >
+            <div class="accordion-body">
+              <form id="addProductForm">
+                <div class="d-flex gap-3">
+                  <div class="mb-3">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="input-title" />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Descripcion</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="input-description"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Precio</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="input-price"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Imagen</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="input-thumbnail"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Codigo</label>
+                    <input type="text" class="form-control" id="input-code" />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Stock</label>
+                    <input type="text" class="form-control" id="input-stock" />
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Crear Producto</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseTwo"
+              aria-expanded="false"
+              aria-controls="collapseTwo"
+            >
+              Editar Producto
+            </button>
+          </h2>
+          <div
+            id="collapseTwo"
+            class="accordion-collapse collapse"
+            data-bs-parent="#accordionExample"
+          >
+            <div class="accordion-body">
+              <form action=""></form>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseThree"
+              aria-expanded="false"
+              aria-controls="collapseThree"
+            >
+              Eliminar Producto
+            </button>
+          </h2>
+          <div
+            id="collapseThree"
+            class="accordion-collapse collapse"
+            data-bs-parent="#accordionExample"
+          >
+            <div class="accordion-body">
+              <form action=""></form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div
+      class="col g-0 d-flex flex-wrap justify-content-center gap-5"
+      id="dinamic-list"
+    >
+      {{#each data}}
+        <div class="card" style="width: 15rem; border: 1px solid black">
+          <img src={{this.thumbnail}} class="card-img" alt="{{this.title}}" />
+          <div class="card-body text-center">
+            <h6 class="card-id">ID: {{this.id}}</h6>
+            <div class="card-title">
+              <h4>{{this.title}}</h4>
+            </div>
+            <div class="card-description">
+              <p>{{this.description}}</p>
+            </div>
+            <div class="card-price">
+              <p>$ {{this.price}}.-</p>
+            </div>
+            <div class="card-item-detail">
+              <p class="code"><b>Code:</b> {{this.code}}</p>
+              <p class="stock"><b>Stock:</b> {{this.stock}}</p>
+            </div>
+            <div class="btnContainer">
+              <a href="#" class="btn btn-dark">Agregar al Carrito</a>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
