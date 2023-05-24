@@ -182,7 +182,7 @@
             data-bs-parent="#accordionExample"
           >
             <div class="accordion-body">
-              <form action="">
+              <form id="deleteProdForm">
                 <div
                   class="d-flex flex-column justify-content-center align-items-start gap-3"
                 >
@@ -191,10 +191,14 @@
                     <input
                       type="text"
                       class="form-control border border-secondary"
+                      name="productId"
                     />
                   </div>
-                  <button type="submit" class="btn btn-primary">Eliminar
-                    Producto</button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="deleteProductButton"
+                  >Eliminar Producto</button>
                 </div>
               </form>
             </div>

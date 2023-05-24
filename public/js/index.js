@@ -22,6 +22,14 @@ addProductForm.addEventListener("submit", (e) => {
   socket.emit("new-product", newProduct);
 });
 
+const deleteProdForm = document.getElementById("deleteProdForm");
+deleteProdForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const productId = deleteProdForm.elements.productId.value;
+  socket.emit("deleteProduct", productId);
+  deleteProdForm.reset();
+});
+
 socket.on("products", (prod) => {
   console.log(prod);
   document.getElementById("dinamic-list").innerHTML = prod

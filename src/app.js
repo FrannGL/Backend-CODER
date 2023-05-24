@@ -43,6 +43,13 @@ socketServer.on("connection", (socket) => {
       console.log(err);
     }
   });
+
+  socket.on("deleteProduct", async (productId) => {
+    prodMan.deleteProduct(productId);
+    const productsList = await prodMan.getProducts();
+    console.log(productsList);
+    socketServer.emit("products", productsList);
+  });
 });
 
 // ENDPOINTS
