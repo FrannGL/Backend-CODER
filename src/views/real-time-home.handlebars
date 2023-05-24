@@ -16,7 +16,7 @@
               data-bs-target="#collapseOne"
               aria-expanded="true"
               aria-controls="collapseOne"
-            >
+            ><i class="bi bi-database-add me-2"></i>
               Agregar Producto
             </button>
           </h2>
@@ -30,14 +30,18 @@
                 <div class="d-flex gap-3">
                   <div class="mb-3">
                     <label class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="input-title" />
+                    <input
+                      type="text"
+                      class="form-control border border-secondary"
+                      id="input-title"
+                    />
                   </div>
 
                   <div class="mb-3">
                     <label class="form-label">Descripcion</label>
                     <input
                       type="text"
-                      class="form-control"
+                      class="form-control border border-secondary"
                       id="input-description"
                     />
                   </div>
@@ -46,7 +50,7 @@
                     <label class="form-label">Precio</label>
                     <input
                       type="number"
-                      class="form-control"
+                      class="form-control border border-secondary"
                       id="input-price"
                     />
                   </div>
@@ -55,19 +59,27 @@
                     <label class="form-label">Imagen</label>
                     <input
                       type="text"
-                      class="form-control"
+                      class="form-control border border-secondary"
                       id="input-thumbnail"
                     />
                   </div>
 
                   <div class="mb-3">
                     <label class="form-label">Codigo</label>
-                    <input type="text" class="form-control" id="input-code" />
+                    <input
+                      type="text"
+                      class="form-control border border-secondary"
+                      id="input-code"
+                    />
                   </div>
 
                   <div class="mb-3">
                     <label class="form-label">Stock</label>
-                    <input type="text" class="form-control" id="input-stock" />
+                    <input
+                      type="text"
+                      class="form-control border border-secondary"
+                      id="input-stock"
+                    />
                   </div>
                 </div>
 
@@ -85,7 +97,7 @@
               data-bs-target="#collapseTwo"
               aria-expanded="false"
               aria-controls="collapseTwo"
-            >
+            ><i class="bi bi-pencil me-2"></i>
               Editar Producto
             </button>
           </h2>
@@ -95,7 +107,59 @@
             data-bs-parent="#accordionExample"
           >
             <div class="accordion-body">
-              <form action=""></form>
+              <form id="addProductForm">
+                <div class="d-flex gap-3">
+                  <div class="mb-3">
+                    <label class="form-label">Nombre</label>
+                    <input
+                      type="text"
+                      class="form-control border border-secondary"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Descripcion</label>
+                    <input
+                      type="text"
+                      class="form-control border border-secondary"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Precio</label>
+                    <input
+                      type="number"
+                      class="form-control border border-secondary"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Imagen</label>
+                    <input
+                      type="text"
+                      class="form-control border border-secondary"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Codigo</label>
+                    <input
+                      type="text"
+                      class="form-control border border-secondary"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Stock</label>
+                    <input
+                      type="text"
+                      class="form-control border border-secondary"
+                    />
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Editar Producto</button>
+              </form>
             </div>
           </div>
         </div>
@@ -108,7 +172,7 @@
               data-bs-target="#collapseThree"
               aria-expanded="false"
               aria-controls="collapseThree"
-            >
+            ><i class="bi bi-trash3 me-2"></i>
               Eliminar Producto
             </button>
           </h2>
@@ -118,7 +182,21 @@
             data-bs-parent="#accordionExample"
           >
             <div class="accordion-body">
-              <form action=""></form>
+              <form action="">
+                <div
+                  class="d-flex flex-column justify-content-center align-items-start gap-3"
+                >
+                  <div class="mb-3">
+                    <label class="form-label text-center">ID del Producto</label>
+                    <input
+                      type="text"
+                      class="form-control border border-secondary"
+                    />
+                  </div>
+                  <button type="submit" class="btn btn-primary">Eliminar
+                    Producto</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
