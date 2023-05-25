@@ -158,3 +158,22 @@ body {
   padding: 0.5rem;
   text-align: center;
 }
+
+.modal-footer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-footer button {
+  width: 48%;
+}
+
+.footerInfo {
+  font-family: "Oswald", sans-serif;
+}
+
+.footerInfo h5 {
+  font-size: 1.5rem;
+}

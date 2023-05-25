@@ -8,7 +8,7 @@ import { productsApiRouter } from "./routes/products-api.router.js";
 import { cartsRouter } from "./routes/carts.router.js";
 import { home } from "./routes/home.router.js";
 import { products } from "./routes/products.router.js";
-import { realTimeProductsRouter } from "./routes/real-time-products-router.js";
+import { productsAdminRouter } from "./routes/real-time-products-router.js";
 
 const app = express();
 const PORT = 8080;
@@ -51,6 +51,12 @@ socketServer.on("connection", (socket) => {
     console.log(productsList);
     socketServer.emit("products", productsList);
   });
+  socket.on("productModified", async (id, product) => {
+    prodMan.updateProduct(id, product);
+    const productsList = await prodMan.getProducts();
+    console.log(productsList);
+    socketServer.emit("products", productsList);
+  });
 });
 
 // ENDPOINTS
@@ -60,7 +66,7 @@ app.use("/api/carts", cartsRouter);
 // PLANTILLAS
 app.use("/", home);
 app.use("/products", products);
-app.use("/realtimeproducts", realTimeProductsRouter);
+app.use("/products-admin", productsAdminRouter);
 
 app.get("*", (req, res) => {
   return res.status(404).json({

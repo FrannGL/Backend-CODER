@@ -1,12 +1,12 @@
 import express from "express";
-export const realTimeProductsRouter = express.Router();
+export const productsAdminRouter = express.Router();
 import ProductManager from "../helpers/productManager.js";
 const prodMan = new ProductManager();
 
-realTimeProductsRouter.get("/", async (req, res) => {
+productsAdminRouter.get("/", async (req, res) => {
   try {
     const data = await prodMan.getProducts();
-    return res.status(200).render("real-time-products", { data });
+    return res.status(200).render("products-admin", { data });
   } catch (err) {
     console.log(err);
     res

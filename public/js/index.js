@@ -1,13 +1,21 @@
 const socket = io();
 
-const addProduct = document.getElementById("addProductForm");
 const inputTitle = document.getElementById("input-title");
 const inputDescription = document.getElementById("input-description");
 const inputPrice = document.getElementById("input-price");
 const inputThumbnail = document.getElementById("input-thumbnail");
 const inputCode = document.getElementById("input-code");
 const inputStock = document.getElementById("input-stock");
+const inputEditTitle = document.getElementById("input-editTitle");
+const inputEditDescription = document.getElementById("input-editDescription");
+const inputEditPrice = document.getElementById("input-editPrice");
+const inputEditThumbnail = document.getElementById("input-editThumbnail");
+const inputEditCode = document.getElementById("input-editCode");
+const inputEditStock = document.getElementById("input-editStock");
+
+const addProduct = document.getElementById("addProductForm");
 const deleteProduct = document.querySelectorAll(".btnDelete");
+const editProduct = document.querySelectorAll(".btnEdit");
 const cardId = document.getElementById("card-id");
 
 addProduct.addEventListener("submit", (e) => {
@@ -30,9 +38,9 @@ addProduct.addEventListener("submit", (e) => {
   socket.emit("new-product", newProduct);
 });
 
-deleteProduct.forEach((btnDelete) => {
-  const cardId = btnDelete.dataset.id;
-  btnDelete.addEventListener("click", () => {
+deleteProduct.forEach((producto) => {
+  const cardId = producto.dataset.id;
+  producto.addEventListener("click", () => {
     Swal.fire({
       title: "¿Estás seguro?",
       text: "Se eliminará el producto del array original",
@@ -48,6 +56,42 @@ deleteProduct.forEach((btnDelete) => {
         socket.emit("deleteProduct", productId);
         Swal.fire("Hecho!", "Eliminaste el producto", "success");
       }
+    });
+  });
+});
+
+function setModalTitle(id) {
+  const modalTitle = document.getElementById("exampleModalLabel");
+  modalTitle.innerText = "Editar Producto con el ID " + id;
+}
+
+function saveChanges() {
+  const modalElement = document.getElementById("exampleModal");
+  const modalInstance = bootstrap.Modal.getInstance(modalElement);
+  modalInstance.hide();
+  Swal.fire({
+    position: "center",
+    icon: "success",
+    title: "Producto Modificado",
+    showConfirmButton: true,
+    confirmButtonColor: "#0d6efd",
+    timer: 1500,
+  });
+}
+
+editProduct.forEach((producto) => {
+  const cardId = producto.dataset.id;
+  producto.addEventListener("click", () => {
+    document.getElementById("btn-edit").addEventListener("click", () => {
+      const newProduct = {
+        title: inputEditTitle.value,
+        description: inputEditDescription.value,
+        price: inputEditPrice.value,
+        thumbnail: inputEditThumbnail.value,
+        code: inputEditCode.value,
+        stock: inputEditStock.value,
+      };
+      socket.emit("productModified", cardId, newProduct);
     });
   });
 });
