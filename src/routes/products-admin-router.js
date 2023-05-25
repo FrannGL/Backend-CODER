@@ -6,7 +6,8 @@ const prodMan = new ProductManager();
 productsAdminRouter.get("/", async (req, res) => {
   try {
     const data = await prodMan.getProducts();
-    return res.status(200).render("products-admin", { data });
+    const title = "Administrador de Productos";
+    return res.status(200).render("products-admin", { data, title });
   } catch (err) {
     console.log(err);
     res

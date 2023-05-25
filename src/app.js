@@ -8,7 +8,7 @@ import { productsApiRouter } from "./routes/products-api.router.js";
 import { cartsRouter } from "./routes/carts.router.js";
 import { home } from "./routes/home.router.js";
 import { products } from "./routes/products.router.js";
-import { productsAdminRouter } from "./routes/real-time-products-router.js";
+import { productsAdminRouter } from "./routes/products-admin-router.js";
 
 const app = express();
 const PORT = 8080;
