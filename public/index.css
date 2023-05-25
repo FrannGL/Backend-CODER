@@ -109,6 +109,17 @@ body {
   font-size: 0.8rem;
 }
 
+.btnAdd {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnAdd button {
+  width: 100%;
+}
+
 .bg-image {
   background-image: url("/images/burger-wallpaper3.jpg");
   background-position: center;
