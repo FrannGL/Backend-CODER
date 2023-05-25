@@ -4,9 +4,10 @@ import { Server } from "socket.io";
 import { __dirname } from "./utils.js";
 import ProductManager from "./helpers/productManager.js";
 const prodMan = new ProductManager();
-import { productsRouter } from "./routes/products.router.js";
+import { productsApiRouter } from "./routes/products-api.router.js";
 import { cartsRouter } from "./routes/carts.router.js";
-import { products } from "./routes/home.router.js";
+import { home } from "./routes/home.router.js";
+import { products } from "./routes/products.router.js";
 import { realTimeProductsRouter } from "./routes/real-time-products-router.js";
 
 const app = express();
@@ -53,11 +54,12 @@ socketServer.on("connection", (socket) => {
 });
 
 // ENDPOINTS
-app.use("/api/products", productsRouter);
+app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsRouter);
 
 // PLANTILLAS
-app.use("/home", products);
+app.use("/", home);
+app.use("/products", products);
 app.use("/realtimeproducts", realTimeProductsRouter);
 
 app.get("*", (req, res) => {

@@ -1,69 +1,27 @@
-<div class="title">
-  <img src="./images/logo.png" class="logo" alt="" />
-  <h1 class="text-center">Lista de Productos</h1>
-  <hr />
-</div>
 <div class="container-fluid">
   <div class="row">
-    <div class="col g-0 d-flex flex-wrap justify-content-center gap-5">
-      {{#each data}}
-        <div class="card" style="width: 15rem; border: 1px solid black">
-          <img src={{this.thumbnail}} class="card-img" alt="{{this.title}}" />
-          <div class="card-body text-center">
-            <h6 class="card-id">ID: {{this.id}}</h6>
-            <div class="card-title">
-              <h4>{{this.title}}</h4>
-            </div>
-            <div class="card-description">
-              <p>{{this.description}}</p>
-            </div>
-            <div class="card-price">
-              <p>$ {{this.price}}.-</p>
-            </div>
-            <div class="card-item-detail">
-              <p class="code"><b>Code:</b> {{this.code}}</p>
-              <p class="stock"><b>Stock:</b> {{this.stock}}</p>
-            </div>
-            <div class="btnContainer">
-              <a href="#" class="btn btn-dark">Agregar al Carrito</a>
-            </div>
-          </div>
+    <div class="col g-0">
+      <div class="bg-image"></div>
+
+      <div class="contenedorTituloPrincipal">
+        <img src="/images/logo.png" class="logo" />
+        <h2 class="tituloPrincipal">burguers a la parriilla</h2>
+        <div class="btns d-flex flex-row mt-3">
+          <a href="/api/products">
+            <button type="button" class="btn btn-success me-3">ir a ENDPOINT
+              /api/products</button></a>
+          <a href="/api/carts">
+            <button type="button" class="btn btn-success me-3">ir a ENDPOINT
+              /api/carts</button></a>
+          <a href="/products">
+            <button type="button" class="btn btn-primary me-3">ir a PLANTILLA
+              /products</button></a>
+          <a href="/realtimeproducts"><button
+              type="button"
+              class="btn btn-primary ms-3"
+            >ir a PLANTILLA /realtimeproducts</button></a>
         </div>
-      {{/each}}
+      </div>
     </div>
   </div>
-
 </div>
-
-{{!-- <div class="container-fluid">
-  <div class="row">
-    <div class="col">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Title</th>
-            <th scope="col">Description</th>
-            <th scope="col">Price</th>
-            <th scope="col">Thumbnail</th>
-            <th scope="col">Code</th>
-            <th scope="col">Stock</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each data}}
-            <tr>
-              <th scope="row">{{this.id}}</th>
-              <td>{{this.title}}</td>
-              <td>{{this.description}}</td>
-              <td>$ {{this.price}}</td>
-              <td>{{this.thumbnail}}</td>
-              <td>{{this.code}}</td>
-              <td>{{this.stock}}</td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div> --}}

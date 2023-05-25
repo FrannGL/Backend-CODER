@@ -1,9 +1,9 @@
 import express from "express";
-export const products = express.Router();
+export const home = express.Router();
 import ProductManager from "../helpers/productManager.js";
 const prodMan = new ProductManager();
 
-products.get("/", async (req, res) => {
+home.get("/", async (req, res) => {
   try {
     const data = await prodMan.getProducts();
     const title = "Listado de Productos";
