@@ -6,7 +6,7 @@ const prodMan = new ProductManager();
 realTimeProductsRouter.get("/", async (req, res) => {
   try {
     const data = await prodMan.getProducts();
-    return res.status(200).render("real-time-home", { data });
+    return res.status(200).render("real-time-products", { data });
   } catch (err) {
     console.log(err);
     res
