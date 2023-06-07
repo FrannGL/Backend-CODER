@@ -1,6 +1,6 @@
 import express from "express";
+import ProductManager from "../DAO/helpers/productManager.js";
 export const productsAdminRouter = express.Router();
-import ProductManager from "../helpers/productManager.js";
 const prodMan = new ProductManager();
 
 productsAdminRouter.get("/", async (req, res) => {

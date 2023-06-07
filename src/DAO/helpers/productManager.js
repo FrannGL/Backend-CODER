@@ -1,5 +1,5 @@
 import fs from "fs";
-import { __dirname } from "../utils.js";
+import { __dirname } from "../../config.js";
 const productPath = `${__dirname}/data/products.JSON`;
 export default class ProductManager {
   constructor() {

@@ -1,7 +1,7 @@
 import express from "express";
+import CartsManager from "../DAO/helpers/cartsManager.js";
+import ProductManager from "../DAO/helpers/productManager.js";
 export const cartsRouter = express.Router();
-import CartsManager from "../helpers/cartsManager.js";
-import ProductManager from "../helpers/productManager.js";
 const prodMan = new ProductManager();
 const cartMan = new CartsManager();
 
@@ -14,13 +14,13 @@ cartsRouter.get("/", async (req, res) => {
       res.status(200).json({
         status: "success",
         msg: `Mostrando los ${queryLimit} carritos`,
-        data: search,
+        payload: search,
       });
     } else {
       res.status(200).json({
         status: "success",
         msg: `Mostrando los ${data.length} carritos`,
-        data: data,
+        payload: data,
       });
     }
   } catch (err) {
@@ -39,7 +39,7 @@ cartsRouter.get("/:id", async (req, res) => {
       res.status(200).json({
         status: "success",
         msg: `Mostrando el producto con ID ${cartEncontrado.id}`,
-        data: cartEncontrado,
+        payload: cartEncontrado,
       });
     } else {
       res.status(404).send({ status: "error", msg: "Carrito no encontrado" });
@@ -94,7 +94,7 @@ cartsRouter.post("/:cid/products/:pid", async (req, res) => {
     res.status(200).json({
       status: "success",
       msg: `Producto Agregado Correctamente`,
-      data: cartExist,
+      payload: cartExist,
     });
   } catch (error) {
     console.log(error);

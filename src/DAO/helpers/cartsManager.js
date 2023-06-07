@@ -1,5 +1,5 @@
 import fs from "fs";
-import { __dirname } from "../utils.js";
+import { __dirname } from "../../config.js";
 const cartPath = `${__dirname}\/data/carts.JSON`;
 export default class CartsManager {
   constructor() {
