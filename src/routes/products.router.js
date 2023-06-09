@@ -1,11 +1,10 @@
 import express from "express";
-import ProductManager from "../DAO/helpers/productManager.js";
+import { productService } from "../services/products.service.js";
 export const products = express.Router();
-const prodMan = new ProductManager();
 
 products.get("/", async (req, res) => {
   try {
-    const data = await prodMan.getProducts();
+    const data = await productService.getAll({});
     const title = "Listado de Productos";
     return res.status(200).render("products", { title, data });
   } catch (err) {

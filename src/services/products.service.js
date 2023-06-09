@@ -2,18 +2,7 @@ import { ProductsModel } from "../DAO/models/products.model.js";
 
 class ProductService {
   async getAll() {
-    const products = await ProductsModel.find(
-      {},
-      {
-        _id: true,
-        title: true,
-        description: true,
-        price: true,
-        thumbnail: true,
-        code: true,
-        stock: true,
-      }
-    );
+    const products = await ProductsModel.find({});
     return products;
   }
 

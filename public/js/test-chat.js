@@ -37,7 +37,15 @@ socket.on("listado_de_msgs", (msgs) => {
   const divMsgs = document.getElementById("div-msgs");
   let formato = "";
   msgs.forEach((msg) => {
-    formato = formato + "<p>email " + msg.user + ": " + msg.message + "</p>";
+    formato =
+      formato +
+      `<div class="mt-3"><p><span class="fw-bold">User: </span>` +
+      msg.user +
+      `</br>` +
+      `</p>` +
+      `<p><span class="fw-bold">Message: </span>` +
+      msg.message +
+      `</p></div>`;
   });
   divMsgs.innerHTML = formato;
 });

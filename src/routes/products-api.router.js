@@ -1,9 +1,6 @@
 import express from "express";
-import ProductManager from "../DAO/helpers/productManager.js";
-import { ProductsModel } from "../DAO/models/products.model.js";
 import { productService } from "../services/products.service.js";
 export const productsApiRouter = express.Router();
-const prodMan = new ProductManager();
 
 productsApiRouter.get("/", async (req, res) => {
   try {

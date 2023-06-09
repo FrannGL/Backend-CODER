@@ -1,13 +1,15 @@
 import express from "express";
 import CartsManager from "../DAO/helpers/cartsManager.js";
 import ProductManager from "../DAO/helpers/productManager.js";
+import { cartsServices } from "../services/carts.service.js";
+import { productService } from "../services/products.service.js";
 export const cartsRouter = express.Router();
 const prodMan = new ProductManager();
 const cartMan = new CartsManager();
 
 cartsRouter.get("/", async (req, res) => {
   try {
-    const data = await cartMan.getCarts();
+    const data = await cartsServices.getAll();
     const queryLimit = req.query.limit;
     if (queryLimit && queryLimit <= 10) {
       const search = data.slice(0, queryLimit);
@@ -19,8 +21,8 @@ cartsRouter.get("/", async (req, res) => {
     } else {
       res.status(200).json({
         status: "success",
-        msg: `Mostrando los ${data.length} carritos`,
-        payload: data,
+        msg: `Mostrando los carritos`,
+        payload: { data },
       });
     }
   } catch (err) {
@@ -34,7 +36,7 @@ cartsRouter.get("/", async (req, res) => {
 cartsRouter.get("/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    const cartEncontrado = cartMan.getCartsById(id);
+    const cartEncontrado = cartsServices.getAllById(id);
     if (cartEncontrado) {
       res.status(200).json({
         status: "success",
@@ -54,47 +56,11 @@ cartsRouter.get("/:id", async (req, res) => {
 
 cartsRouter.post("/:cid/products/:pid", async (req, res) => {
   try {
-    const cartId = req.params.cid;
-    const prodId = req.params.pid;
-
-    const carts = await cartMan.getCarts();
-    const products = await prodMan.getProducts();
-
-    console.log(products[3]);
-
-    const cartExist = carts.find((cart) => cart.id === +cartId);
-
-    console.log(cartExist);
-
-    const productExist = products.find((prod) => prod.id === +prodId);
-
-    if (!productExist || !cartExist) {
-      throw new Error("Carrito o Producto no existente");
-    }
-
-    if (cartExist) {
-      const existingProduct = cartExist.products.find(
-        (prod) => prod.idProduct === +prodId
-      );
-
-      if (existingProduct) {
-        existingProduct.quantity++;
-      } else {
-        cartExist.products.push({ idProduct: +prodId, quantity: 1 });
-      }
-    } else {
-      const newCart = {
-        id: +cartId,
-        products: [{ idProduct: +prodId, quantity: 1 }],
-      };
-      carts.push(newCart);
-    }
-
-    cartMan.saveCarts(carts);
+    await cartsServices.create();
     res.status(200).json({
       status: "success",
       msg: `Producto Agregado Correctamente`,
-      payload: cartExist,
+      payload: {},
     });
   } catch (error) {
     console.log(error);
