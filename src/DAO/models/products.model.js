@@ -1,13 +1,12 @@
 import { Schema, model } from "mongoose";
 
 const schema = new Schema({
-  _id: { type: String, required: true, max: 100 },
   title: { type: String, required: true, max: 100 },
-  description: { type: String, required: true, max: 200 },
-  price: { type: String, required: true, max: 100 },
-  thumbnail: { type: String, required: true, max: 200 },
-  code: { type: String, required: true, max: 10 },
-  stock: { type: String, required: true, max: 10 },
+  description: { type: String, required: true },
+  code: { type: Number, required: true },
+  price: { type: Number, required: true },
+  stock: { type: Number, required: true },
+  thumbnail: { type: String, required: true },
 });
 
 export const ProductsModel = model("products", schema);

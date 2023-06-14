@@ -4,7 +4,7 @@ export const products = express.Router();
 
 products.get("/", async (req, res) => {
   try {
-    const data = await productService.getAll({});
+    const data = await productService.getAllRendering({});
     const title = "Listado de Productos";
     return res.status(200).render("products", { title, data });
   } catch (err) {

@@ -6,6 +6,27 @@ class ProductService {
     return products;
   }
 
+  async getProductById(_id) {
+    const productById = await ProdModel.findOne({ _id: _id });
+    return productById;
+  }
+
+  async getAllRendering() {
+    const products = await ProductsModel.find(
+      {},
+      {
+        _id: 1,
+        title: 1,
+        description: 1,
+        price: 1,
+        thumbnail: 1,
+        code: 1,
+        stock: 1,
+      }
+    ).lean();
+    return products;
+  }
+
   async create({ title, description, price, thumbnail, code, stock }) {
     const ProductCreated = await ProductsModel.create({
       title,
