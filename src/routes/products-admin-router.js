@@ -5,8 +5,20 @@ export const productsAdminRouter = express.Router();
 productsAdminRouter.get("/", async (req, res) => {
   try {
     const data = await productService.getAll({});
+    const dataParse = data.map((prod) => {
+      return {
+        _id: prod._id.toString(),
+        title: prod.title,
+        description: prod.description,
+        price: prod.price,
+        thumbnail: prod.thumbnail,
+        code: prod.code,
+        stock: prod.stock,
+      };
+    });
+    console.log(dataParse);
     const title = "Administrador de Productos";
-    return res.status(200).render("products-admin", { data, title });
+    return res.status(200).render("products-admin", { dataParse, title });
   } catch (err) {
     console.log(err);
     res

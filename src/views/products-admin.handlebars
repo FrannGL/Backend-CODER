@@ -131,11 +131,11 @@
         class="col g-0 d-flex flex-wrap justify-content-center gap-5"
         id="dinamic-list"
       >
-        {{#each data}}
+        {{#each dataParse}}
           <div class="card" style="width: 15rem; border: 1px solid black">
             <img src={{this.thumbnail}} class="card-img" alt="{{this.title}}" />
             <div class="card-body text-center">
-              <h6 class="card-id">ID: {{this.id}}</h6>
+              <h6 class="card-id">ID: {{this._id}}</h6>
               <div class="card-title">
                 <h4>{{this.title}}</h4>
               </div>
