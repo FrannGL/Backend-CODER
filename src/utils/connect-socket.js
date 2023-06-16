@@ -25,9 +25,11 @@ export function connectSocketServer(httpServer) {
       }
     });
 
-    socket.on("productModified", async (newProd) => {
+    socket.on("productModified", async (id, newProd) => {
       try {
-        await ProductsModel.updateOne({ _id }, { newProd });
+        console.log(id);
+        console.log(newProd);
+        await ProductsModel.findOneAndUpdate({ _id: id }, newProd);
         const prod = await ProductsModel.find({});
         socketServer.emit("products", prod);
       } catch (e) {

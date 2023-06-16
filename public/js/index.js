@@ -19,9 +19,25 @@ function setModalTitle(id) {
 }
 
 function saveChanges() {
-  const modalElement = document.getElementById("exampleModal");
-  const modalInstance = bootstrap.Modal.getInstance(modalElement);
-  modalInstance.hide();
+  const id = window.localStorage.getItem("id");
+
+  const inputEditTitle = document.getElementById("input-editTitle");
+  const inputEditDescription = document.getElementById("input-editDescription");
+  const inputEditPrice = document.getElementById("input-editPrice");
+  const inputEditThumbnail = document.getElementById("input-editThumbnail");
+  const inputEditCode = document.getElementById("input-editCode");
+  const inputEditStock = document.getElementById("input-editStock");
+
+  const newProduct = {
+    title: inputEditTitle.value,
+    description: inputEditDescription.value,
+    price: inputEditPrice.value,
+    thumbnail: inputEditThumbnail.value,
+    code: inputEditCode.value,
+    stock: inputEditStock.value,
+  };
+
+  socket.emit("productModified", id, newProduct);
 
   Swal.fire({
     position: "center",
@@ -30,6 +46,16 @@ function saveChanges() {
     showConfirmButton: true,
     confirmButtonColor: "#0d6efd",
     timer: 1500,
+  });
+  const modalElement = document.getElementById("exampleModal");
+  const modalInstance = bootstrap.Modal.getInstance(modalElement);
+  modalInstance.hide();
+  modalElement.addEventListener("hidden.bs.modal", () => {
+    const backdropElement = document.querySelector(".modal-backdrop");
+    if (backdropElement) {
+      backdropElement.parentNode.removeChild(backdropElement);
+    }
+    document.body.style.overflow = "auto";
   });
 }
 
@@ -57,32 +83,11 @@ container.addEventListener("click", (event) => {
   if (event.target.classList.contains("btnEdit")) {
     const button = event.target;
     const cardId = button.getAttribute("data-id");
+    window.localStorage.setItem("id", cardId);
+
     const modalElement = document.getElementById("exampleModal");
     const modal = new bootstrap.Modal(modalElement);
     modal.show();
-
-    const inputEditTitle = document.getElementById("input-editTitle");
-    const inputEditDescription = document.getElementById(
-      "input-editDescription"
-    );
-    const inputEditPrice = document.getElementById("input-editPrice");
-    const inputEditThumbnail = document.getElementById("input-editThumbnail");
-    const inputEditCode = document.getElementById("input-editCode");
-    const inputEditStock = document.getElementById("input-editStock");
-
-    const newProduct = {
-      id: cardId,
-      title: inputEditTitle.value,
-      description: inputEditDescription.value,
-      price: inputEditPrice.value,
-      thumbnail: inputEditThumbnail.value,
-      code: inputEditCode.value,
-      stock: inputEditStock.value,
-    };
-
-    console.log(newProduct);
-
-    socket.emit("productModified", cardId, newProduct);
   }
 
   if (event.target.classList.contains("btnDelete")) {
