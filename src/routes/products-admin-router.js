@@ -7,7 +7,7 @@ productsAdminRouter.get("/", async (req, res) => {
     const data = await productService.getAll({});
     const dataParse = data.map((prod) => {
       return {
-        _id: prod._id.toString(),
+        id: prod._id,
         title: prod.title,
         description: prod.description,
         price: prod.price,
@@ -16,7 +16,6 @@ productsAdminRouter.get("/", async (req, res) => {
         stock: prod.stock,
       };
     });
-    console.log(dataParse);
     const title = "Administrador de Productos";
     return res.status(200).render("products-admin", { dataParse, title });
   } catch (err) {

@@ -17,30 +17,32 @@ export function connectSocketServer(httpServer) {
 
     socket.on("new-product", async (newProd) => {
       try {
-        await ProductsModel.create({ ...newProd });
+        await ProductsModel.create(newProd);
         const prods = await ProductsModel.find({});
-        console.log(prods);
         socketServer.emit("products", prods);
       } catch (e) {
         console.log(e);
       }
     });
 
-    socket.on("deleteProduct", async (productId) => {
+    socket.on("productModified", async (newProd) => {
       try {
-        ProductsModel.deleteOne(productId);
-        const productsList = await ProductsModel.find({});
-        console.log(productsList);
-        socketServer.emit("products", productsList);
+        await ProductsModel.updateOne({ _id }, { newProd });
+        const prod = await ProductsModel.find({});
+        socketServer.emit("products", prod);
       } catch (e) {
         console.log(e);
       }
     });
-    socket.on("productModified", async (id, product) => {
-      ProductsModel.updateOne(id, product);
-      const productsList = await ProductsModel.find({});
-      console.log(productsList);
-      socketServer.emit("products", productsList);
+
+    socket.on("delete-product", async (idProd) => {
+      try {
+        await ProductsModel.deleteOne({ _id: idProd });
+        const prods = await ProductsModel.find({});
+        socketServer.emit("products", prods);
+      } catch (e) {
+        console.log(e);
+      }
     });
 
     socket.on("msg_front_to_back", async (msg) => {

@@ -7,7 +7,7 @@ class ProductService {
   }
 
   async getProductById(_id) {
-    const productById = await ProductsModel.findOne({ _id: _id });
+    const productById = await ProdModel.findOne({ _id: _id });
     return productById;
   }
 
