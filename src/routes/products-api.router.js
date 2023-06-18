@@ -16,7 +16,7 @@ productsApiRouter.get("/", async (req, res) => {
     } else {
       res.status(200).json({
         status: "success",
-        msg: `Mostrando los productos`,
+        msg: `Mostrando los ${products.length} productos`,
         payload: { products },
       });
     }

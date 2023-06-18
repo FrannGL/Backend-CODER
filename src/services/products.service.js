@@ -6,6 +6,28 @@ class ProductService {
     return products;
   }
 
+  async getAllWithPagination(pagina, price, orderBy) {
+    const query = {};
+    if (price) {
+      query.price = price;
+    }
+
+    const sortOptions = {};
+    if (orderBy === "asc") {
+      sortOptions.title = 1;
+    } else if (orderBy === "desc") {
+      sortOptions.title = -1;
+    }
+
+    const queryResult = await ProductsModel.paginate(query, {
+      page: pagina || 1,
+      limit: 5,
+      sort: sortOptions,
+    });
+
+    return queryResult;
+  }
+
   async getProductById(_id) {
     const productById = await ProdModel.findOne({ _id: _id });
     return productById;
