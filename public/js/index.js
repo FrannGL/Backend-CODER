@@ -2,6 +2,7 @@ const socket = io();
 
 const inputTitle = document.getElementById("input-title");
 const inputDescription = document.getElementById("input-description");
+const inputCategory = document.getElementById("input-category");
 const inputPrice = document.getElementById("input-price");
 const inputThumbnail = document.getElementById("input-thumbnail");
 const inputCode = document.getElementById("input-code");
@@ -23,6 +24,7 @@ function saveChanges() {
 
   const inputEditTitle = document.getElementById("input-editTitle");
   const inputEditDescription = document.getElementById("input-editDescription");
+  const inputEditCategory = document.getElementById("input-editCategory");
   const inputEditPrice = document.getElementById("input-editPrice");
   const inputEditThumbnail = document.getElementById("input-editThumbnail");
   const inputEditCode = document.getElementById("input-editCode");
@@ -31,6 +33,7 @@ function saveChanges() {
   const newProduct = {
     title: inputEditTitle.value,
     description: inputEditDescription.value,
+    category: inputEditCategory.value,
     price: inputEditPrice.value,
     thumbnail: inputEditThumbnail.value,
     code: inputEditCode.value,
@@ -64,6 +67,7 @@ addProduct.addEventListener("submit", (e) => {
   const newProduct = {
     title: inputTitle.value,
     description: inputDescription.value,
+    category: inputCategory.value,
     price: inputPrice.value,
     thumbnail: inputThumbnail.value,
     code: inputCode.value,
@@ -122,17 +126,20 @@ socket.on("products", (producto) => {
         <div class="card-body text-center">
           <h6 class="card-id">ID: ${prod._id}</h6>
           <div class="card-title">
-            <h4>${prod.title}</h4>
+            <h4 class="m-0">${prod.title}</h4>
+          </div>
+          <div>
+            <h6 class="m-0">${prod.category}</h6>
           </div>
           <div class="card-description">
-            <p>${prod.description}</p>
+            <p class="m-0 py-2">${prod.description}</p>
           </div>
           <div class="card-price">
-            <p>$ ${prod.price}.-</p>
+            <p class="m-0">$ ${prod.price}.-</p>
           </div>
           <div class="card-item-detail">
-            <p class="code"><b>Code:</b> ${prod.code}</p>
-            <p class="stock"><b>Stock:</b> ${prod.stock}</p>
+            <p class="code m-0"><b>Code:</b> ${prod.code}</p>
+            <p class="stock m-0"><b>Stock:</b> ${prod.stock}</p>
           </div>
           <div class="btnContainer">
             <a
@@ -202,7 +209,18 @@ socket.on("products", (producto) => {
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-4">
+                  <div class="form-floating mb-3">
+                    <input
+                      type="text"
+                      class="form-control border-0 border-bottom border-dark"
+                      id="input-editCategory"
+                      placeholder="Categoria"
+                    />
+                    <label for="input-categoria"><i class="bi bi-tag me-1"></i>Categoria</label>
+                 </div>
+               </div>
+                <div class="col-4">
                   <div class="form-floating mb-3">
                     <input
                       type="number"
@@ -215,7 +233,7 @@ socket.on("products", (producto) => {
                       ></i>Precio</label>
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-4">
                   <div class="form-floating">
                     <input
                       type="text"

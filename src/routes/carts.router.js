@@ -1,69 +1,93 @@
 import express from "express";
-import CartsManager from "../DAO/helpers/cartsManager.js";
-import ProductManager from "../DAO/helpers/productManager.js";
-import { cartsServices } from "../services/carts.service.js";
+import { cartService } from "../services/carts.service.js";
 import { productService } from "../services/products.service.js";
+
 export const cartsRouter = express.Router();
-const prodMan = new ProductManager();
-const cartMan = new CartsManager();
 
 cartsRouter.get("/", async (req, res) => {
   try {
-    const data = await cartsServices.getAll();
-    const queryLimit = req.query.limit;
-    if (queryLimit && queryLimit <= 10) {
-      const search = data.slice(0, queryLimit);
-      res.status(200).json({
-        status: "success",
-        msg: `Mostrando los ${queryLimit} carritos`,
-        payload: search,
-      });
-    } else {
-      res.status(200).json({
-        status: "success",
-        msg: `Mostrando los carritos`,
-        payload: { data },
-      });
-    }
-  } catch (err) {
-    console.log(err);
-    res
-      .status(501)
-      .send({ status: "error", msg: "Error en el servidor", error: err });
-  }
-});
-
-cartsRouter.get("/:id", async (req, res) => {
-  try {
-    let id = req.params.id;
-    const cartEncontrado = cartsServices.getAllById(id);
-    if (cartEncontrado) {
-      res.status(200).json({
-        status: "success",
-        msg: `Mostrando el producto con ID ${cartEncontrado.id}`,
-        payload: cartEncontrado,
-      });
-    } else {
-      res.status(404).send({ status: "error", msg: "Carrito no encontrado" });
-    }
-  } catch (error) {
-    console.log(error);
-    res
-      .status(501)
-      .send({ status: "error", msg: "Error en el servidor", error: error });
-  }
-});
-
-cartsRouter.post("/:cid/products/:pid", async (req, res) => {
-  try {
-    await cartsServices.create();
-    res.status(200).json({
+    let carts = await cartService.getAll();
+    return res.status(200).json({
       status: "success",
-      msg: `Producto Agregado Correctamente`,
+      msg: "all carts",
+      payload: { carts },
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      status: "error",
+      msg: "something went wrong :(",
       payload: {},
     });
-  } catch (error) {
-    console.log(error);
-    res.status(501).send({ status: "error", msg: "Error", error: error });
+  }
+});
+
+cartsRouter.get("/:_id", async (req, res) => {
+  try {
+    const { _id } = req.params;
+    const cart = await cartService.getOneCart(_id);
+    return res.status(200).json({
+      status: "succes",
+      msg: "cart found",
+      payload: cart,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      status: "error",
+      msg: "something went wrong :(",
+      payload: {},
+    });
+  }
+});
+
+cartsRouter.post("/", async (_, res) => {
+  try {
+    let newCart = await cartService.create();
+    return res.status(201).json({
+      status: "success",
+      msg: "Cart added",
+      payload: newCart,
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      status: "error",
+      msg: "something went wrong :(",
+      payload: {},
+    });
+  }
+});
+
+cartsRouter.post("/:cid/product/:pid", async (req, res) => {
+  try {
+    let cid = req.params.cid;
+    let pid = req.params.pid;
+
+    let findProd = await productService.getProductById(pid);
+
+    let findCart = await cartService.getOneCart(cid);
+    if (!findProd) {
+      return res
+        .status(404)
+        .json({ status: "error", msg: "product not found", payload: {} });
+    } else if (!findCart) {
+      return res
+        .status(404)
+        .json({ status: "error", msg: "cart not found", payload: {} });
+    } else {
+      return res.status(201).json({
+        status: "success",
+        msg: "product added to cart",
+        payload: await cartService.addProductToCart(cid, pid),
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      status: "error",
+      msg: "something went wrong :(",
+      payload: {},
+    });
   }
 });

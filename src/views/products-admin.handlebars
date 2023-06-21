@@ -1,6 +1,6 @@
 <main>
   <div class="title">
-    <img src="./images/logo.png" class="logo" alt="" />
+    <a href="/"><img src="./images/logo.png" class="logo" alt="" /></a>
     <h1 class="text-center">{{{title}}}</h1>
     <hr />
   </div>
@@ -57,7 +57,20 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-6">
+                    <div class="col-4">
+                      <div class="form-floating mb-3">
+                        <input
+                          type="text"
+                          class="form-control border-0 border-bottom border-dark"
+                          id="input-category"
+                          placeholder="Categoria"
+                        />
+                        <label for="input-category"><i
+                            class="bi bi-tag me-1"
+                          ></i>Categoria</label>
+                      </div>
+                    </div>
+                    <div class="col-4">
                       <div class="form-floating mb-3">
                         <input
                           type="number"
@@ -70,7 +83,7 @@
                           ></i>Precio</label>
                       </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                       <div class="form-floating">
                         <input
                           type="text"
@@ -137,17 +150,20 @@
             <div class="card-body text-center">
               <h6 class="card-id">ID: {{this.id}}</h6>
               <div class="card-title">
-                <h4>{{this.title}}</h4>
+                <h4 class="m-0">{{this.title}}</h4>
+              </div>
+              <div>
+                <h6 class="m-0">{{this.category}}</h6>
               </div>
               <div class="card-description">
-                <p>{{this.description}}</p>
+                <p class="m-0">{{this.description}}</p>
               </div>
               <div class="card-price">
-                <p>$ {{this.price}}.-</p>
+                <p class="m-0">$ {{this.price}}.-</p>
               </div>
               <div class="card-item-detail">
-                <p class="code"><b>Code:</b> {{this.code}}</p>
-                <p class="stock"><b>Stock:</b> {{this.stock}}</p>
+                <p class="code m-0"><b>Code:</b> {{this.code}}</p>
+                <p class="stock m-0"><b>Stock:</b> {{this.stock}}</p>
               </div>
               <div class="btnContainer">
                 <a
@@ -218,7 +234,20 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-6">
+                      <div class="col-4">
+                        <div class="form-floating mb-3">
+                          <input
+                            type="text"
+                            class="form-control border-0 border-bottom border-dark"
+                            id="input-editCategory"
+                            placeholder="Categoria"
+                          />
+                          <label for="input-categoria"><i
+                              class="bi bi-tag me-1"
+                            ></i>Categoria</label>
+                        </div>
+                      </div>
+                      <div class="col-4">
                         <div class="form-floating mb-3">
                           <input
                             type="number"
@@ -231,7 +260,7 @@
                             ></i>Precio</label>
                         </div>
                       </div>
-                      <div class="col-6">
+                      <div class="col-4">
                         <div class="form-floating">
                           <input
                             type="text"

@@ -4,11 +4,11 @@ export const products = express.Router();
 
 products.get("/", async (req, res) => {
   try {
-    const { pagina, price, orderBy } = req.query;
-    console.log(pagina, price, orderBy);
+    const { limit, pagina, category, orderBy } = req.query;
     const data = await productService.getAllWithPagination(
+      limit,
       pagina,
-      price,
+      category,
       orderBy
     );
     const { totalPages, page, hasPrevPage, hasNextPage, prevPage, nextPage } =

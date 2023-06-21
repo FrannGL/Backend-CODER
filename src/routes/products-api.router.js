@@ -4,22 +4,40 @@ export const productsApiRouter = express.Router();
 
 productsApiRouter.get("/", async (req, res) => {
   try {
-    const products = await productService.getAll();
-    const queryLimit = req.query.limit;
-    if (queryLimit && queryLimit <= 20) {
-      const search = products.slice(0, queryLimit);
-      res.status(200).json({
-        status: "success",
-        msg: `Mostrando los ${queryLimit} productos`,
-        payload: search,
-      });
-    } else {
-      res.status(200).json({
-        status: "success",
-        msg: `Mostrando los ${products.length} productos`,
-        payload: { products },
-      });
-    }
+    const { limit, pagina, category, orderBy } = req.query;
+    const data = await productService.getAllWithPagination(
+      limit,
+      pagina,
+      category,
+      orderBy
+    );
+    const {
+      totalDocs,
+      totalPages,
+      page,
+      hasPrevPage,
+      hasNextPage,
+      prevPage,
+      nextPage,
+    } = data;
+    res.status(200).json({
+      status: "success",
+      msg: `Mostrando los ${data.docs.length} productos`,
+      payload: data.docs,
+      totalDocs: totalDocs,
+      totalPages: totalPages,
+      prevPage: hasPrevPage ? prevPage : null,
+      nextPage: hasNextPage ? nextPage : null,
+      page: page,
+      hasPrevPage: hasPrevPage,
+      hasNextPage: hasNextPage,
+      prevLink: hasPrevPage
+        ? `/api/products?limit=${limit}&pagina=${prevPage}`
+        : null,
+      nextLink: hasNextPage
+        ? `/api/products?limit=${limit}&pagina=${nextPage}`
+        : null,
+    });
   } catch (e) {
     console.log(e);
     return res.status(500).json({

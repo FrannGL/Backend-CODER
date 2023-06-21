@@ -5,23 +5,30 @@ class ProductService {
     const products = await ProductsModel.find({});
     return products;
   }
-
-  async getAllWithPagination(pagina, price, orderBy) {
+  async getAllCount() {
+    try {
+      const count = await ProductsModel.countDocuments();
+      return count;
+    } catch (error) {
+      throw new Error("Error al obtener el número total de productos");
+    }
+  }
+  async getAllWithPagination(limit, pagina, category, orderBy) {
     const query = {};
-    if (price) {
-      query.price = price;
+    if (category) {
+      query.category = category;
     }
 
     const sortOptions = {};
     if (orderBy === "asc") {
-      sortOptions.title = 1;
+      sortOptions.price = 1;
     } else if (orderBy === "desc") {
-      sortOptions.title = -1;
+      sortOptions.price = -1;
     }
 
     const queryResult = await ProductsModel.paginate(query, {
       page: pagina || 1,
-      limit: 5,
+      limit: limit || 5,
       sort: sortOptions,
     });
 
