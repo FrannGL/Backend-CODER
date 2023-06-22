@@ -53,6 +53,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 200px;
+  height: 75px;
 }
 
 .card-description p {
@@ -117,6 +118,14 @@ body {
 
 .btnAdd button {
   width: 100%;
+}
+
+.fixed-bottom-right {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  transform: scale(1.5);
+  z-index: 100;
 }
 
 .bg-image {

@@ -32,10 +32,10 @@ productsApiRouter.get("/", async (req, res) => {
       hasPrevPage: hasPrevPage,
       hasNextPage: hasNextPage,
       prevLink: hasPrevPage
-        ? `/api/products?limit=${limit}&pagina=${prevPage}`
+        ? `/api/products?limit=${data.limit}&pagina=${prevPage}`
         : null,
       nextLink: hasNextPage
-        ? `/api/products?limit=${limit}&pagina=${nextPage}`
+        ? `/api/products?limit=${data.limit}&pagina=${nextPage}`
         : null,
     });
   } catch (e) {

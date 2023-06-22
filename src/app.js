@@ -1,6 +1,7 @@
 import express from "express";
 import handlebars from "express-handlebars";
 import { __dirname } from "./config.js";
+import { cartsApiRouter } from "./routes/carts-api.router.js";
 import { cartsRouter } from "./routes/carts.router.js";
 import { home } from "./routes/home.router.js";
 import { productsAdminRouter } from "./routes/products-admin-router.js";
@@ -35,12 +36,13 @@ app.set("view engine", "handlebars");
 
 // ENDPOINTS
 app.use("/api/products", productsApiRouter);
-app.use("/api/carts", cartsRouter);
+app.use("/api/carts", cartsApiRouter);
 
 // PLANTILLAS
 app.use("/", home);
 app.use("/products", products);
 app.use("/products-admin", productsAdminRouter);
+app.use("/cart", cartsRouter)
 app.use("/test-chat", testChatRouter);
 
 app.get("*", (req, res) => {
