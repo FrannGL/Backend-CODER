@@ -1,21 +1,28 @@
+import MongoStore from "connect-mongo";
 import express from "express";
 import handlebars from "express-handlebars";
+import session from "express-session";
+import FileStore from "session-file-store";
 import { __dirname } from "./config.js";
 import { cartsApiRouter } from "./routes/carts-api.router.js";
 import { cartsRouter } from "./routes/carts.router.js";
 import { home } from "./routes/home.router.js";
+import { loginRouter } from "./routes/login.router.js";
+import { logoutRouter } from "./routes/logout.router.js";
 import { productsAdminRouter } from "./routes/products-admin-router.js";
 import { productsApiRouter } from "./routes/products-api.router.js";
-import { products } from "./routes/products.router.js";
+import { productsRouter } from "./routes/products.router.js";
+import { registerRouter } from "./routes/register.router.js";
 import { testChatRouter } from "./routes/test-chat.router.js";
+import { usersApiRouter } from "./routes/users-api.router.js";
+import { usersRouter } from "./routes/users.router.js";
 import { connectMongo } from "./utils/connect-db.js";
 import { connectSocketServer } from "./utils/connect-socket.js";
-// import cookieParser from "cookie-parser";
-import session from "express-session";
 
 // CONFIG BASICAS Y CONEXION A BD
 const app = express();
 const PORT = 8080;
+const fileStore = FileStore(session);
 
 connectMongo();
 
@@ -25,12 +32,17 @@ const httpServer = app.listen(PORT, () => {
 });
 
 connectSocketServer(httpServer);
-// app.use(cookieParser("asdjkhdfs23ASDgjk"));
 app.use(
 	session({
 		secret: "jhasdkjh671246JHDAhjd",
-		resave: true,
-		saveUninitialized: true,
+		resave: false,
+		saveUninitialized: false,
+		store: MongoStore.create({
+			mongoUrl:
+				"mongodb+srv://francoivangalluccio:VbfDXQUUxVvHnxna@cluster0.nwjyo8a.mongodb.net/?retryWrites=true&w=majority",
+			mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+			ttl: 15,
+		}),
 	})
 );
 
@@ -47,59 +59,18 @@ app.set("view engine", "handlebars");
 // ENDPOINTS
 app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsApiRouter);
+app.use("/api/users", usersApiRouter);
+app.use("/api/sessions/login", loginRouter);
+app.use("/api/sessions/logout", logoutRouter);
+app.use("/api/sessions/register", registerRouter);
 
 // PLANTILLAS
 app.use("/", home);
-app.use("/products", products);
+app.use("/products", productsRouter);
 app.use("/products-admin", productsAdminRouter);
+app.use("/users", usersRouter);
 app.use("/cart", cartsRouter);
 app.use("/test-chat", testChatRouter);
-
-app.get("/login", (req, res) => {
-	const { username, password } = req.query;
-	if (username !== "pepe" || password !== "pepepass") {
-		return res.send("Login Failed");
-	}
-	req.session.user = username;
-	req.session.admin = false;
-	res.send("Login Success!");
-});
-
-app.get("/abierta", (req, res) => {
-	res.send("Informacion abierta al publico.");
-});
-
-function checkLogin(req, res, next) {
-	if (req.session?.user) {
-		return next();
-	}
-	return res.status(401).send("Error de autenticacion");
-}
-
-app.get("/perfil", checkLogin, (req, res) => {
-	res.send("Todo el perfil");
-});
-
-app.get("/session", (req, res) => {
-	console.log(req.session);
-	if (req.session?.cont) {
-		req.session.cont++;
-		res.send(JSON.stringify(req.session));
-	} else {
-		req.session.cont = 1;
-		req.session.cuadro = "River";
-		res.send(JSON.stringify(req.session));
-	}
-});
-
-app.get("/logout", (req, res) => {
-	req.session.destroy((err) => {
-		if (err) {
-			return res.json({ status: "Logout Error", body: err });
-		}
-		res.send("Logout Ok!");
-	});
-});
 
 app.get("*", (req, res) => {
 	console.log(req.signedCookies);
