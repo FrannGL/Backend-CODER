@@ -2,6 +2,8 @@ import MongoStore from "connect-mongo";
 import express from "express";
 import handlebars from "express-handlebars";
 import session from "express-session";
+import passport from "passport";
+import { iniPassport } from "./config/passport.config.js";
 import FileStore from "session-file-store";
 import { __dirname } from "./config.js";
 import { cartsApiRouter } from "./routes/carts-api.router.js";
@@ -19,7 +21,7 @@ import { usersRouter } from "./routes/users.router.js";
 import { connectMongo } from "./utils/connect-db.js";
 import { connectSocketServer } from "./utils/connect-socket.js";
 
-// CONFIG BASICAS Y CONEXION A BD
+// CONFIG BASICAS Y CONEXION A DB
 const app = express();
 const PORT = 8080;
 const fileStore = FileStore(session);
@@ -56,6 +58,11 @@ app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 
+// CONFIG DE PASSPORT
+iniPassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 // ENDPOINTS
 app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsApiRouter);
@@ -63,6 +70,20 @@ app.use("/api/users", usersApiRouter);
 app.use("/api/sessions/login", loginRouter);
 app.use("/api/sessions/logout", logoutRouter);
 app.use("/api/sessions/register", registerRouter);
+app.get(
+	"/api/sessions/github",
+	passport.authenticate("github", { scope: ["user:email"] })
+);
+app.get(
+	"/api/sessions/githubcallback",
+	passport.authenticate("github", { failureRedirect: "/error-auth" }),
+	(req, res) => {
+		req.session.user = req.user.username;
+		req.session.rol = req.user.rol;
+		// Successful authentication, redirect home.
+		res.redirect("/products");
+	}
+);
 
 // PLANTILLAS
 app.use("/", home);
@@ -71,9 +92,11 @@ app.use("/products-admin", productsAdminRouter);
 app.use("/users", usersRouter);
 app.use("/cart", cartsRouter);
 app.use("/test-chat", testChatRouter);
+app.get("/error-auth", (req, res) => {
+	return res.status(400).render("error-auth");
+});
 
 app.get("*", (req, res) => {
-	console.log(req.signedCookies);
 	return res.status(404).json({
 		status: "Error",
 		msg: "No se ecuentra la ruta especificada",

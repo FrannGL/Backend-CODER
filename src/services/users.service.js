@@ -1,8 +1,9 @@
 import { UserModel } from "../DAO/models/users.model.js";
+import { isValidPassword } from "../utils/bcrypt.js";
 class UserService {
 	async findUser(email, password) {
 		const user = await UserModel.findOne(
-			{ email: email, password: password },
+			{ email: email },
 			{
 				_id: true,
 				email: true,
@@ -11,7 +12,11 @@ class UserService {
 				rol: true,
 			}
 		);
-		return user || false;
+		if (user && isValidPassword(password, user.password)) {
+			return user;
+		} else {
+			return false;
+		}
 	}
 
 	async findUserByEmail(email) {

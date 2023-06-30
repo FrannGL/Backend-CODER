@@ -1,6 +1,7 @@
 import express from "express";
 export const registerRouter = express.Router();
 import { userService } from "../services/users.service.js";
+import { createHash } from "../utils/bcrypt.js";
 
 registerRouter.get("/", async (req, res) => {
 	try {
@@ -16,12 +17,11 @@ registerRouter.get("/", async (req, res) => {
 
 registerRouter.post("/", async (req, res) => {
 	const { email, username, password, rol } = req.body;
-	console.log(req.body);
 	const userExist = await userService.findUserByEmail(email);
 	if (userExist) {
 		res.send("El usuario ya existe!");
 	} else {
-		userService.create(email, username, password, rol);
+		userService.create(email, username, createHash(password), rol);
 		res.redirect("/");
 	}
 });

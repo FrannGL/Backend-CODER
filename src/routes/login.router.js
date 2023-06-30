@@ -22,6 +22,6 @@ loginRouter.post("/", async (req, res) => {
 		req.session.rol = userExist.rol;
 		res.redirect("/products");
 	} else {
-		res.send("Usuario Inexistente");
+		res.send("Email inexistente o contraseña incorrecta");
 	}
 });
