@@ -101,7 +101,7 @@ export function iniPassport() {
 					if (!user) {
 						const newUser = {
 							email: profile.email,
-							username: profile._json.name || profile._json.login || "noname",
+							firstName: profile._json.name || profile._json.login || "noname",
 							rol: "user",
 							password: "nopass",
 						};

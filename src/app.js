@@ -78,13 +78,11 @@ app.get(
 	"/api/sessions/githubcallback",
 	passport.authenticate("github", { failureRedirect: "/error-auth" }),
 	(req, res) => {
-		req.session.user = req.user.username;
+		req.session.user = req.user.firstName;
 		req.session.rol = req.user.rol;
-		// Successful authentication, redirect home.
 		res.redirect("/products");
 	}
 );
-
 // PLANTILLAS
 app.use("/", home);
 app.use("/products", productsRouter);

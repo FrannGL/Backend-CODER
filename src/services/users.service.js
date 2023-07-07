@@ -6,8 +6,10 @@ class UserService {
 			{ email: email },
 			{
 				_id: true,
+				firstName: true,
+				lastName: true,
+				age: true,
 				email: true,
-				username: true,
 				password: true,
 				rol: true,
 			}
@@ -24,8 +26,10 @@ class UserService {
 			{ email: email },
 			{
 				_id: true,
+				firstName: true,
+				lastName: true,
+				age: true,
 				email: true,
-				username: true,
 				password: true,
 				rol: true,
 			}
@@ -38,15 +42,17 @@ class UserService {
 			{},
 			{
 				_id: true,
+				firstName: true,
+				lastName: true,
+				age: true,
 				email: true,
-				username: true,
 				password: true,
 				rol: true,
 			}
 		);
 		return users;
 	}
-	async create(email, username, password, rol) {
+	async create(firstName, lastName, age, email, password, rol) {
 		const existingUser = await this.findUserByEmail(email);
 
 		if (existingUser) {
@@ -54,22 +60,26 @@ class UserService {
 		}
 
 		const userCreated = await UserModel.create({
+			firstName,
+			lastName,
+			age,
 			email,
-			username,
 			password,
 			rol,
 		});
 
 		return userCreated;
 	}
-	async updateOne({ _id, email, username, password, rol }) {
+	async updateOne({ _id, firstName, lastName, age, email, password, rol }) {
 		const userUptaded = await UserModel.updateOne(
 			{
 				_id: _id,
 			},
 			{
+				firstName,
+				lastName,
+				age,
 				email,
-				username,
 				password,
 				rol,
 			}

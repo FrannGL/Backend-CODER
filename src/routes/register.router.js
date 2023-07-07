@@ -31,7 +31,7 @@ registerRouter.post(
 			email: req.user.email,
 			firstName: req.user.firstName,
 			lastName: req.user.lastName,
-			rol: req.user.admin,
+			rol: req.user.rol,
 		};
 
 		return res.status(201).redirect("/products");
