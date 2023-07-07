@@ -4,10 +4,9 @@
 			<div class="bg-image" style="filter: blur(5px);"></div>
 
 			<div class="contenedorTituloPrincipal">
-				<a href="/"><img src="/images/logo.png" class="logo" alt="" /></a>
-				<h2 class="tituloPrincipal">burguers a la parrilla</h2>
+				<a href="/"><img src="/images/logo.png" class="logo" alt="logo" /></a>
 				<div
-					class="d-flex justify-content-center align-items-center flex-column bg-dark mt-3"
+					class="d-flex justify-content-center align-items-center flex-column bg-dark"
 					style="border-radius: 20px 20px 20px 20px"
 				>
 					<div class="tab-content">
@@ -20,7 +19,7 @@
 							<form
 								action="/api/sessions/register"
 								method="post"
-								style="width: 300px; padding: 10px;"
+								style="width: 500px; padding: 10px;"
 							>
 								<div class="text-center text-white mb-3">
 									<p>Register with:</p>
@@ -37,7 +36,9 @@
 									</button>
 
 									<button type="button" class="btn btn-link btn-floating mx-1">
-										<i class="bi bi-github"></i>
+										<a href="/api/sessions/github"><i
+												class="bi bi-github"
+											></i></a>
 									</button>
 								</div>
 
@@ -46,28 +47,54 @@
 								<div class="mb-4">
 									<div class="form-floating mb-3">
 										<input
-											type="email"
+											type="text"
 											class="form-control border-0 border-bottom border-dark"
-											id="inputEmailRegister"
-											name="email"
-											placeholder="Password"
+											id="inputFirstNameRegister"
+											name="firstName"
+											placeholder="Firstname"
 										/>
-										<label for="input-passwordLogin"><i
-												class="bi bi-envelope-at me-1"
-											></i>Email</label>
+										<label for="input-firstNameLogin"><i
+												class="bi bi-person-vcard me-1"
+											></i>Firstname</label>
 									</div>
 
 									<div class="form-floating mb-3">
 										<input
 											type="text"
 											class="form-control border-0 border-bottom border-dark"
-											id="inputUserRegister"
-											name="username"
-											placeholder="User"
+											id="inputLastnameRegister"
+											name="lastName"
+											placeholder="Lastname"
 										/>
-										<label for="input-userLogin"><i
-												class="bi bi-person-fill-lock me-1"
-											></i>User</label>
+										<label for="input-lastnamedLogin"><i
+												class="bi bi-person-vcard-fill me-1"
+											></i>Lastname</label>
+									</div>
+
+									<div class="form-floating mb-3">
+										<input
+											type="number"
+											class="form-control border-0 border-bottom border-dark"
+											id="inputAgeRegister"
+											name="age"
+											placeholder="Age"
+										/>
+										<label for="input-ageLogin"><i
+												class="bi bi-chat-heart-fill me-1"
+											></i>Age</label>
+									</div>
+
+									<div class="form-floating mb-3">
+										<input
+											type="email"
+											class="form-control border-0 border-bottom border-dark"
+											id="inputEmailRegister"
+											name="email"
+											placeholder="Email"
+										/>
+										<label for="input-emailLogin"><i
+												class="bi bi-envelope-at me-1"
+											></i>Email</label>
 									</div>
 
 									<div class="form-floating mb-3">

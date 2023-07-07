@@ -43,7 +43,7 @@ app.use(
 			mongoUrl:
 				"mongodb+srv://francoivangalluccio:VbfDXQUUxVvHnxna@cluster0.nwjyo8a.mongodb.net/?retryWrites=true&w=majority",
 			mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-			ttl: 15,
+			ttl: 3600,
 		}),
 	})
 );

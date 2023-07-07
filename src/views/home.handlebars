@@ -10,11 +10,11 @@
 						style="width: 300px;"
 					/></a>
 				<h2 class="tituloPrincipal mt-2">burguers a la parrilla</h2>
-				{{#if username}}
+				{{#if firstName}}
 					<div class="mt-3 ms-3">
 						<div class="d-flex justify-content-center align-items-center">
 							<h4 class="text-white mt-1">Bienvenido,
-								{{username}}. Tu Rol es
+								{{firstName}}. Tu Rol es
 								{{rol}}</h4>
 							<a
 								href="/api/sessions/logout"
@@ -26,7 +26,10 @@
 					</div>
 				{{else}}
 					<div class="mt-3">
-						<a href="/api/sessions/login" class="btn btn-primary btnLogin">
+						<a
+							href="/api/sessions/login"
+							class="btn btn-outline-light btnLogin"
+						>
 							<i class="bi bi-person-circle me-2"></i>Iniciar Sesión
 						</a>
 						<a
@@ -37,27 +40,6 @@
 						</a>
 					</div>
 				{{/if}}
-				{{! <div
-					class="btns d-flex flex-wrap gap-3 justify-content-center flex-row mt-3"
-				>
-					<a href="/api/products" class="btn btn-success me-3">
-						ir a ENDPOINT /api/products</a>
-					<a href="/api/users" class="btn btn-success me-3">
-						ir a ENDPOINT /api/users</a>
-					<a href="/api/carts" class="btn btn-success me-3">
-						ir a ENDPOINT /api/carts</a>
-					<a href="/products" class="btn btn-primary me-3">
-						ir a PLANTILLA /products</a>
-					<a href="/users" class="btn btn-primary me-3">
-						ir a PLANTILLA /users</a>
-					<a href="/cart/6493733f204cb1967cd9e521" class="btn btn-primary me-3">
-						ir a PLANTILLA /cart</a>
-					<a href="/products-admin" class="btn btn-primary">
-						ir a PLANTILLA /products-admin</a>
-					<a href="/test-chat" class="btn btn-primary ms-3">
-						ir a PLANTILLA /test-chat</a>
-				</div> }}
-
 			</div>
 		</div>
 	</div>

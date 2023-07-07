@@ -1,7 +1,6 @@
 import express from "express";
 export const registerRouter = express.Router();
-import { userService } from "../services/users.service.js";
-import { createHash } from "../utils/bcrypt.js";
+import passport from "passport";
 
 registerRouter.get("/", async (req, res) => {
 	try {
@@ -15,13 +14,32 @@ registerRouter.get("/", async (req, res) => {
 	}
 });
 
-registerRouter.post("/", async (req, res) => {
-	const { email, username, password, rol } = req.body;
-	const userExist = await userService.findUserByEmail(email);
-	if (userExist) {
-		res.send("El usuario ya existe!");
-	} else {
-		userService.create(email, username, createHash(password), rol);
-		res.redirect("/");
+registerRouter.post(
+	"/",
+	passport.authenticate("register", {
+		failureRedirect: "/",
+	}),
+	(req, res) => {
+		if (!req.user) {
+			return res
+				.status(400)
+				.render("error-page", { msg: "User already exists" });
+		}
+		req.session.user = {
+			_id: req.user._id,
+			age: req.user.age,
+			email: req.user.email,
+			firstName: req.user.firstName,
+			lastName: req.user.lastName,
+			rol: req.user.admin,
+		};
+
+		return res.status(201).render("/home");
 	}
-});
+);
+
+// registerRouter.get("/failregister", async (req, res) => {
+// 	return res
+// 		.status(400)
+// 		.render("error-page", { msg: "Controla tu email e intenta más tarde" });
+// });
