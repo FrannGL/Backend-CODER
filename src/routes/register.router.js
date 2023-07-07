@@ -34,7 +34,7 @@ registerRouter.post(
 			rol: req.user.admin,
 		};
 
-		return res.status(201).render("/home");
+		return res.status(201).redirect("/products");
 	}
 );
 
