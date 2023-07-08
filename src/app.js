@@ -3,18 +3,18 @@ import express from "express";
 import handlebars from "express-handlebars";
 import session from "express-session";
 import passport from "passport";
-import { iniPassport } from "./config/passport.config.js";
 import FileStore from "session-file-store";
 import { __dirname } from "./config.js";
+import { iniPassport } from "./config/passport.config.js";
 import { cartsApiRouter } from "./routes/carts-api.router.js";
 import { cartsRouter } from "./routes/carts.router.js";
+import { login } from "./routes/login.router.js";
 import { home } from "./routes/home.router.js";
-import { loginRouter } from "./routes/login.router.js";
-import { logoutRouter } from "./routes/logout.router.js";
 import { productsAdminRouter } from "./routes/products-admin-router.js";
 import { productsApiRouter } from "./routes/products-api.router.js";
 import { productsRouter } from "./routes/products.router.js";
-import { registerRouter } from "./routes/register.router.js";
+import { sessionsRouter } from "./routes/sessions.router.js";
+import { errorRouter } from "./routes/error.router.js";
 import { testChatRouter } from "./routes/test-chat.router.js";
 import { usersApiRouter } from "./routes/users-api.router.js";
 import { usersRouter } from "./routes/users.router.js";
@@ -67,16 +67,14 @@ app.use(passport.session());
 app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsApiRouter);
 app.use("/api/users", usersApiRouter);
-app.use("/api/sessions/login", loginRouter);
-app.use("/api/sessions/logout", logoutRouter);
-app.use("/api/sessions/register", registerRouter);
+app.use("/api/sessions", sessionsRouter);
 app.get(
 	"/api/sessions/github",
 	passport.authenticate("github", { scope: ["user:email"] })
 );
 app.get(
 	"/api/sessions/githubcallback",
-	passport.authenticate("github", { failureRedirect: "/error-auth" }),
+	passport.authenticate("github", { failureRedirect: "/error" }),
 	(req, res) => {
 		req.session.user = req.user.firstName;
 		req.session.rol = req.user.rol;
@@ -84,20 +82,16 @@ app.get(
 	}
 );
 // PLANTILLAS
-app.use("/", home);
+app.use("/", login);
+app.use("/home", home);
 app.use("/products", productsRouter);
 app.use("/products-admin", productsAdminRouter);
 app.use("/users", usersRouter);
 app.use("/cart", cartsRouter);
 app.use("/test-chat", testChatRouter);
-app.get("/error-auth", (req, res) => {
-	return res.status(400).render("error-auth");
-});
+app.use("/error", errorRouter);
 
 app.get("*", (req, res) => {
-	return res.status(404).json({
-		status: "Error",
-		msg: "No se ecuentra la ruta especificada",
-		data: {},
-	});
+	const notFound = "Esta página no existe";
+	return res.status(500).render("error", { notFound });
 });

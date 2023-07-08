@@ -1,12 +1,12 @@
 import express from "express";
 import { productService } from "../services/products.service.js";
 export const productsAdminRouter = express.Router();
-import checkLogin from "../utils/checkLogin.js";
+import { checkAdmin } from "../utils/checkLogin.js";
 
-productsAdminRouter.get("/", checkLogin, async (req, res) => {
+productsAdminRouter.get("/", checkAdmin, async (req, res) => {
 	try {
 		const data = await productService.getAll({});
-		const dataParse = data.map((prod) => {
+		const dataParse = data.map(prod => {
 			return {
 				id: prod._id,
 				title: prod.title,
@@ -18,7 +18,9 @@ productsAdminRouter.get("/", checkLogin, async (req, res) => {
 			};
 		});
 		const title = "Administrador de Productos";
-		return res.status(200).render("products-admin", { dataParse, title });
+		const firstName = req.session.user.firstName;
+		const rol = req.session.user.rol;
+		return res.status(200).render("products-admin", { dataParse, title, firstName, rol });
 	} catch (err) {
 		console.log(err);
 		res
