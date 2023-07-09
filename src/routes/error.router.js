@@ -3,8 +3,10 @@ export const errorRouter = express.Router();
 
 errorRouter.get("/", async (req, res) => {
 	try {
+		const errorMsg = req.session.errorMsg;
+		req.session.errorMsg = null;
 		const title = "Fuego Burgers®";
-		return res.status(200).render("error", { title });
+		return res.status(200).render("error", { title, errorMsg });
 	} catch (err) {
 		console.log(err);
 		res

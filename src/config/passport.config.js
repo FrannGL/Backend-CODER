@@ -11,15 +11,18 @@ export function iniPassport() {
 	passport.use(
 		"login",
 		new LocalStrategy(
-			{ usernameField: "email" },
-			async (username, password, done) => {
+			{ usernameField: "email", passReqToCallback: true },
+			async (req, username, password, done) => {
 				try {
 					const user = await UserModel.findOne({ email: username }).exec();
 					if (!user) {
-						console.log("User Not Found with username (email) " + username);
+						console.log("User Not Found with email " + username);
+						req.session.errorMsg =
+							"Usuario inexistente con el email proporcionado";
 						return done(null, false);
 					}
 					if (!isValidPassword(password, user.password)) {
+						req.session.errorMsg = "Contraseña incorrecta.";
 						console.log("Invalid Password");
 						return done(null, false);
 					}
@@ -90,7 +93,7 @@ export function iniPassport() {
 						},
 					});
 					const emails = await res.json();
-					const emailDetail = emails.find((email) => email.verified == true);
+					const emailDetail = emails.find(email => email.verified == true);
 
 					if (!emailDetail) {
 						return done(new Error("cannot get a valid email for this user"));

@@ -76,9 +76,13 @@ app.get(
 	"/api/sessions/githubcallback",
 	passport.authenticate("github", { failureRedirect: "/error" }),
 	(req, res) => {
-		req.session.user = req.user.firstName;
-		req.session.rol = req.user.rol;
-		res.redirect("/products");
+		req.session.user = {
+			firstName: req.user.firstName,
+			lastName: req.user.lastName,
+			rol: req.user.rol,
+		};
+
+		res.redirect("/home");
 	}
 );
 // PLANTILLAS

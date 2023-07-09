@@ -152,17 +152,20 @@ body {
 	background-color: rgba(0, 0, 0, 0.45);
 }
 
-.nav {
-	width: 100%;
+.user {
 	position: absolute;
 	top: 0;
+	right: 0;
+	margin-top: 15px;
+}
+
+.wrapper {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
-.menuContainer {
-	width: 70%;
+.wrapper .menuContainer {
 	display: flex;
 	justify-content: start;
 	align-items: center;
@@ -172,6 +175,10 @@ body {
 	font-weight: 300;
 }
 
+.menuContainer li {
+	transition: all 0.3s ease;
+}
+
 .menuContainer li a {
 	text-decoration: none;
 	color: #fff;
@@ -179,9 +186,8 @@ body {
 
 .menuContainer li:hover {
 	cursor: pointer;
-	font-weight: 400;
 	color: #c4c3c3;
-	transform: scale(1.1);
+	transform: scale(1.2);
 }
 
 .menuItem {

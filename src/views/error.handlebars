@@ -10,7 +10,28 @@
 					/></a>
 				<h2 class="tituloPrincipal mt-2">burguers a la parrilla</h2>
 
-				{{#if isLogin}}
+				{{#if errorMsg}}
+					<div
+						class="d-flex justify-content-center align-items-center mt-5 p-3"
+					>
+						<img
+							src="/images/error.png"
+							class="me-3"
+							alt="error"
+							width="50px"
+						/>
+						<h4
+							class="text-white mt-1"
+							style="text-transform: uppercase;"
+						>{{errorMsg}}</h4>
+					</div>
+
+					<a
+						href="/"
+						class="btn btn-outline-light btn-sm fs-6 text-decoration-none"
+					><i class="bi bi-box-arrow-in-left me-2"></i>VOLVER AL INICIO</a>
+
+				{{else if isLogin}}
 					<div
 						class="d-flex justify-content-center align-items-center mt-5 p-3"
 					>
@@ -68,7 +89,7 @@
 					</div>
 
 					<a
-						href="/home"
+						href="/"
 						class="btn btn-outline-light btn-sm fs-6 text-decoration-none"
 					><i class="bi bi-box-arrow-in-left me-2"></i>VOLVER AL INICIO</a>
 				{{else}}
@@ -82,8 +103,14 @@
 							width="50px"
 						/>
 						<h4 class="text-white mt-1" style="text-transform: uppercase;">ERROR
-							DE AUTENTICACIÓN</h4>
+							DE AUTENTICACION</h4>
+
 					</div>
+
+					<a
+						href="/"
+						class="btn btn-outline-light btn-sm fs-6 text-decoration-none"
+					><i class="bi bi-box-arrow-in-left me-2"></i>VOLVER AL INICIO</a>
 				{{/if}}
 
 			</div>
