@@ -1,5 +1,5 @@
 export default function checkLogin(req, res, next) {
-	if (req.session.firstName) {
+	if (req.session.user.firstName) {
 		return next();
 	} else {
 		const isLogin = "Debes iniciar sesión para acceder a esta página";

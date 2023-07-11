@@ -78,7 +78,6 @@ app.get(
 	(req, res) => {
 		req.session.user = {
 			firstName: req.user.firstName,
-			lastName: req.user.lastName,
 			rol: req.user.rol,
 		};
 
