@@ -12,7 +12,7 @@ productsRouter.get("/", checkLogin, async (req, res) => {
 			category,
 			orderBy
 		);
-		const { firstName, rol } = req.session.user;
+		const { firstName, role } = req.session.user;
 		const { totalPages, page, hasPrevPage, hasNextPage, prevPage, nextPage } =
 			data;
 		const plainProducts = data.docs.map(doc => doc.toObject());
@@ -20,7 +20,7 @@ productsRouter.get("/", checkLogin, async (req, res) => {
 		return res.status(200).render("products", {
 			title,
 			firstName,
-			rol,
+			role,
 			plainProducts,
 			totalPages,
 			page,

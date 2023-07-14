@@ -11,7 +11,7 @@ class UserService {
 				age: true,
 				email: true,
 				password: true,
-				rol: true,
+				role: true,
 			}
 		);
 		if (user && isValidPassword(password, user.password)) {
@@ -31,7 +31,7 @@ class UserService {
 				age: true,
 				email: true,
 				password: true,
-				rol: true,
+				role: true,
 			}
 		);
 		return user || false;
@@ -47,12 +47,12 @@ class UserService {
 				age: true,
 				email: true,
 				password: true,
-				rol: true,
+				role: true,
 			}
 		);
 		return users;
 	}
-	async create(firstName, lastName, age, email, password, rol) {
+	async create(firstName, lastName, age, email, password, role) {
 		const existingUser = await this.findUserByEmail(email);
 
 		if (existingUser) {
@@ -65,12 +65,12 @@ class UserService {
 			age,
 			email,
 			password,
-			rol,
+			role,
 		});
 
 		return userCreated;
 	}
-	async updateOne({ _id, firstName, lastName, age, email, password, rol }) {
+	async updateOne({ _id, firstName, lastName, age, email, password, role }) {
 		const userUptaded = await UserModel.updateOne(
 			{
 				_id: _id,
@@ -81,7 +81,7 @@ class UserService {
 				age,
 				email,
 				password,
-				rol,
+				role,
 			}
 		);
 		return userUptaded;

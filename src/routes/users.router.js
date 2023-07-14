@@ -14,15 +14,15 @@ usersRouter.get("/", checkAdmin, async (req, res) => {
 				age: user.age,
 				email: user.email,
 				password: user.password,
-				rol: user.rol,
+				role: user.role,
 			};
 		});
 		const firstName = req.session.user.firstName;
-		const rol = req.session.user.rol;
+		const role = req.session.user.role;
 		const title = "Fuego Burgers® - Users";
 		return res
 			.status(200)
-			.render("users", { dataParse, title, firstName, rol });
+			.render("users", { dataParse, title, firstName, role });
 	} catch (err) {
 		console.log(err);
 		res

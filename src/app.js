@@ -78,7 +78,7 @@ app.get(
 	(req, res) => {
 		req.session.user = {
 			firstName: req.user.firstName,
-			rol: req.user.rol,
+			role: req.user.role,
 		};
 
 		res.redirect("/home");

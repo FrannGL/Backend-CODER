@@ -105,7 +105,7 @@ export function iniPassport() {
 						const newUser = {
 							email: profile.email,
 							firstName: profile._json.name || profile._json.login || "noname",
-							rol: "user",
+							role: "user",
 							password: "nopass",
 						};
 						let userCreated = await UserModel.create(newUser);

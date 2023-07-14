@@ -19,8 +19,8 @@ productsAdminRouter.get("/", checkAdmin, async (req, res) => {
 		});
 		const title = "Administrador de Productos";
 		const firstName = req.session.user.firstName;
-		const rol = req.session.user.rol;
-		return res.status(200).render("products-admin", { dataParse, title, firstName, rol });
+		const role = req.session.user.role;
+		return res.status(200).render("products-admin", { dataParse, title, firstName, role });
 	} catch (err) {
 		console.log(err);
 		res

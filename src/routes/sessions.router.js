@@ -48,7 +48,7 @@ sessionsRouter.post(
 		if (!req.user) {
 			return res
 				.status(400)
-				.render("error-page", { msg: "Usuario Inexistente" });
+				.render("error", { msg: "Usuario Inexistente" });
 		}
 		req.session.user = {
 			_id: req.user._id,
@@ -56,7 +56,7 @@ sessionsRouter.post(
 			email: req.user.email,
 			firstName: req.user.firstName,
 			lastName: req.user.lastName,
-			rol: req.user.rol,
+			role: req.user.role,
 		};
 		return res.redirect("/home");
 	}
@@ -65,19 +65,17 @@ sessionsRouter.post(
 //TODO #4
 sessionsRouter.post(
 	"/register",
-	passport.authenticate("register", { failureRedirect: "/" }),
+	passport.authenticate("register", { failureRedirect: "/error" }),
 	(req, res) => {
 		if (!req.user) {
-			//TODO #5
 			return res.status(500).render("error");
 		}
 		req.session.user = {
 			_id: req.user._id,
 			email: req.user.email,
 			firstName: req.user.firstName,
-			rol: req.user.rol,
+			role: req.user.role,
 		};
 		return res.redirect("/home");
-		// return res.json({ msg: "ok", payload: req.user });
 	}
 );

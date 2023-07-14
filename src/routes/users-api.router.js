@@ -22,14 +22,14 @@ usersApiRouter.get("/", async (req, res) => {
 
 usersApiRouter.post("/", async (req, res) => {
 	try {
-		const { email, username, password, rol } = req.body;
-		if (!email || !username || !password || !rol) {
+		const { email, username, password, role } = req.body;
+		if (!email || !username || !password || !role) {
 			console.log(
-				"validation error: please complete email, username, password and rol."
+				"validation error: please complete email, username, password and role."
 			);
 			return res.status(400).json({
 				status: "error",
-				msg: "please complete email, username, password and rol.",
+				msg: "please complete email, username, password and role.",
 				payload: {},
 			});
 		}
@@ -37,7 +37,7 @@ usersApiRouter.post("/", async (req, res) => {
 			email,
 			username,
 			password,
-			rol,
+			e,
 		});
 		return res.status(201).json({
 			status: "success",
@@ -47,7 +47,7 @@ usersApiRouter.post("/", async (req, res) => {
 				email: userCreated.email,
 				username: userCreated.username,
 				password: userCreated.password,
-				rol: userCreated.rol,
+				role: userCreated.role,
 			},
 		});
 	} catch (e) {
@@ -63,14 +63,14 @@ usersApiRouter.post("/", async (req, res) => {
 usersApiRouter.put("/:_id", async (req, res) => {
 	try {
 		const { _id } = req.params;
-		const { email, username, password, rol } = req.body;
-		if (!email || !username || !password || !rol || !_id) {
+		const { email, username, password, role } = req.body;
+		if (!email || !username || !password || !role || !_id) {
 			console.log(
-				"validation error: please complete email, username, password and rol."
+				"validation error: please complete email, username, password and role."
 			);
 			return res.status(400).json({
 				status: "error",
-				msg: "please complete email, username, password and rol.",
+				msg: "please complete email, username, password and role.",
 				payload: {},
 			});
 		}
@@ -80,7 +80,7 @@ usersApiRouter.put("/:_id", async (req, res) => {
 				email,
 				username,
 				password,
-				rol,
+				role,
 			});
 			console.log(userUptaded);
 			if (userUptaded.matchedCount > 0) {
