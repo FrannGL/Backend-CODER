@@ -4,7 +4,7 @@ import handlebars from "express-handlebars";
 import session from "express-session";
 import passport from "passport";
 import FileStore from "session-file-store";
-import { __dirname } from "./config.js";
+import { __dirname } from "./config/dirname.config.js";
 import { iniPassport } from "./config/passport.config.js";
 import { cartsApiRouter } from "./routes/carts-api.router.js";
 import { cartsRouter } from "./routes/carts.router.js";
@@ -20,10 +20,11 @@ import { usersApiRouter } from "./routes/users-api.router.js";
 import { usersRouter } from "./routes/users.router.js";
 import { connectMongo } from "./utils/connect-db.js";
 import { connectSocketServer } from "./utils/connect-socket.js";
+import env from "./config/enviroment.config.js";
 
 // CONFIG BASICAS Y CONEXION A DB
 const app = express();
-const PORT = 8080;
+const PORT = env.port;
 const fileStore = FileStore(session);
 
 connectMongo();
@@ -40,8 +41,7 @@ app.use(
 		resave: false,
 		saveUninitialized: false,
 		store: MongoStore.create({
-			mongoUrl:
-				"mongodb+srv://francoivangalluccio:VbfDXQUUxVvHnxna@cluster0.nwjyo8a.mongodb.net/?retryWrites=true&w=majority",
+			mongoUrl: env.mongoUrl,
 			mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
 			ttl: 3600,
 		}),
