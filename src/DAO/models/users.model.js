@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { customAlphabet } from "nanoid";
+import { generateCartId } from "../../utils/generateId.js";
 
 const schema = new Schema({
 	firstName: { type: String, required: false, max: 100 },
@@ -12,13 +12,7 @@ const schema = new Schema({
 		type: String,
 		required: true,
 		unique: true,
-		default: function () {
-			const nanoid = customAlphabet(
-				"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-				25
-			);
-			return nanoid();
-		},
+		default: () => generateCartId(),
 	},
 });
 

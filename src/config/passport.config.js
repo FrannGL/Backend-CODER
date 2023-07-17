@@ -1,9 +1,10 @@
 import fetch from "node-fetch";
 import passport from "passport";
-import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import GitHubStrategy from "passport-github2";
 import local from "passport-local";
 import { UserModel } from "../DAO/models/users.model.js";
+import { cartService } from "../services/carts.service.js";
+import { createHash, isValidPassword } from "../utils/bcrypt.js";
 const LocalStrategy = local.Strategy;
 
 export function iniPassport() {
@@ -63,7 +64,12 @@ export function iniPassport() {
 						password: createHash(password),
 					};
 					const userCreated = await UserModel.create(newUser);
-					console.log("User Registration succesful");
+
+					const cartId = userCreated.cartID;
+
+					await cartService.createOne(cartId);
+
+					console.log("User Registration successful");
 					return done(null, userCreated);
 				} catch (e) {
 					console.log("Error in register");
@@ -78,7 +84,7 @@ export function iniPassport() {
 		new GitHubStrategy(
 			{
 				clientID: "Iv1.96c1b2f8b8c46bf1",
-				clientSecret: "6e89017c0b7671dcebfbc9aa74b7f78327732f7c",
+				clientSecret: process.env.GITHUB_CLIENT_SECRET,
 				callbackURL: "http://localhost:8080/api/sessions/githubcallback",
 			},
 			async (accesToken, _, profile, done) => {

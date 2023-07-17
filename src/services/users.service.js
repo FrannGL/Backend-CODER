@@ -1,5 +1,6 @@
 import { UserModel } from "../DAO/models/users.model.js";
-import { isValidPassword } from "../utils/bcrypt.js";
+import { cartService } from "./carts.service.js";
+import { generateCartId } from "../utils/generateId.js";
 class UserService {
 	async findUser(email, password) {
 		const user = await UserModel.findOne(
@@ -59,6 +60,8 @@ class UserService {
 			return "El usuario ya se encuentra registrado";
 		}
 
+		const cartId = generateCartId();
+
 		const userCreated = await UserModel.create({
 			firstName,
 			lastName,
@@ -66,7 +69,10 @@ class UserService {
 			email,
 			password,
 			role,
+			cartID: cartId,
 		});
+
+		await cartService.createOne(cartId);
 
 		return userCreated;
 	}

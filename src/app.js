@@ -4,23 +4,24 @@ import handlebars from "express-handlebars";
 import session from "express-session";
 import passport from "passport";
 import FileStore from "session-file-store";
-import { __dirname } from "./config/dirname.config.js";
+import env from "./config/enviroment.config.js";
 import { iniPassport } from "./config/passport.config.js";
 import { cartsApiRouter } from "./routes/carts-api.router.js";
 import { cartsRouter } from "./routes/carts.router.js";
-import { login } from "./routes/login.router.js";
+import { errorRouter } from "./routes/error.router.js";
 import { home } from "./routes/home.router.js";
+import { login } from "./routes/login.router.js";
 import { productsAdminRouter } from "./routes/products-admin-router.js";
 import { productsApiRouter } from "./routes/products-api.router.js";
 import { productsRouter } from "./routes/products.router.js";
 import { sessionsRouter } from "./routes/sessions.router.js";
-import { errorRouter } from "./routes/error.router.js";
 import { testChatRouter } from "./routes/test-chat.router.js";
 import { usersApiRouter } from "./routes/users-api.router.js";
 import { usersRouter } from "./routes/users.router.js";
 import { connectMongo } from "./utils/connect-db.js";
 import { connectSocketServer } from "./utils/connect-socket.js";
-import env from "./config/enviroment.config.js";
+
+console.log(env);
 
 // CONFIG BASICAS Y CONEXION A DB
 const app = express();
@@ -47,6 +48,12 @@ app.use(
 		}),
 	})
 );
+
+// DIRNAME CONFIG
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+export const __dirname = dirname(__filename);
 
 // MIDDLEWARES
 app.use(express.json());
