@@ -18,8 +18,7 @@ import { sessionsRouter } from "./routes/sessions.router.js";
 import { testChatRouter } from "./routes/test-chat.router.js";
 import { usersApiRouter } from "./routes/users-api.router.js";
 import { usersRouter } from "./routes/users.router.js";
-import { connectMongo } from "./utils/connect-db.js";
-import { connectSocketServer } from "./utils/connect-socket.js";
+import { connectMongo, connectSocketServer } from "./utils/main.js";
 
 // CONFIG BASICAS Y CONEXION A DB
 const app = express();
@@ -53,7 +52,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
 
-// MIDDLEWARES
+// MIDDLEWARES BASICOS
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -73,21 +72,14 @@ app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsApiRouter);
 app.use("/api/users", usersApiRouter);
 app.use("/api/sessions", sessionsRouter);
-app.get(
-	"/api/sessions/github",
-	passport.authenticate("github", { scope: ["user:email"] })
-);
-app.get(
-	"/api/sessions/githubcallback",
-	passport.authenticate("github", { failureRedirect: "/error" }),
-	(req, res) => {
-		req.session.user = {
-			firstName: req.user.firstName,
-			role: req.user.role,
-		};
-		res.redirect("/home");
-	}
-);
+app.get("/api/sessions/github", passport.authenticate("github", { scope: ["user:email"] }));
+app.get("/api/sessions/githubcallback", passport.authenticate("github", { failureRedirect: "/error" }), (req, res) => {
+	req.session.user = {
+		firstName: req.user.firstName,
+		role: req.user.role,
+	};
+	res.redirect("/home");
+});
 // PLANTILLAS
 app.use("/", login);
 app.use("/home", home);

@@ -1,6 +1,6 @@
 import { UserModel } from "../DAO/models/users.model.js";
 import { cartService } from "./carts.service.js";
-import { generateCartId } from "../utils/generateId.js";
+import { generateCartId } from "../utils/main.js";
 class UserService {
 	async findUser(email, password) {
 		const user = await UserModel.findOne(

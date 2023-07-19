@@ -1,7 +1,10 @@
-export default function checkLogin(req, res, next) {
-	if (req.session.user.firstName) {
-		return next();
-	} else {
+export function checkLogin(req, res, next) {
+	try {
+		if (req.session.user.firstName) {
+			return next();
+		}
+	} catch (e) {
+		console.log(e);
 		const isLogin = "Debes iniciar sesión para acceder a esta página";
 		return res.status(201).render("error", { isLogin });
 	}

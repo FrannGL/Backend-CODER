@@ -4,35 +4,31 @@ import GitHubStrategy from "passport-github2";
 import local from "passport-local";
 import { UserModel } from "../DAO/models/users.model.js";
 import { cartService } from "../services/carts.service.js";
-import { createHash, isValidPassword } from "../utils/bcrypt.js";
+import { createHash, isValidPassword } from "../utils/main.js";
 const LocalStrategy = local.Strategy;
 
 export function iniPassport() {
 	passport.use(
 		"login",
-		new LocalStrategy(
-			{ usernameField: "email", passReqToCallback: true },
-			async (req, username, password, done) => {
-				try {
-					const user = await UserModel.findOne({ email: username }).exec();
-					if (!user) {
-						console.log("User Not Found with email " + username);
-						req.session.errorMsg =
-							"Usuario inexistente con el email proporcionado";
-						return done(null, false);
-					}
-					if (!isValidPassword(password, user.password)) {
-						req.session.errorMsg = "Contraseña incorrecta.";
-						console.log("Invalid Password");
-						return done(null, false);
-					}
-
-					return done(null, user);
-				} catch (err) {
-					return done(err);
+		new LocalStrategy({ usernameField: "email", passReqToCallback: true }, async (req, username, password, done) => {
+			try {
+				const user = await UserModel.findOne({ email: username }).exec();
+				if (!user) {
+					console.log("User Not Found with email " + username);
+					req.session.errorMsg = "Usuario inexistente con el email proporcionado";
+					return done(null, false);
 				}
+				if (!isValidPassword(password, user.password)) {
+					req.session.errorMsg = "Contraseña incorrecta";
+					console.log("Invalid Password");
+					return done(null, false);
+				}
+
+				return done(null, user);
+			} catch (err) {
+				return done(err);
 			}
-		)
+		})
 	);
 
 	passport.use(
