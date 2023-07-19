@@ -21,8 +21,6 @@ import { usersRouter } from "./routes/users.router.js";
 import { connectMongo } from "./utils/connect-db.js";
 import { connectSocketServer } from "./utils/connect-socket.js";
 
-console.log(env);
-
 // CONFIG BASICAS Y CONEXION A DB
 const app = express();
 const PORT = env.port;
@@ -87,7 +85,6 @@ app.get(
 			firstName: req.user.firstName,
 			role: req.user.role,
 		};
-
 		res.redirect("/home");
 	}
 );

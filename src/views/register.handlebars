@@ -10,17 +10,8 @@
 					style="border-radius: 20px 20px 20px 20px"
 				>
 					<div class="tab-content">
-						<div
-							class="tab-pane fade show active"
-							id="pills-login"
-							role="tabpanel"
-							aria-labelledby="tab-login"
-						>
-							<form
-								action="/api/sessions/register"
-								method="post"
-								style="width: 500px; padding: 10px;"
-							>
+						<div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+							<form action="/api/sessions/register" method="post" style="width: 500px; padding: 10px;">
 								<div class="text-center text-white mb-3">
 									<p>Register with:</p>
 									<button type="button" class="btn btn-link btn-floating mx-1">
@@ -36,9 +27,7 @@
 									</button>
 
 									<button type="button" class="btn btn-link btn-floating mx-1">
-										<a href="/api/sessions/github"><i
-												class="bi bi-github"
-											></i></a>
+										<a href="/api/sessions/github"><i class="bi bi-github"></i></a>
 									</button>
 								</div>
 
@@ -53,9 +42,7 @@
 											name="firstName"
 											placeholder="Firstname"
 										/>
-										<label for="input-firstNameLogin"><i
-												class="bi bi-person-vcard me-1"
-											></i>Firstname</label>
+										<label for="input-firstNameLogin"><i class="bi bi-person-vcard me-1"></i>Firstname</label>
 									</div>
 
 									<div class="form-floating mb-3">
@@ -66,9 +53,7 @@
 											name="lastName"
 											placeholder="Lastname"
 										/>
-										<label for="input-lastnamedLogin"><i
-												class="bi bi-person-vcard-fill me-1"
-											></i>Lastname</label>
+										<label for="input-lastnamedLogin"><i class="bi bi-person-vcard-fill me-1"></i>Lastname</label>
 									</div>
 
 									<div class="form-floating mb-3">
@@ -79,9 +64,7 @@
 											name="age"
 											placeholder="Age"
 										/>
-										<label for="input-ageLogin"><i
-												class="bi bi-chat-heart-fill me-1"
-											></i>Age</label>
+										<label for="input-ageLogin"><i class="bi bi-chat-heart-fill me-1"></i>Age</label>
 									</div>
 
 									<div class="form-floating mb-3">
@@ -92,9 +75,7 @@
 											name="email"
 											placeholder="Email"
 										/>
-										<label for="input-emailLogin"><i
-												class="bi bi-envelope-at me-1"
-											></i>Email</label>
+										<label for="input-emailLogin"><i class="bi bi-envelope-at me-1"></i>Email</label>
 									</div>
 
 									<div class="form-floating mb-3">
@@ -105,37 +86,17 @@
 											name="password"
 											placeholder="Password"
 										/>
-										<label for="input-passwordLogin"><i
-												class="bi bi-eye-slash me-1"
-											></i>Password</label>
+										<label for="input-passwordLogin"><i class="bi bi-eye-slash me-1"></i>Password</label>
 									</div>
 
-									<div
-										class="w-100 mt-4 d-flex justify-content-center align-items-center flex-column text-white"
-									>
-										<button
-											type="submit"
-											class="btn btn-primary btn-block mb-4 w-100"
-										>
+									<div class="w-100 mt-4 d-flex justify-content-center align-items-center flex-column text-white">
+										<button type="submit" class="btn btn-primary btn-block mb-4 w-100">
 											Register
 										</button>
-										<div
-											class="w-100 d-flex justify-content-between align-items-center flex-column gap-3"
-										>
-											<div
-												class="form-check w-100 d-flex justify-content-center align-items-center"
-											>
-												<input
-													class="form-check-input me-2"
-													type="checkbox"
-													value=""
-													id="loginCheck"
-													checked
-												/>
-												<label
-													class="form-check-label"
-													for="loginCheck"
-												>Remember me</label>
+										<div class="w-100 d-flex justify-content-between align-items-center flex-column gap-3">
+											<div class="form-check w-100 d-flex justify-content-center align-items-center">
+												<input class="form-check-input me-2" type="checkbox" value="" id="loginCheck" checked />
+												<label class="form-check-label" for="loginCheck">Remember me</label>
 											</div>
 											<div class="row w-100 text-center">
 												<a href="#!">Forgot password?</a>

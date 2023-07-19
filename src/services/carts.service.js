@@ -1,4 +1,4 @@
-import { CartsModel } from "../DAO/models/carts.models.js";
+import { CartsModel } from "../DAO/models/carts.model.js";
 import { ProductsModel } from "../DAO/models/products.model.js";
 
 class CartService {
@@ -12,7 +12,7 @@ class CartService {
 		return carts;
 	}
 
-	async get(cartId) {
+	async getByRender(cartId) {
 		const cart = await CartsModel.findById(cartId).populate("products.product");
 		if (!cart) {
 			throw new Error("Cart not found");

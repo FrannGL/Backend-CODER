@@ -3,10 +3,7 @@
 		<div class="flex-row text-end mt-3 ms-3" style="width: 99%;">
 			<div class="d-flex justify-content-end align-items-center">
 				<h5>Hola, {{firstName}}. Tu rol es {{role}}</h5>
-				<a
-					href="/api/sessions/logout"
-					class="btn btn-danger btn-sm btnLogin ms-2 me-5 mb-1"
-				>
+				<a href="/api/sessions/logout" class="btn btn-danger btn-sm btnLogin ms-2 me-5 mb-1">
 					<i class="bi bi-box-arrow-left me-2"></i>Logout
 				</a>
 			</div>
@@ -34,11 +31,7 @@
 								Agregar Producto
 							</button>
 						</h2>
-						<div
-							id="collapseOne"
-							class="accordion-collapse collapse"
-							data-bs-parent="#accordionExample"
-						>
+						<div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
 							<div class="accordion-body">
 								<form id="addProductForm">
 									<div class="row">
@@ -50,9 +43,7 @@
 													id="input-title"
 													placeholder="Nombre"
 												/>
-												<label for="input-title"><i
-														class="bi bi-pencil-square me-1"
-													></i>Nombre</label>
+												<label for="input-title"><i class="bi bi-pencil-square me-1"></i>Nombre</label>
 											</div>
 										</div>
 										<div class="col-6">
@@ -63,9 +54,7 @@
 													id="input-description"
 													placeholder="Descripcion"
 												/>
-												<label for="input-description"><i
-														class="bi bi-file-bar-graph me-1"
-													></i>Descripcion</label>
+												<label for="input-description"><i class="bi bi-file-bar-graph me-1"></i>Descripcion</label>
 											</div>
 										</div>
 									</div>
@@ -78,9 +67,7 @@
 													id="input-category"
 													placeholder="Categoria"
 												/>
-												<label for="input-category"><i
-														class="bi bi-tag me-1"
-													></i>Categoria</label>
+												<label for="input-category"><i class="bi bi-tag me-1"></i>Categoria</label>
 											</div>
 										</div>
 										<div class="col-4">
@@ -91,9 +78,7 @@
 													id="input-price"
 													placeholder="Precio"
 												/>
-												<label for="input-price"><i
-														class="bi bi-currency-dollar me-1"
-													></i>Precio</label>
+												<label for="input-price"><i class="bi bi-currency-dollar me-1"></i>Precio</label>
 											</div>
 										</div>
 										<div class="col-4">
@@ -104,9 +89,7 @@
 													id="input-thumbnail"
 													placeholder="Imagen"
 												/>
-												<label for="input-thumbnail"><i
-														class="bi bi-card-image me-1"
-													></i>Imagen</label>
+												<label for="input-thumbnail"><i class="bi bi-card-image me-1"></i>Imagen</label>
 											</div>
 										</div>
 									</div>
@@ -119,9 +102,7 @@
 													id="input-code"
 													placeholder="Codigo"
 												/>
-												<label for="input-code"><i
-														class="bi bi-qr-code me-1"
-													></i>Codigo</label>
+												<label for="input-code"><i class="bi bi-qr-code me-1"></i>Codigo</label>
 											</div>
 										</div>
 										<div class="col-6">
@@ -132,16 +113,13 @@
 													id="input-stock"
 													placeholder="Stock"
 												/>
-												<label for="input-stock"><i
-														class="bi bi-list-ol me-1"
-													></i>Stock</label>
+												<label for="input-stock"><i class="bi bi-list-ol me-1"></i>Stock</label>
 											</div>
 										</div>
 									</div>
 									<div class="btnAdd">
-										<button type="submit" class="btn btn-primary"><i
-												class="bi bi-send-plus-fill me-2"
-											></i>Crear Producto</button>
+										<button type="submit" class="btn btn-primary"><i class="bi bi-send-plus-fill me-2"></i>Crear
+											Producto</button>
 									</div>
 								</form>
 							</div>
@@ -153,10 +131,7 @@
 	</div>
 	<div class="container-fluid">
 		<div class="row">
-			<div
-				class="col g-0 d-flex flex-wrap justify-content-center gap-5"
-				id="dinamic-list"
-			>
+			<div class="col g-0 d-flex flex-wrap justify-content-center gap-5" id="dinamic-list">
 				{{#each data}}
 					<div class="card" style="width: 15rem; border: 1px solid black">
 						<img src={{this.thumbnail}} class="card-img" alt="{{this.title}}" />
@@ -187,11 +162,9 @@
 									data-bs-target="#exampleModal"
 									onclick="setModalTitle(this.getAttribute('data-id'))"
 								><i class="bi bi-pencil me-1"></i>Editar</a>
-								<a
-									href="#"
-									class="btn btn-danger btn-sm ms-2 btnDelete"
-									data-id={{this.id}}
-								><i class="bi bi-trash3 me-1"></i>Eliminar</a>
+								<a href="#" class="btn btn-danger btn-sm ms-2 btnDelete" data-id={{this.id}}><i
+										class="bi bi-trash3 me-1"
+									></i>Eliminar</a>
 							</div>
 						</div>
 					</div>
@@ -206,15 +179,9 @@
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header" id="modalHeader">
-									<h2 class="modal-title fs-5" id="exampleModalLabel">Editar
-										Producto
+									<h2 class="modal-title fs-5" id="exampleModalLabel">Editar Producto
 									</h2>
-									<button
-										type="button"
-										class="btn-close"
-										data-bs-dismiss="modal"
-										aria-label="Close"
-									></button>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 								</div>
 								<div class="modal-body">
 									<form id="addProductForm">
@@ -227,9 +194,7 @@
 														id="input-editTitle"
 														placeholder="Nombre"
 													/>
-													<label for="input-title"><i
-															class="bi bi-pencil-square me-1"
-														></i>Nombre</label>
+													<label for="input-title"><i class="bi bi-pencil-square me-1"></i>Nombre</label>
 												</div>
 											</div>
 											<div class="col-6">
@@ -240,9 +205,7 @@
 														id="input-editDescription"
 														placeholder="Descripcion"
 													/>
-													<label for="input-description"><i
-															class="bi bi-file-bar-graph me-1"
-														></i>Descripcion</label>
+													<label for="input-description"><i class="bi bi-file-bar-graph me-1"></i>Descripcion</label>
 												</div>
 											</div>
 										</div>
@@ -255,9 +218,7 @@
 														id="input-editCategory"
 														placeholder="Categoria"
 													/>
-													<label for="input-categoria"><i
-															class="bi bi-tag me-1"
-														></i>Categoria</label>
+													<label for="input-categoria"><i class="bi bi-tag me-1"></i>Categoria</label>
 												</div>
 											</div>
 											<div class="col-4">
@@ -268,9 +229,7 @@
 														id="input-editPrice"
 														placeholder="Precio"
 													/>
-													<label for="input-price"><i
-															class="bi bi-currency-dollar me-1"
-														></i>Precio</label>
+													<label for="input-price"><i class="bi bi-currency-dollar me-1"></i>Precio</label>
 												</div>
 											</div>
 											<div class="col-4">
@@ -281,9 +240,7 @@
 														id="input-editThumbnail"
 														placeholder="Imagen"
 													/>
-													<label for="input-thumbnail"><i
-															class="bi bi-card-image me-1"
-														></i>Imagen</label>
+													<label for="input-thumbnail"><i class="bi bi-card-image me-1"></i>Imagen</label>
 												</div>
 											</div>
 										</div>
@@ -296,9 +253,7 @@
 														id="input-editCode"
 														placeholder="Codigo"
 													/>
-													<label for="input-code"><i
-															class="bi bi-qr-code me-1"
-														></i>Codigo</label>
+													<label for="input-code"><i class="bi bi-qr-code me-1"></i>Codigo</label>
 												</div>
 											</div>
 											<div class="col-6">
@@ -309,26 +264,15 @@
 														id="input-editStock"
 														placeholder="Stock"
 													/>
-													<label for="input-stock"><i
-															class="bi bi-list-ol me-1"
-														></i>Stock</label>
+													<label for="input-stock"><i class="bi bi-list-ol me-1"></i>Stock</label>
 												</div>
 											</div>
 										</div>
 									</form>
 								</div>
 								<div class="modal-footer">
-									<button
-										type="button"
-										class="btn btn-danger"
-										data-bs-dismiss="modal"
-									>Cancelar</button>
-									<button
-										type="button"
-										class="btn btn-primary"
-										id="btn-edit"
-										onclick="saveChanges()"
-									>Guardar</button>
+									<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+									<button type="button" class="btn btn-primary" id="btn-edit" onclick="saveChanges()">Guardar</button>
 								</div>
 							</div>
 						</div>

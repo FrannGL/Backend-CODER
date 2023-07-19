@@ -8,8 +8,6 @@ home.get("/", async (req, res) => {
 		return res.status(200).render("home", { title, firstName, lastName, role });
 	} catch (err) {
 		console.log(err);
-		res
-			.status(501)
-			.send({ status: "error", msg: "Error en el servidor", error: err });
+		res.status(501).send({ status: "error", msg: "Error en el servidor", error: err });
 	}
 });
