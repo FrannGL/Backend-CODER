@@ -1,84 +1,87 @@
-import { ProductsModel } from "../DAO/models/products.model.js";
+import { productsModel } from "../DAO/models/products.model.js";
 
 class ProductService {
-  async getAll() {
-    const products = await ProductsModel.find({});
-    return products;
-  }
-  async getAllCount() {
+  async read() {
     try {
-      const count = await ProductsModel.countDocuments();
-      return count;
-    } catch (error) {
-      throw new Error("Error al obtener el número total de productos");
+      const products = await productsModel.read();
+      return products;
+    } catch (e) {
+      console.log(e);
     }
   }
-  async getAllWithPagination(limit, pagina, category, orderBy) {
-    const query = {};
-    if (category) {
-      query.category = category;
-    }
 
-    const sortOptions = {};
-    if (orderBy === "asc") {
-      sortOptions.price = 1;
-    } else if (orderBy === "desc") {
-      sortOptions.price = -1;
-    }
-
-    const queryResult = await ProductsModel.paginate(query, {
-      page: pagina || 1,
-      limit: limit || 5,
-      sort: sortOptions,
-    });
-
-    return queryResult;
-  }
-
-  async getProductById(_id) {
-    const productById = await ProdModel.findOne({ _id: _id });
-    return productById;
-  }
-
-  async getAllRendering() {
-    const products = await ProductsModel.find(
-      {},
-      {
-        _id: 1,
-        title: 1,
-        description: 1,
-        price: 1,
-        thumbnail: 1,
-        code: 1,
-        stock: 1,
+  async readWithPagination(limit, pagina, category, orderBy) {
+    try {
+      const query = {};
+      if (category) {
+        query.category = category;
       }
-    ).lean();
-    return products;
+
+      const sortOptions = {};
+      if (orderBy === "asc") {
+        sortOptions.price = 1;
+      } else if (orderBy === "desc") {
+        sortOptions.price = -1;
+      }
+
+      const queryResult = await productsModel.readWithPagination(
+        query,
+        pagina,
+        limit,
+        sortOptions
+      );
+
+      return queryResult;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async readById(_id) {
+    try {
+      const productById = await productsModel.readById(_id);
+      return productById;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   }
 
   async create({ title, description, price, thumbnail, code, stock }) {
-    const ProductCreated = await ProductsModel.create({
-      title,
-      description,
-      price,
-      thumbnail,
-      code,
-      stock,
-    });
-    return ProductCreated;
+    try {
+      const ProductCreated = await productsModel.create({
+        title,
+        description,
+        price,
+        thumbnail,
+        code,
+        stock,
+      });
+      return ProductCreated;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async update({ _id, title, description, price, thumbnail, code, stock }) {
-    const productUpdated = await ProductsModel.updateOne(
-      { _id: _id },
-      { title, description, price, thumbnail, code, stock }
-    );
-    return productUpdated;
+    try {
+      const productUpdated = await productsModel.create(
+        { _id: _id },
+        { title, description, price, thumbnail, code, stock }
+      );
+      return productUpdated;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async delete(id) {
-    const result = await ProductsModel.deleteOne({ _id: id });
-    return result;
+    try {
+      const result = await productsModel.delete({ _id: id });
+      return result;
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 
