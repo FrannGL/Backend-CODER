@@ -1,8 +1,8 @@
 import { cartService } from "../services/carts.service.js";
 class CartsController {
-	read = async (req, res) => {
+	async read(req, res) {
 		try {
-			const cart = await cartService.getAll();
+			const cart = await cartService.read();
 			res.status(200).json({
 				status: "success",
 				payload: cart,
@@ -10,12 +10,12 @@ class CartsController {
 		} catch (error) {
 			res.status(404).json({ message: error.message });
 		}
-	};
+	}
 
-	readById = async (req, res) => {
+	async readById(req, res) {
 		try {
 			const cartId = req.params.cid;
-			const cart = await cartService.get(cartId);
+			const cart = await cartService.readById(cartId);
 			res.status(200).json({
 				status: "success",
 				payload: cart,
@@ -23,37 +23,23 @@ class CartsController {
 		} catch (error) {
 			res.status(404).json({ message: error.message });
 		}
-	};
+	}
 
-	readByRender = async (req, res) => {
+	async readByRender(req, res) {
 		try {
 			const cartId = req.params.cid;
-			const cart = await cartService.getByRender(cartId);
+			const cart = await cartService.readByRender(cartId);
 			const plainCart = cart.products.map(doc => doc.toObject());
 			res.status(200).render("carts", { plainCart });
 		} catch (error) {
 			res.status(404).json({ message: error.message });
 		}
-	};
+	}
 
-	createCart = async (req, res) => {
-		try {
-			const { products } = req.body;
-			const newCart = await cartService.createOne({ products });
-			res.status(200).json({
-				status: "success",
-				payload: newCart,
-			});
-		} catch (error) {
-			console.log(error);
-			res.status(500).json({ message: "Internal Server Error" });
-		}
-	};
-
-	createProduct = async (req, res) => {
+	async addProduct(req, res) {
 		try {
 			const { cid, pid } = req.params;
-			const cart = await cartService.addProductToCart(cid, pid);
+			const cart = await cartService.addProduct(cid, pid);
 			res.status(200).json({
 				status: "success",
 				payload: cart,
@@ -61,9 +47,9 @@ class CartsController {
 		} catch (error) {
 			res.status(404).json({ error: error.message });
 		}
-	};
+	}
 
-	updateCart = async (req, res) => {
+	async updateCart(req, res) {
 		try {
 			const { cid } = req.params;
 			const { products } = req.body;
@@ -73,9 +59,9 @@ class CartsController {
 			console.error(error);
 			res.status(500).json({ status: "error", message: "Internal server error" });
 		}
-	};
+	}
 
-	updateProduct = async (req, res) => {
+	async updateProductQuantity(req, res) {
 		try {
 			const { cid, pid } = req.params;
 			const { quantity } = req.body;
@@ -85,29 +71,29 @@ class CartsController {
 			console.error(error);
 			res.status(500).json({ status: "error", message: "Internal server error" });
 		}
-	};
+	}
 
-	deleteCart = async (req, res) => {
+	async emptyCart(req, res) {
 		try {
 			const { cid } = req.params;
-			await cartService.clearCart(cid);
+			await cartService.emptyCart(cid);
 			res.status(200).json({ status: "success", message: "Cart cleared successfully" });
 		} catch (error) {
 			console.error(error);
 			res.status(500).json({ status: "error", message: "Internal server error" });
 		}
-	};
+	}
 
-	deleteProduct = async (req, res) => {
+	async deleteProduct(req, res) {
 		try {
 			const { cid, pid } = req.params;
-			const cart = await cartService.removeProduct(cid, pid);
+			const cart = await cartService.deleteProduct(cid, pid);
 			res.status(200).json({ status: "success", message: "Product removed from cart", cart });
 		} catch (error) {
 			console.error(error);
 			res.status(500).json({ status: "error", message: "Internal server error" });
 		}
-	};
+	}
 }
 
 export const cartsController = new CartsController();

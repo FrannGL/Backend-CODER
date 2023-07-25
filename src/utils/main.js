@@ -18,8 +18,8 @@ export async function connectMongo() {
 
 // CONNECT-SOCKET
 import { Server } from "socket.io";
-import { MsgModel } from "../DAO/models/msgs.model.js";
-import { ProductsModel } from "../DAO/models/products.model.js";
+import { MsgModel } from "../DAO/models/mongoose/msgs.mongoose.js";
+import { ProductsMongoose } from "../DAO/models/mongoose/products.mongoose.js";
 
 export function connectSocketServer(httpServer) {
 	const socketServer = new Server(httpServer);
@@ -28,7 +28,7 @@ export function connectSocketServer(httpServer) {
 		console.log(`Nuevo usuario conectado a traves de ${socket.id}`);
 
 		try {
-			const allProducts = await ProductsModel.find({});
+			const allProducts = await ProductsMongoose.find({});
 			socket.emit("products", allProducts);
 		} catch (e) {
 			console.log(e);
@@ -36,8 +36,8 @@ export function connectSocketServer(httpServer) {
 
 		socket.on("new-product", async newProd => {
 			try {
-				await ProductsModel.create(newProd);
-				const prods = await ProductsModel.find({});
+				await ProductsMongoose.create(newProd);
+				const prods = await ProductsMongoose.find({});
 				socketServer.emit("products", prods);
 			} catch (e) {
 				console.log(e);
@@ -48,8 +48,8 @@ export function connectSocketServer(httpServer) {
 			try {
 				console.log(id);
 				console.log(newProd);
-				await ProductsModel.findOneAndUpdate({ _id: id }, newProd);
-				const prod = await ProductsModel.find({});
+				await ProductsMongoose.findOneAndUpdate({ _id: id }, newProd);
+				const prod = await ProductsMongoose.find({});
 				socketServer.emit("products", prod);
 			} catch (e) {
 				console.log(e);
@@ -58,8 +58,8 @@ export function connectSocketServer(httpServer) {
 
 		socket.on("delete-product", async idProd => {
 			try {
-				await ProductsModel.deleteOne({ _id: idProd });
-				const prods = await ProductsModel.find({});
+				await ProductsMongoose.deleteOne({ _id: idProd });
+				const prods = await ProductsMongoose.find({});
 				socketServer.emit("products", prods);
 			} catch (e) {
 				console.log(e);

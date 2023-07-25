@@ -1,9 +1,9 @@
 import { userService } from "../services/users.service.js";
 
 class UserController {
-	read = async (req, res) => {
+	async read(req, res) {
 		try {
-			const users = await userService.getAll();
+			const users = await userService.read();
 			return res.status(200).json({
 				status: "success",
 				msg: "listado de usuarios",
@@ -17,10 +17,10 @@ class UserController {
 				payload: {},
 			});
 		}
-	};
-	readByRender = async (req, res) => {
+	}
+	async readByrender(req, res) {
 		try {
-			const data = await userService.getAll();
+			const data = await userService.read();
 			const dataParse = data.map(user => {
 				return {
 					id: user._id,
@@ -40,9 +40,9 @@ class UserController {
 			console.log(err);
 			res.status(501).send({ status: "error", msg: "Error en el servidor", error: err });
 		}
-	};
+	}
 
-	create = async (req, res) => {
+	async create(req, res) {
 		try {
 			const { email, username, password, role } = req.body;
 			if (!email || !username || !password || !role) {
@@ -78,30 +78,31 @@ class UserController {
 				payload: {},
 			});
 		}
-	};
+	}
 
-	update = async (req, res) => {
+	async update(req, res) {
 		try {
 			const { _id } = req.params;
-			const { email, username, password, role } = req.body;
-			if (!email || !username || !password || !role || !_id) {
-				console.log("validation error: please complete email, username, password and role.");
+			const { firstName, lastName, age, email, password, role } = req.body;
+			if (!firstName || !lastName || !age || !email || !password || !role || !_id) {
+				console.log("validation error: please complete the required fields.");
 				return res.status(400).json({
 					status: "error",
-					msg: "please complete email, username, password and role.",
+					msg: "please complete the required fields",
 					payload: {},
 				});
 			}
 			try {
-				const userUptaded = await userService.updateOne({
+				const userUpdated = await userService.update({
 					_id,
+					firstName,
+					lastName,
+					age,
 					email,
-					username,
 					password,
 					role,
 				});
-				console.log(userUptaded);
-				if (userUptaded.matchedCount > 0) {
+				if (userUpdated) {
 					return res.status(201).json({
 						status: "success",
 						msg: "user uptaded",
@@ -129,12 +130,12 @@ class UserController {
 				payload: {},
 			});
 		}
-	};
+	}
 
-	delete = async (req, res) => {
+	async delete(req, res) {
 		try {
 			const { _id } = req.params;
-			const result = await userService.deleteOne(_id);
+			const result = await userService.delete(_id);
 			if (result?.deletedCount > 0) {
 				return res.status(200).json({
 					status: "success",
@@ -156,7 +157,7 @@ class UserController {
 				payload: {},
 			});
 		}
-	};
+	}
 }
 
 export const usersController = new UserController();

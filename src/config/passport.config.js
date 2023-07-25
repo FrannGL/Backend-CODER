@@ -2,7 +2,7 @@ import fetch from "node-fetch";
 import passport from "passport";
 import GitHubStrategy from "passport-github2";
 import local from "passport-local";
-import { UserModel } from "../DAO/models/users.model.js";
+import { UsersMongoose } from "../DAO/models/mongoose/users.mongoose.js";
 import { cartService } from "../services/carts.service.js";
 import { createHash, isValidPassword } from "../utils/main.js";
 const LocalStrategy = local.Strategy;
@@ -12,7 +12,7 @@ export function iniPassport() {
 		"login",
 		new LocalStrategy({ usernameField: "email", passReqToCallback: true }, async (req, username, password, done) => {
 			try {
-				const user = await UserModel.findOne({ email: username }).exec();
+				const user = await UsersMongoose.findOne({ email: username }).exec();
 				if (!user) {
 					console.log("User Not Found with email " + username);
 					req.session.errorMsg = "Usuario inexistente con el email proporcionado";
@@ -41,7 +41,7 @@ export function iniPassport() {
 			async (req, username, password, done) => {
 				try {
 					const { email, firstName, lastName, age, admin } = req.body;
-					const user = await UserModel.findOne({ email: username }).exec();
+					const user = await UsersMongoose.findOne({ email: username }).exec();
 					if (user) {
 						console.log("User already exists");
 						return done(null, false);
@@ -59,11 +59,11 @@ export function iniPassport() {
 						admin,
 						password: createHash(password),
 					};
-					const userCreated = await UserModel.create(newUser);
+					const userCreated = await UsersMongoose.create(newUser);
 
 					const cartId = userCreated.cartID;
 
-					await cartService.createOne(cartId);
+					await cartService.createCart(cartId);
 
 					console.log("User Registration successful");
 					return done(null, userCreated);
@@ -101,7 +101,7 @@ export function iniPassport() {
 					}
 					profile.email = emailDetail.email;
 
-					let user = await UserModel.findOne({ email: profile.email });
+					let user = await UsersMongoose.findOne({ email: profile.email });
 					if (!user) {
 						const newUser = {
 							email: profile.email,
@@ -130,7 +130,7 @@ export function iniPassport() {
 	});
 
 	passport.deserializeUser(async (id, done) => {
-		let user = await UserModel.findById(id);
+		let user = await UsersMongoose.findById(id);
 		done(null, user);
 	});
 }

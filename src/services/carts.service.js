@@ -1,29 +1,40 @@
-import { CartsModel } from "../DAO/models/carts.model.js";
-import { ProductsModel } from "../DAO/models/products.model.js";
+import { cartsModel } from "../DAO/models/carts.model.js";
+import { productsModel } from "../DAO/models/products.model.js";
 
 class CartService {
-	async createOne(cartId) {
-		const cartCreated = await CartsModel.create({ _id: cartId });
-		return cartCreated;
-	}
-
-	async getAll() {
-		const carts = await CartsModel.find({});
+	async read() {
+		const carts = await cartsModel.read();
 		return carts;
 	}
 
-	async getByRender(cartId) {
-		const cart = await CartsModel.findById(cartId).populate("products.product");
+	async readById(_id) {
+		try {
+			const productById = await cartsModel.readById(_id);
+			return productById;
+		} catch (e) {
+			console.log(e);
+			throw e;
+		}
+	}
+
+	async readByRender(cartId) {
+		const cart = await cartsModel.readByRender(cartId);
 		if (!cart) {
 			throw new Error("Cart not found");
 		}
 		return cart;
 	}
 
-	async addProductToCart(cartId, productId) {
+	// SE CREA EL CARRITO CUANDO SE REGISTRA EL USUARIO
+	async createCart(cartId) {
+		const cartCreated = await cartsModel.createCart({ _id: cartId });
+		return cartCreated;
+	}
+
+	async addProduct(cartId, productId) {
 		try {
-			const cart = await CartsModel.findById(cartId);
-			const product = await ProductsModel.findById(productId);
+			const cart = await cartsModel.readById(cartId);
+			const product = await productsModel.readById(productId);
 			if (!cart) {
 				throw new Error("Cart not found");
 			}
@@ -40,11 +51,7 @@ class CartService {
 
 	async updateCart(cartId, products) {
 		try {
-			const cart = await CartsModel.findByIdAndUpdate(
-				cartId,
-				{ products },
-				{ new: true }
-			);
+			const cart = await cartsModel.updateCart(cartId, products);
 			return cart;
 		} catch (error) {
 			throw new Error("Error updating cart in database");
@@ -53,10 +60,8 @@ class CartService {
 
 	async updateProductQuantity(cartId, productId, quantity) {
 		try {
-			const cart = await CartsModel.findById(cartId);
-			const productIndex = cart.products.findIndex(
-				p => p.product.toString() === productId
-			);
+			const cart = await cartsModel.readById(cartId);
+			const productIndex = cart.products.findIndex(p => p.product.toString() === productId);
 			if (productIndex === -1) {
 				throw new Error("Product not found in cart");
 			}
@@ -68,12 +73,20 @@ class CartService {
 		}
 	}
 
-	async removeProduct(cartId, productId) {
+	async emptyCart(cartId) {
 		try {
-			const cart = await CartsModel.findById(cartId);
-			const productIndex = cart.products.findIndex(
-				p => p.product.toString() === productId
-			);
+			const cart = await cartsModel.readById(cartId);
+			cart.products = [];
+			await cart.save();
+		} catch (error) {
+			throw new Error("Error clearing cart");
+		}
+	}
+
+	async deleteProduct(cartId, productId) {
+		try {
+			const cart = await cartsModel.readById(cartId);
+			const productIndex = cart.products.findIndex(p => p.product.toString() === productId);
 			if (productIndex === -1) {
 				throw new Error("Product not found in cart");
 			}
@@ -82,16 +95,6 @@ class CartService {
 			return cart;
 		} catch (error) {
 			throw new Error("Error removing product from cart");
-		}
-	}
-
-	async clearCart(cartId) {
-		try {
-			const cart = await CartsModel.findById(cartId);
-			cart.products = [];
-			await cart.save();
-		} catch (error) {
-			throw new Error("Error clearing cart");
 		}
 	}
 }

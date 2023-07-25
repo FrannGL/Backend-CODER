@@ -1,10 +1,10 @@
 import { productService } from "../services/products.service.js";
 
 class ProductsController {
-	read = async (req, res) => {
+	async read(req, res) {
 		try {
 			const { limit, pagina, category, orderBy } = req.query;
-			const data = await productService.getAllWithPagination(limit, pagina, category, orderBy);
+			const data = await productService.readWithPagination(limit, pagina, category, orderBy);
 			const { totalDocs, totalPages, page, hasPrevPage, hasNextPage, prevPage, nextPage } = data;
 			res.status(200).json({
 				status: "success",
@@ -28,12 +28,12 @@ class ProductsController {
 				payload: {},
 			});
 		}
-	};
+	}
 
-	readByRenderUser = async (req, res) => {
+	async readByRenderUser(req, res) {
 		try {
 			const { limit, pagina, category, orderBy } = req.query;
-			const data = await productService.getAllWithPagination(limit, pagina, category, orderBy);
+			const data = await productService.readWithPagination(limit, pagina, category, orderBy);
 			const { firstName, role } = req.session.user;
 			const { totalPages, page, hasPrevPage, hasNextPage, prevPage, nextPage } = data;
 			const plainProducts = data.docs.map(doc => doc.toObject());
@@ -54,11 +54,11 @@ class ProductsController {
 			console.log(err);
 			res.status(501).send({ status: "error", msg: "Error en el servidor", error: err });
 		}
-	};
+	}
 
-	readByRenderAdmin = async (req, res) => {
+	async readByRenderAdmin(req, res) {
 		try {
-			const data = await productService.getAll({});
+			const data = await productService.read({});
 			const dataParse = data.map(prod => {
 				return {
 					id: prod._id,
@@ -78,8 +78,23 @@ class ProductsController {
 			console.log(err);
 			res.status(501).send({ status: "error", msg: "Error en el servidor", error: err });
 		}
-	};
-	create = async (req, res) => {
+	}
+
+	async readById(req, res) {
+		try {
+			const { _id } = req.params;
+			const productById = await productService.readById(_id);
+			return res.status(201).json({
+				status: "success",
+				msg: `Mostrando el producto con id ${_id}`,
+				payload: { productById },
+			});
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	async create(req, res) {
 		try {
 			const { title, description, price, thumbnail, code, stock } = req.body;
 			if (!title || !description || !price || !thumbnail || !code || !stock) {
@@ -119,9 +134,9 @@ class ProductsController {
 				payload: {},
 			});
 		}
-	};
+	}
 
-	update = async (req, res) => {
+	async update(req, res) {
 		try {
 			const { _id } = req.params;
 			const { title, description, price, thumbnail, code, stock } = req.body;
@@ -171,9 +186,9 @@ class ProductsController {
 				payload: {},
 			});
 		}
-	};
+	}
 
-	delete = async (req, res) => {
+	async delete(req, res) {
 		try {
 			const { _id } = req.params;
 
@@ -200,7 +215,7 @@ class ProductsController {
 				payload: {},
 			});
 		}
-	};
+	}
 }
 
 export const productsController = new ProductsController();
