@@ -1,36 +1,22 @@
-import { productsModel } from "../DAO/mongo/models/products.model.js";
+import { ProductsMongoose } from "../products.mongoose.js";
 
-class ProductService {
+class ProductsModel {
   async read() {
     try {
-      const products = await productsModel.read();
+      const products = await ProductsMongoose.find({});
       return products;
     } catch (e) {
       console.log(e);
     }
   }
 
-  async readWithPagination(limit, pagina, category, orderBy) {
+  async readWithPagination(query, pagina, limit, sortOptions) {
     try {
-      const query = {};
-      if (category) {
-        query.category = category;
-      }
-
-      const sortOptions = {};
-      if (orderBy === "asc") {
-        sortOptions.price = 1;
-      } else if (orderBy === "desc") {
-        sortOptions.price = -1;
-      }
-
-      const queryResult = await productsModel.readWithPagination(
-        query,
-        pagina,
-        limit,
-        sortOptions
-      );
-
+      const queryResult = await ProductsMongoose.paginate(query, {
+        page: pagina || 1,
+        limit: limit || 5,
+        sort: sortOptions,
+      });
       return queryResult;
     } catch (e) {
       console.log(e);
@@ -39,17 +25,16 @@ class ProductService {
 
   async readById(_id) {
     try {
-      const productById = await productsModel.readById(_id);
+      const productById = await ProductsMongoose.findOne({ _id });
       return productById;
     } catch (e) {
       console.log(e);
-      throw e;
     }
   }
 
   async create({ title, description, price, thumbnail, code, stock }) {
     try {
-      const ProductCreated = await productsModel.create({
+      const ProductCreated = await ProductsMongoose.create({
         title,
         description,
         price,
@@ -65,7 +50,7 @@ class ProductService {
 
   async update({ _id, title, description, price, thumbnail, code, stock }) {
     try {
-      const productUpdated = await productsModel.create(
+      const productUpdated = await ProductsMongoose.updateOne(
         { _id: _id },
         { title, description, price, thumbnail, code, stock }
       );
@@ -77,7 +62,7 @@ class ProductService {
 
   async delete(id) {
     try {
-      const result = await productsModel.delete({ _id: id });
+      const result = await ProductsMongoose.deleteOne({ _id: id });
       return result;
     } catch (e) {
       console.log(e);
@@ -85,4 +70,4 @@ class ProductService {
   }
 }
 
-export const productService = new ProductService();
+export const productsModel = new ProductsModel();
