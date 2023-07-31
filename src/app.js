@@ -22,29 +22,28 @@ import { connectMongo, connectSocketServer } from "./utils/main.js";
 
 // CONFIG BASICAS Y CONEXION A DB
 const app = express();
-const PORT = 8080;
+const PORT = env.port;
 const fileStore = FileStore(session);
 
 connectMongo();
 
 // HTTP SERVER
 const httpServer = app.listen(PORT, () => {
-  console.log(`Levantando en puerto http://localhost:${PORT}`);
+	console.log(`Levantando en puerto http://localhost:${PORT}`);
 });
 
 connectSocketServer(httpServer);
 app.use(
-  session({
-    secret: "jhasdkjh671246JHDAhjd",
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl:
-        "mongodb+srv://francoivangalluccio:VbfDXQUUxVvHnxna@cluster0.nwjyo8a.mongodb.net/?retryWrites=true&w=majority",
-      mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-      ttl: 3600,
-    }),
-  })
+	session({
+		secret: "jhasdkjh671246JHDAhjd",
+		resave: false,
+		saveUninitialized: false,
+		store: MongoStore.create({
+			mongoUrl: env.mongoUrl,
+			mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+			ttl: 3600,
+		}),
+	})
 );
 
 // DIRNAME CONFIG
@@ -73,21 +72,14 @@ app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsApiRouter);
 app.use("/api/users", usersApiRouter);
 app.use("/api/sessions", sessionsRouter);
-app.get(
-  "/api/sessions/github",
-  passport.authenticate("github", { scope: ["user:email"] })
-);
-app.get(
-  "/api/sessions/githubcallback",
-  passport.authenticate("github", { failureRedirect: "/error" }),
-  (req, res) => {
-    req.session.user = {
-      firstName: req.user.firstName,
-      role: req.user.role,
-    };
-    res.redirect("/home");
-  }
-);
+app.get("/api/sessions/github", passport.authenticate("github", { scope: ["user:email"] }));
+app.get("/api/sessions/githubcallback", passport.authenticate("github", { failureRedirect: "/error" }), (req, res) => {
+	req.session.user = {
+		firstName: req.user.firstName,
+		role: req.user.role,
+	};
+	res.redirect("/home");
+});
 // PLANTILLAS
 app.use("/", login);
 app.use("/home", home);
@@ -99,6 +91,6 @@ app.use("/test-chat", testChatRouter);
 app.use("/error", errorRouter);
 
 app.get("*", (req, res) => {
-  const notFound = "Esta página no existe";
-  return res.status(500).render("error", { notFound });
+	const notFound = "Esta página no existe";
+	return res.status(500).render("error", { notFound });
 });

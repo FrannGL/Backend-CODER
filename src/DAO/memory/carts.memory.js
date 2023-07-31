@@ -1,0 +1,41 @@
+export default class CartsMemory {
+	constructor() {
+		this.data = [];
+	}
+
+	async read() {
+		return this.data;
+	}
+
+	async readById(_id) {
+		try {
+			const cartId = await this.data.find(cart => cart.id === _id);
+			return cartId;
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	async readByRender(cartId) {
+		try {
+			const cart = await this.data.find(cart => cart.id === cartId);
+			return cart;
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
+	async create(data) {
+		this.data.push(data);
+		return data;
+	}
+
+	async updateCart(cartId, products) {
+		try {
+			const cart = await this.data.find(cartId, { products }, { new: true });
+			return cart;
+		} catch (error) {
+			throw new Error("Error updating cart in database");
+		}
+	}
+}

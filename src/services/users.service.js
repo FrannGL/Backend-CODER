@@ -1,4 +1,4 @@
-import { usersModel } from "../DAO//mongo/models/users.model.js";
+import { usersModel } from "../DAO/mongo/models/users.model.js";
 import { cartService } from "./carts.service.js";
 import { generateCartId } from "../utils/main.js";
 class UserService {
@@ -25,7 +25,7 @@ class UserService {
   }
   async create(firstName, lastName, age, email, password, role) {
     try {
-      const existingUser = await this.getOne(email);
+      const existingUser = await this.readOne(email);
       if (existingUser) {
         return "El usuario ya se encuentra registrado";
       }
