@@ -39,3 +39,5 @@ export default class CartsMemory {
 		}
 	}
 }
+
+export const cartsMemory = new CartsMemory();

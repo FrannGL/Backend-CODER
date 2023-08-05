@@ -81,3 +81,5 @@ export default class UsersMemory {
 		}
 	}
 }
+
+export const usersMemory = new UsersMemory();

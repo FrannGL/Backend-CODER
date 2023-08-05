@@ -1,6 +1,7 @@
-import { getProductsModel } from "../DAO/factory.js";
+import importModels from "../DAO/factory.js";
 
-const productsModel = getProductsModel();
+const models = await importModels();
+const productsModel = models.products;
 
 class ProductService {
 	async read() {
@@ -44,28 +45,18 @@ class ProductService {
 		}
 	}
 
-	async create({ title, description, price, thumbnail, code, stock }) {
+	async create(product) {
 		try {
-			const ProductCreated = await productsModel.create({
-				title,
-				description,
-				price,
-				thumbnail,
-				code,
-				stock,
-			});
+			const ProductCreated = await productsModel.create(product);
 			return ProductCreated;
 		} catch (e) {
 			console.log(e);
 		}
 	}
 
-	async update({ _id, title, description, price, thumbnail, code, stock }) {
+	async update(_id, product) {
 		try {
-			const productUpdated = await productsModel.create(
-				{ _id: _id },
-				{ title, description, price, thumbnail, code, stock }
-			);
+			const productUpdated = await productsModel.update(_id, product);
 			return productUpdated;
 		} catch (e) {
 			console.log(e);

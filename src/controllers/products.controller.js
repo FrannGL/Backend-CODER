@@ -1,4 +1,6 @@
+import ProductsDTO from "./DTO/products.dto.js";
 import { productService } from "../services/products.service.js";
+import env from "../config/enviroment.config.js";
 
 class ProductsController {
 	async read(req, res) {
@@ -36,20 +38,28 @@ class ProductsController {
 			const data = await productService.readWithPagination(limit, pagina, category, orderBy);
 			const { firstName, role } = req.session.user;
 			const { totalPages, page, hasPrevPage, hasNextPage, prevPage, nextPage } = data;
-			const plainProducts = data.docs.map(doc => doc.toObject());
-			const title = "Listado de Productos";
-			return res.status(200).render("products", {
-				title,
-				firstName,
-				role,
-				plainProducts,
-				totalPages,
-				page,
-				hasPrevPage,
-				hasNextPage,
-				prevPage,
-				nextPage,
-			});
+			if (env.persistence === "MONGO") {
+				const plainProducts = data.docs.map(doc => doc.toObject());
+				const title = "Listado de Productos";
+				return res.status(200).render("products", {
+					title,
+					firstName,
+					role,
+					plainProducts,
+					totalPages,
+					page,
+					hasPrevPage,
+					hasNextPage,
+					prevPage,
+					nextPage,
+				});
+			} else {
+				return res.status(200).json({
+					status: "success",
+					msg: "Listado de productos",
+					payload: { data },
+				});
+			}
 		} catch (err) {
 			console.log(err);
 			res.status(501).send({ status: "error", msg: "Error en el servidor", error: err });
@@ -96,23 +106,9 @@ class ProductsController {
 
 	async create(req, res) {
 		try {
-			const { title, description, price, thumbnail, code, stock } = req.body;
-			if (!title || !description || !price || !thumbnail || !code || !stock) {
-				console.log("Por favor completa todos los campos");
-				return res.status(400).json({
-					status: "error",
-					msg: "Por favor completa todos los campos",
-					payload: {},
-				});
-			}
-			const ProductCreated = await productService.create({
-				title,
-				description,
-				price,
-				thumbnail,
-				code,
-				stock,
-			});
+			const { title, description, category, price, thumbnail, code, stock } = req.body;
+			let product = new ProductsDTO({ title, description, category, price, thumbnail, code, stock });
+			const ProductCreated = await productService.create(product);
 			return res.status(201).json({
 				status: "success",
 				msg: "Producto Creado",
@@ -120,6 +116,7 @@ class ProductsController {
 					_id: ProductCreated._id,
 					title: ProductCreated.title,
 					description: ProductCreated.description,
+					category: ProductCreated.category,
 					price: ProductCreated.price,
 					thumbnail: ProductCreated.thumbnail,
 					code: ProductCreated.code,
@@ -139,39 +136,25 @@ class ProductsController {
 	async update(req, res) {
 		try {
 			const { _id } = req.params;
-			const { title, description, price, thumbnail, code, stock } = req.body;
-			if (!title || !description || !price || !thumbnail || !code || !stock || !_id) {
-				console.log("Por favor completa todos los campos");
-				return res.status(400).json({
-					status: "error",
-					msg: "Por favor completa todos los campos",
-					payload: {},
-				});
-			}
+			const { title, description, category, price, thumbnail, code, stock } = req.body;
+			let product = new ProductsDTO({ title, description, category, price, thumbnail, code, stock });
 			try {
-				const productUpdated = await productService.update({
-					_id,
-					title,
-					description,
-					price,
-					thumbnail,
-					code,
-					stock,
-				});
-				if (productUpdated.matchedCount > 0) {
+				const productUpdated = await productService.update(_id, product);
+				if (productUpdated) {
 					return res.status(201).json({
 						status: "success",
-						msg: "product uptaded",
+						msg: "product updated",
 						payload: `Has actualizado el producto con ID ${_id}`,
 					});
 				} else {
 					return res.status(404).json({
 						status: "error",
-						msg: "product not found",
+						msg: "product not found or not updated",
 						payload: {},
 					});
 				}
 			} catch (e) {
+				console.log(e);
 				return res.status(500).json({
 					status: "error",
 					msg: "Error al actualizar el producto",

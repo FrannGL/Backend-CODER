@@ -19,6 +19,8 @@ import { testChatRouter } from "./routes/test-chat.router.js";
 import { usersApiRouter } from "./routes/users-api.router.js";
 import { usersRouter } from "./routes/users.router.js";
 import { connectMongo, connectSocketServer } from "./utils/main.js";
+import nodemailer from "nodemailer";
+import twilio from "twilio";
 
 // CONFIG BASICAS Y CONEXION A DB
 const app = express();
@@ -51,6 +53,54 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
+
+const transport = nodemailer.createTransport({
+	service: "gmail",
+	port: 587,
+	auth: {
+		user: process.env.GOOGLE_EMAIL,
+		pass: process.env.GOOGLE_PASS,
+	},
+});
+
+app.get("/mail", async (req, res) => {
+	const result = await transport.sendMail({
+		from: process.env.GOOGLE_EMAIL,
+		to: "guillermofergnani@gmail.com",
+		subject: "Perdon me faltaba algo",
+		html: `
+				<div>
+					<h1>hola mundo</h1>
+					<img src="cid:image1" />
+				</div>
+			`,
+		attachments: [
+			{
+				filename: "image1.gif",
+				path: __dirname + "/images/image1.gif",
+				cid: "image1",
+			},
+		],
+	});
+
+	console.log(result);
+	res.send("Email sent");
+});
+
+const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
+app.get("/sms", async (req, res) => {
+	const result = await client.messages.create({
+		body: "que onda che",
+		from: process.env.TWILIO_PHONE_NUMBER,
+		to: "+541121557802",
+		body: "hola",
+	});
+
+	console.log(result);
+
+	res.send("SMS sent");
+});
 
 // MIDDLEWARES BASICOS
 app.use(express.json());

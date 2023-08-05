@@ -1,26 +1,109 @@
 class ProductsMemory {
 	constructor() {
-		this.data = [];
+		this.data = [
+			{
+				_id: "1",
+				title: "Producto 1",
+				description: "Descripción del Producto 1",
+				price: 10.99,
+				thumbnail: "url1",
+				code: "ABC123",
+				stock: 50,
+			},
+			{
+				_id: "2",
+				title: "Producto 2",
+				description: "Descripción del Producto 2",
+				price: 19.99,
+				thumbnail: "url2",
+				code: "DEF456",
+				stock: 30,
+			},
+			{
+				_id: "3",
+				title: "Producto 2",
+				description: "Descripción del Producto 2",
+				price: 19.99,
+				thumbnail: "url2",
+				code: "DEF456",
+				stock: 30,
+			},
+			{
+				_id: "4",
+				title: "Producto 2",
+				description: "Descripción del Producto 2",
+				price: 19.99,
+				thumbnail: "url2",
+				code: "DEF456",
+				stock: 30,
+			},
+			{
+				_id: "5",
+				title: "Producto 2",
+				description: "Descripción del Producto 2",
+				price: 19.99,
+				thumbnail: "url2",
+				code: "DEF456",
+				stock: 30,
+			},
+			{
+				_id: "6",
+				title: "Producto 2",
+				description: "Descripción del Producto 2",
+				price: 19.99,
+				thumbnail: "url2",
+				code: "DEF456",
+				stock: 30,
+			},
+			{
+				_id: "7",
+				title: "Producto 2",
+				description: "Descripción del Producto 2",
+				price: 19.99,
+				thumbnail: "url2",
+				code: "DEF456",
+				stock: 30,
+			},
+			{
+				_id: "8",
+				title: "Producto 2",
+				description: "Descripción del Producto 2",
+				price: 19.99,
+				thumbnail: "url2",
+				code: "DEF456",
+				stock: 30,
+			},
+			{
+				_id: "9",
+				title: "Producto 2",
+				description: "Descripción del Producto 2",
+				price: 19.99,
+				thumbnail: "url2",
+				code: "DEF456",
+				stock: 30,
+			},
+			{
+				_id: "10",
+				title: "Producto 2",
+				description: "Descripción del Producto 2",
+				price: 19.99,
+				thumbnail: "url2",
+				code: "DEF456",
+				stock: 30,
+			},
+		];
 	}
 
 	async read() {
 		return this.data;
 	}
-	async readWithPagination() {
-		try {
-			const queryResult = await this.data.find(query, {
-				page: pagina || 1,
-				limit: limit || 5,
-				sort: sortOptions,
-			});
-			return queryResult;
-		} catch (e) {
-			console.log(e);
-		}
+	async readWithPagination(page = 1, limit = 5) {
+		const allProducts = await this.read();
+		return allProducts;
 	}
 	async readById(_id) {
 		try {
-			const productById = await this.data.find({ _id });
+			const productById = this.data.find(product => product._id === _id);
 			return productById;
 		} catch (e) {
 			console.log(e);
@@ -28,31 +111,49 @@ class ProductsMemory {
 	}
 	async create({ title, description, price, thumbnail, code, stock }) {
 		try {
-			const ProductCreated = await this.data.find({
+			const newProduct = {
+				_id: Date.now().toString(),
 				title,
 				description,
 				price,
 				thumbnail,
 				code,
 				stock,
-			});
-			return ProductCreated;
+			};
+			this.data.push(newProduct);
+			return newProduct;
 		} catch (e) {
 			console.log(e);
 		}
 	}
 	async update({ _id, title, description, price, thumbnail, code, stock }) {
 		try {
-			const productUpdated = await this.data.find({ _id: _id }, { title, description, price, thumbnail, code, stock });
-			return productUpdated;
+			const productIndex = this.data.findIndex(product => product._id === _id);
+			if (productIndex !== -1) {
+				this.data[productIndex] = {
+					...this.data[productIndex],
+					title,
+					description,
+					price,
+					thumbnail,
+					code,
+					stock,
+				};
+				return this.data[productIndex];
+			}
+			return null; // Product not found
 		} catch (e) {
 			console.log(e);
 		}
 	}
 	async delete(id) {
 		try {
-			const result = await this.data.find({ _id: id });
-			return result;
+			const productIndex = this.data.findIndex(product => product._id === id);
+			if (productIndex !== -1) {
+				const deletedProduct = this.data.splice(productIndex, 1);
+				return deletedProduct[0];
+			}
+			return null; // Product not found
 		} catch (e) {
 			console.log(e);
 		}

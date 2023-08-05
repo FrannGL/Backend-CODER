@@ -1,3 +1,4 @@
+import UsersDTO from "./DTO/users.dto.js";
 import { userService } from "../services/users.service.js";
 
 class UserController {
@@ -42,66 +43,43 @@ class UserController {
 		}
 	}
 
-	async create(req, res) {
-		try {
-			const { email, username, password, role } = req.body;
-			if (!email || !username || !password || !role) {
-				console.log("validation error: please complete email, username, password and role.");
-				return res.status(400).json({
-					status: "error",
-					msg: "please complete email, username, password and role.",
-					payload: {},
-				});
-			}
-			const userCreated = await userService.create({
-				email,
-				username,
-				password,
-				e,
-			});
-			return res.status(201).json({
-				status: "success",
-				msg: "user created",
-				payload: {
-					_id: userCreated._id,
-					email: userCreated.email,
-					username: userCreated.username,
-					password: userCreated.password,
-					role: userCreated.role,
-				},
-			});
-		} catch (e) {
-			console.log(e);
-			return res.status(500).json({
-				status: "error",
-				msg: "something went wrong :(",
-				payload: {},
-			});
-		}
-	}
+	// SE CREA UTILIZANDO PASSPORT
+
+	// async create(req, res) {
+	// 	try {
+	// 		const { firstName, lastName, age, email, password } = req.body;
+	// 		let user = new UsersDTO({ firstName, lastName, age, email, password });
+	// 		console.log(user);
+	// 		const userCreated = await userService.create(user);
+	// 		return res.status(201).json({
+	// 			status: "success",
+	// 			msg: "user created",
+	// 			payload: {
+	// 				_id: userCreated._id,
+	// 				firstName: userCreated.firstName,
+	// 				lastName: userCreated.lastName,
+	// 				age: userCreated.age,
+	// 				email: userCreated.email,
+	// 				password: userCreated.password,
+	// 			},
+	// 		});
+	// 	} catch (e) {
+	// 		console.log(e);
+	// 		return res.status(500).json({
+	// 			status: "error",
+	// 			msg: "something went wrong :(",
+	// 			payload: {},
+	// 		});
+	// 	}
+	// }
 
 	async update(req, res) {
 		try {
 			const { _id } = req.params;
-			const { firstName, lastName, age, email, password, role } = req.body;
-			if (!firstName || !lastName || !age || !email || !password || !role || !_id) {
-				console.log("validation error: please complete the required fields.");
-				return res.status(400).json({
-					status: "error",
-					msg: "please complete the required fields",
-					payload: {},
-				});
-			}
+			const { firstName, lastName, age, email, password } = req.body;
+			let user = new UsersDTO({ firstName, lastName, age, email, password });
 			try {
-				const userUpdated = await userService.update({
-					_id,
-					firstName,
-					lastName,
-					age,
-					email,
-					password,
-					role,
-				});
+				const userUpdated = await userService.update(_id, user);
 				if (userUpdated) {
 					return res.status(201).json({
 						status: "success",
