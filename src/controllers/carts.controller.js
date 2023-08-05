@@ -29,8 +29,10 @@ class CartsController {
 		try {
 			const cartId = req.params.cid;
 			const cart = await cartService.readByRender(cartId);
+			const totalCart = await cartService.totalCart(cartId);
+			console.log(totalCart);
 			const plainCart = cart.products.map(doc => doc.toObject());
-			res.status(200).render("carts", { plainCart });
+			res.status(200).render("carts", { plainCart, totalCart });
 		} catch (error) {
 			res.status(404).json({ message: error.message });
 		}

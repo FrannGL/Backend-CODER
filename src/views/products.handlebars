@@ -16,7 +16,7 @@
 	</div>
 	<div class="floatCartButton">
 		<button class="fixed-bottom-right btn btn-primary btn-lg">
-			<a href="#"><i class="bi bi-cart text-white" style="text-decoration: none;"></i></a>
+			<a id="cartLink" href="/cart/{{cartId}}"><i class="bi bi-cart text-white" style="text-decoration: none;"></i></a>
 		</button>
 	</div>
 	<div class="container-fluid">
@@ -39,7 +39,11 @@
 								<p class="m-0">$ {{this.price}}.-</p>
 							</div>
 							<div class="card-btn d-flex justify-content-end align-items-end w-100">
-								<button class="btn btn-dark btn-sm me-2">Agregar al Carrito</button>
+								<button
+									class="btn btn-dark btn-sm me-2 btnCart"
+									data-product-id="{{this._id}}"
+									data-cart-id={{cartId}}
+								>Agregar al Carrito</button>
 							</div>
 						</div>
 					</div>
@@ -118,3 +122,5 @@
 		<h6>by Franco Galluccio</h6>
 	</div>
 </footer>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>

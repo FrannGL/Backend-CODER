@@ -36,7 +36,7 @@ class ProductsController {
 		try {
 			const { limit, pagina, category, orderBy } = req.query;
 			const data = await productService.readWithPagination(limit, pagina, category, orderBy);
-			const { firstName, role } = req.session.user;
+			const { firstName, role, cartId } = req.session.user;
 			const { totalPages, page, hasPrevPage, hasNextPage, prevPage, nextPage } = data;
 			if (env.persistence === "MONGO") {
 				const plainProducts = data.docs.map(doc => doc.toObject());
@@ -45,6 +45,7 @@ class ProductsController {
 					title,
 					firstName,
 					role,
+					cartId,
 					plainProducts,
 					totalPages,
 					page,

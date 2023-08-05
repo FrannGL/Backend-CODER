@@ -62,7 +62,40 @@ function saveChanges() {
 	});
 }
 
-addProduct.addEventListener("submit", (e) => {
+document.addEventListener("DOMContentLoaded", () => {
+	const addToCartButtons = document.querySelectorAll(".btnCart");
+	const cartLink = document.getElementById("cartLink"); // Obtén el enlace del carrito por su ID
+	const cartId = cartLink.getAttribute("href").split("/").pop(); // Obtiene el cartId del enlace
+
+	addToCartButtons.forEach(button => {
+		button.addEventListener("click", async () => {
+			const productId = button.getAttribute("data-product-id");
+			console.log(`Producto agregado al carrito. ID: ${productId}`);
+			console.log(`El carrito tiene el ID: ${cartId}`);
+
+			try {
+				const response = await fetch(`/cart/${cartId}/products/${productId}`, {
+					method: "POST",
+				});
+
+				if (response.ok) {
+					console.log("Producto agregado al carrito con éxito.");
+					Swal.fire({
+						icon: "success",
+						title: "Producto Agregado al Carrito",
+						text: "El producto ha sido agregado exitosamente al carrito.",
+					});
+				} else {
+					console.error("Error al agregar el producto al carrito.");
+				}
+			} catch (error) {
+				console.error("Error de red:", error);
+			}
+		});
+	});
+});
+
+addProduct.addEventListener("submit", e => {
 	e.preventDefault();
 	const newProduct = {
 		title: inputTitle.value,
@@ -83,7 +116,7 @@ addProduct.addEventListener("submit", (e) => {
 	socket.emit("new-product", newProduct);
 });
 
-container.addEventListener("click", (event) => {
+container.addEventListener("click", event => {
 	if (event.target.classList.contains("btnEdit")) {
 		const button = event.target;
 		const cardId = button.getAttribute("data-id");
@@ -107,7 +140,7 @@ container.addEventListener("click", (event) => {
 			cancelButtonColor: "#d33",
 			confirmButtonText: "Si, borrar",
 			cancelButtonText: "Cancelar",
-		}).then((result) => {
+		}).then(result => {
 			if (result.isConfirmed) {
 				const productId = cardId;
 				socket.emit("delete-product", productId);
@@ -117,9 +150,9 @@ container.addEventListener("click", (event) => {
 	}
 });
 
-socket.on("products", (producto) => {
+socket.on("products", producto => {
 	container.innerHTML = producto
-		.map((prod) => {
+		.map(prod => {
 			return `
       <div class="card" style="width: 15rem; border: 1px solid black">
         <img src=${prod.thumbnail} class="card-img" alt="${prod.title}" />

@@ -38,13 +38,22 @@ class CartService {
 		try {
 			const cart = await cartsModel.readById(cartId);
 			const product = await productsModel.readById(productId);
+
 			if (!cart) {
 				throw new Error("Cart not found");
 			}
 			if (!product) {
 				throw new Error("Product not found");
 			}
-			cart.products.push({ product: product._id, quantity: 1 });
+
+			const existingProduct = cart.products.find(item => item.product.toString() === product._id.toString());
+
+			if (existingProduct) {
+				existingProduct.quantity++;
+			} else {
+				cart.products.push({ product: product._id, quantity: 1 });
+			}
+
 			await cart.save();
 			return cart;
 		} catch (error) {
@@ -73,6 +82,31 @@ class CartService {
 			return cart;
 		} catch (error) {
 			throw new Error("Error updating product quantity in cart");
+		}
+	}
+
+	async totalCart(cartId) {
+		try {
+			const cart = await cartsModel.readById(cartId);
+
+			if (!cart) {
+				throw new Error("Cart not found");
+			}
+
+			const total = await cart.products.reduce(async (sumPromise, item) => {
+				const sum = await sumPromise;
+				const product = await productsModel.readById(item.product.toString());
+
+				if (product) {
+					const productPrice = product.price;
+					return sum + productPrice * item.quantity;
+				} else {
+					return sum;
+				}
+			}, Promise.resolve(0));
+			return total;
+		} catch (error) {
+			throw error;
 		}
 	}
 

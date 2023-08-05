@@ -1,3 +1,5 @@
+import UsersDTO from "./DTO/users.dto.js";
+
 class SessionsController {
 	async viewLogin(req, res) {
 		try {
@@ -34,8 +36,15 @@ class SessionsController {
 
 	async current(req, res) {
 		try {
-			console.log(req.session);
-			return res.status(200).json({ user: req.session.user });
+			const { firstName, lastName, age, email } = req.session.user;
+			const userDTO = new UsersDTO({ firstName, lastName, age, email });
+			const user = {
+				firstName: userDTO.firstName,
+				lastName: userDTO.lastName,
+				age: userDTO.age,
+				email: userDTO.email,
+			};
+			return res.status(200).json({ user: user });
 		} catch (e) {
 			console.log(e);
 		}
@@ -48,12 +57,14 @@ class SessionsController {
 			}
 			req.session.user = {
 				_id: req.user._id,
-				age: req.user.age,
-				email: req.user.email,
 				firstName: req.user.firstName,
 				lastName: req.user.lastName,
+				age: req.user.age,
+				email: req.user.email,
 				role: req.user.role,
+				cartId: req.user.cartID,
 			};
+			console.log(req.session.user);
 			return res.redirect("/home");
 		} catch (e) {
 			console.log(e);
