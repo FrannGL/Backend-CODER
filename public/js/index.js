@@ -266,6 +266,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   addToCartButtons.forEach((button) => {
     button.addEventListener("click", async () => {
+      const userRole = await getUserRole(); // Obtener el rol del usuario (debe implementarse)
+      if (userRole !== "user") {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "No tienes permiso para realizar esta accion.",
+          showConfirmButton: true,
+          confirmButtonColor: "#0d6efd",
+          timer: 1500,
+        });
+        return userRole;
+      }
+
       const productId = button.getAttribute("data-product-id");
       console.log(`Producto agregado al carrito. ID: ${productId}`);
       console.log(`El carrito tiene el ID: ${cartId}`);
@@ -306,6 +319,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  async function getUserRole() {
+    try {
+      const response = await fetch("/api/sessions/current");
+      if (response.ok) {
+        const data = await response.json();
+        return data.user.role;
+      } else {
+        console.error("Error al obtener el rol del usuario.");
+        return "";
+      }
+    } catch (error) {
+      console.error("Error de red:", error);
+      return "";
+    }
+  }
 });
 
 addProduct.addEventListener("submit", (e) => {
