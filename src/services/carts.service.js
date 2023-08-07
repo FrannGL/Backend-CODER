@@ -85,31 +85,6 @@ class CartService {
 		}
 	}
 
-	async totalCart(cartId) {
-		try {
-			const cart = await cartsModel.readById(cartId);
-
-			if (!cart) {
-				throw new Error("Cart not found");
-			}
-
-			const total = await cart.products.reduce(async (sumPromise, item) => {
-				const sum = await sumPromise;
-				const product = await productsModel.readById(item.product.toString());
-
-				if (product) {
-					const productPrice = product.price;
-					return sum + productPrice * item.quantity;
-				} else {
-					return sum;
-				}
-			}, Promise.resolve(0));
-			return total;
-		} catch (error) {
-			throw error;
-		}
-	}
-
 	async emptyCart(cartId) {
 		try {
 			const cart = await cartsModel.readById(cartId);
@@ -123,13 +98,26 @@ class CartService {
 	async deleteProduct(cartId, productId) {
 		try {
 			const cart = await cartsModel.readById(cartId);
-			const productIndex = cart.products.findIndex(p => p.product.toString() === productId);
-			if (productIndex === -1) {
-				throw new Error("Product not found in cart");
+			console.log(cartId);
+			console.log(productId);
+
+			if (!cart) {
+				throw new Error("Cart not found");
 			}
-			cart.products.splice(productIndex, 1);
-			await cart.save();
-			return cart;
+
+			const productIndex = cart.products.map(product => product.product.toString()).indexOf(productId);
+
+			if (productIndex !== -1) {
+				console.log("Producto encontrado exitosamente");
+				cart.products.splice(productIndex, 1);
+				await cart.save();
+			} else {
+				console.log("Producto no encontrado");
+			}
+
+			const updatedCart = await cartsModel.updateCart(cartId, productIndex);
+
+			return updatedCart;
 		} catch (error) {
 			throw new Error("Error removing product from cart");
 		}

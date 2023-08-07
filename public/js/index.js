@@ -63,9 +63,122 @@ function saveChanges() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+	const cartItems = document.querySelectorAll(".cartItem");
+	const totalCartElement = document.querySelector(".totalCart span");
+
+	function calcularSubtotal(cartItem) {
+		const cantidadElement = cartItem.querySelector(".quant");
+		const precioElement = cartItem.querySelector("#precio");
+		const subtotalElement = cartItem.querySelector("#subtotal");
+
+		const cantidad = parseFloat(cantidadElement.textContent);
+		const precio = parseFloat(precioElement.textContent.replace("$ ", ""));
+
+		const subtotal = cantidad * precio;
+		subtotalElement.textContent = "$ " + subtotal;
+	}
+
+	function actualizarCantidad(cartItem, cantidad) {
+		const cantidadElement = cartItem.querySelector(".quant");
+		cantidadElement.textContent = cantidad.toString();
+		calcularSubtotal(cartItem);
+	}
+
+	function botonIncrementarClick(event) {
+		const cartItem = event.target.closest(".cartItem");
+		const cantidadElement = cartItem.querySelector(".quant");
+		let cantidad = parseFloat(cantidadElement.textContent);
+		cantidad++;
+		actualizarCantidad(cartItem, cantidad);
+		actualizarTotalCart();
+	}
+
+	function botonDecrementarClick(event) {
+		const cartItem = event.target.closest(".cartItem");
+		const cantidadElement = cartItem.querySelector(".quant");
+		let cantidad = parseFloat(cantidadElement.textContent);
+		if (cantidad > 1) {
+			cantidad--;
+			actualizarCantidad(cartItem, cantidad);
+			actualizarTotalCart();
+		}
+	}
+
+	function actualizarTotalCart() {
+		let total = 0;
+		cartItems.forEach(cartItem => {
+			const subtotalElement = cartItem.querySelector("#subtotal");
+			const subtotal = parseFloat(subtotalElement.textContent.replace("$ ", ""));
+			total += subtotal;
+		});
+		totalCartElement.textContent = total;
+	}
+
+	cartItems.forEach(cartItem => {
+		calcularSubtotal(cartItem);
+
+		const botonIncrementar = cartItem.querySelector(".butonController:nth-child(1)");
+		botonIncrementar.addEventListener("click", botonIncrementarClick);
+
+		const botonDecrementar = cartItem.querySelector(".butonController:nth-child(2)");
+		botonDecrementar.addEventListener("click", botonDecrementarClick);
+	});
+
+	actualizarTotalCart();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+	const deleteButtons = document.querySelectorAll(".bi-trash");
+	const cartIdElement = document.querySelector(".cartId");
+
+	if (cartIdElement) {
+		const cartId = cartIdElement.textContent.trim();
+		deleteButtons.forEach(button => {
+			button.setAttribute("data-cart-id", cartId);
+			button.addEventListener("click", async () => {
+				const productId = button.getAttribute("data-product-id");
+				const cartId = button.getAttribute("data-cart-id");
+				console.log(`Producto a eliminar del carrito. ID: ${productId}`);
+				console.log(`El carrito tiene el ID: ${cartId}`);
+
+				await (async () => {
+					const result = await Swal.fire({
+						title: "¿Estás seguro?",
+						text: "Se eliminará el producto de tu carrito",
+						icon: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#0d6efd",
+						cancelButtonColor: "#d33",
+						confirmButtonText: "Si, borrar",
+						cancelButtonText: "Cancelar",
+					});
+
+					if (result.isConfirmed) {
+						Swal.fire("Hecho!", "Eliminaste el producto", "success");
+						try {
+							const response = await fetch(`/cart/${cartId}/products/${productId}`, {
+								method: "DELETE",
+							});
+
+							if (response.ok) {
+								console.log("Producto eliminado del carrito con éxito.");
+								location.reload();
+							} else {
+								console.error("Error al eliminar el producto del carrito.");
+							}
+						} catch (error) {
+							console.error("Error de red:", error);
+						}
+					}
+				})();
+			});
+		});
+	}
+});
+document.addEventListener("DOMContentLoaded", () => {
 	const addToCartButtons = document.querySelectorAll(".btnCart");
-	const cartLink = document.getElementById("cartLink"); // Obtén el enlace del carrito por su ID
-	const cartId = cartLink.getAttribute("href").split("/").pop(); // Obtiene el cartId del enlace
+	const cartLink = document.getElementById("cartLink");
+	const cartId = cartLink.getAttribute("href").split("/").pop();
 
 	addToCartButtons.forEach(button => {
 		button.addEventListener("click", async () => {
