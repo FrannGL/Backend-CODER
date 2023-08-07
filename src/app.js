@@ -31,21 +31,21 @@ connectMongo();
 
 // HTTP SERVER
 const httpServer = app.listen(PORT, () => {
-	console.log(`Levantando en puerto http://localhost:${PORT}`);
+  console.log(`Levantando en puerto http://localhost:${PORT}`);
 });
 
 connectSocketServer(httpServer);
 app.use(
-	session({
-		secret: "jhasdkjh671246JHDAhjd",
-		resave: false,
-		saveUninitialized: false,
-		store: MongoStore.create({
-			mongoUrl: env.mongoUrl,
-			mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-			ttl: 3600,
-		}),
-	})
+  session({
+    secret: "jhasdkjh671246JHDAhjd",
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: env.mongoUrl,
+      mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+      ttl: 3600,
+    }),
+  })
 );
 
 // DIRNAME CONFIG
@@ -55,51 +55,54 @@ const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
 
 const transport = nodemailer.createTransport({
-	service: "gmail",
-	port: 587,
-	auth: {
-		user: process.env.GOOGLE_EMAIL,
-		pass: process.env.GOOGLE_PASS,
-	},
+  service: "gmail",
+  port: 587,
+  auth: {
+    user: process.env.GOOGLE_EMAIL,
+    pass: process.env.GOOGLE_PASS,
+  },
 });
 
 app.get("/mail", async (req, res) => {
-	const result = await transport.sendMail({
-		from: process.env.GOOGLE_EMAIL,
-		to: "guillermofergnani@gmail.com",
-		subject: "Perdon me faltaba algo",
-		html: `
+  const result = await transport.sendMail({
+    from: process.env.GOOGLE_EMAIL,
+    to: "guillermofergnani@gmail.com",
+    subject: "Perdon me faltaba algo",
+    html: `
 				<div>
 					<h1>hola mundo</h1>
 					<img src="cid:image1" />
 				</div>
 			`,
-		attachments: [
-			{
-				filename: "image1.gif",
-				path: __dirname + "/images/image1.gif",
-				cid: "image1",
-			},
-		],
-	});
+    attachments: [
+      {
+        filename: "image1.gif",
+        path: __dirname + "/images/image1.gif",
+        cid: "image1",
+      },
+    ],
+  });
 
-	console.log(result);
-	res.send("Email sent");
+  console.log(result);
+  res.send("Email sent");
 });
 
-const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+// const client = twilio(
+//   process.env.TWILIO_ACCOUNT_SID,
+//   process.env.TWILIO_AUTH_TOKEN
+// );
 
 app.get("/sms", async (req, res) => {
-	const result = await client.messages.create({
-		body: "que onda che",
-		from: process.env.TWILIO_PHONE_NUMBER,
-		to: "+541121557802",
-		body: "hola",
-	});
+  const result = await client.messages.create({
+    body: "que onda che",
+    from: process.env.TWILIO_PHONE_NUMBER,
+    to: "+541121557802",
+    body: "hola",
+  });
 
-	console.log(result);
+  console.log(result);
 
-	res.send("SMS sent");
+  res.send("SMS sent");
 });
 
 // MIDDLEWARES BASICOS
@@ -122,14 +125,21 @@ app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsApiRouter);
 app.use("/api/users", usersApiRouter);
 app.use("/api/sessions", sessionsRouter);
-app.get("/api/sessions/github", passport.authenticate("github", { scope: ["user:email"] }));
-app.get("/api/sessions/githubcallback", passport.authenticate("github", { failureRedirect: "/error" }), (req, res) => {
-	req.session.user = {
-		firstName: req.user.firstName,
-		role: req.user.role,
-	};
-	res.redirect("/home");
-});
+app.get(
+  "/api/sessions/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+);
+app.get(
+  "/api/sessions/githubcallback",
+  passport.authenticate("github", { failureRedirect: "/error" }),
+  (req, res) => {
+    req.session.user = {
+      firstName: req.user.firstName,
+      role: req.user.role,
+    };
+    res.redirect("/home");
+  }
+);
 // PLANTILLAS
 app.use("/", login);
 app.use("/home", home);
@@ -141,6 +151,6 @@ app.use("/test-chat", testChatRouter);
 app.use("/error", errorRouter);
 
 app.get("*", (req, res) => {
-	const notFound = "Esta página no existe";
-	return res.status(500).render("error", { notFound });
+  const notFound = "Esta página no existe";
+  return res.status(500).render("error", { notFound });
 });
