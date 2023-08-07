@@ -266,15 +266,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   addToCartButtons.forEach((button) => {
     button.addEventListener("click", async () => {
-      const userRole = await getUserRole(); // Obtener el rol del usuario (debe implementarse)
+      const userRole = await getUserRole();
       if (userRole !== "user") {
         Swal.fire({
           position: "center",
           icon: "error",
-          title: "No tienes permiso para realizar esta accion.",
+          title:
+            "No tienes permiso para realizar esta accion. Solo los usuarios pueden realizar compras.",
           showConfirmButton: true,
           confirmButtonColor: "#0d6efd",
-          timer: 1500,
+          timer: 3000,
         });
         return userRole;
       }
@@ -308,7 +309,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const newQuantity = currentQuantity + 1;
             cartQuantityElement.innerText = newQuantity;
 
-            // También puedes actualizar la variable cartQuantity en tu script
             cartQuantity = newQuantity;
           }
         } else {

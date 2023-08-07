@@ -1,10 +1,18 @@
 import express from "express";
 export const cartsRouter = express.Router();
 import { cartsController } from "../controllers/carts.controller.js";
-import { checkLogin } from "../middlewares/main.js";
+import { checkLogin, checkUser } from "../middlewares/main.js";
 
-cartsRouter.get("/:cid", checkLogin, cartsController.readByRender);
-cartsRouter.post("/:cid/products/:pid", cartsController.addProduct);
-cartsRouter.put("/:cid/products/:pid", cartsController.updateProductQuantity);
-cartsRouter.delete("/:cid/products/:pid", cartsController.deleteProduct);
-cartsRouter.delete("/:cid", cartsController.emptyCart);
+cartsRouter.get("/:cid", checkLogin, checkUser, cartsController.readByRender);
+cartsRouter.post("/:cid/products/:pid", checkLogin, cartsController.addProduct);
+cartsRouter.put(
+  "/:cid/products/:pid",
+  checkLogin,
+  cartsController.updateProductQuantity
+);
+cartsRouter.delete(
+  "/:cid/products/:pid",
+  checkLogin,
+  cartsController.deleteProduct
+);
+cartsRouter.delete("/:cid", checkLogin, cartsController.emptyCart);

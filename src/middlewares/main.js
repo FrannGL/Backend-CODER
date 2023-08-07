@@ -23,7 +23,7 @@ export function checkUser(req, res, next) {
   if (req.session?.user?.role == "user") {
     return next();
   } else {
-    const isAdmin = "Debes ser usuario para agregar productos al carrito";
-    return res.status(201).render("error", { isAdmin });
+    const isUser = "Debes ser usuario para visualizar el carrito";
+    return res.status(201).render("error", { isUser });
   }
 }
