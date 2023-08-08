@@ -7,5 +7,6 @@ export default class UsersDTO {
     this.password = users.password;
     this.role = users.role;
     this.cartID = users.cartID;
+    this.purchase_made = users.purchase_made;
   }
 }

@@ -19,6 +19,7 @@ import { sessionsRouter } from "./routes/sessions.router.js";
 import { testChatRouter } from "./routes/test-chat.router.js";
 import { usersApiRouter } from "./routes/users-api.router.js";
 import { usersRouter } from "./routes/users.router.js";
+import { purchasesRouter } from "./routes/purchases.router.js";
 import { connectMongo, connectSocketServer } from "./utils/main.js";
 import nodemailer from "nodemailer";
 import twilio from "twilio";
@@ -149,6 +150,7 @@ app.use("/products", productsRouter);
 app.use("/products-admin", productsAdminRouter);
 app.use("/users", usersRouter);
 app.use("/cart", cartsRouter);
+app.use("/purchases", purchasesRouter)
 app.use("/test-chat", testChatRouter);
 app.use("/error", errorRouter);
 

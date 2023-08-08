@@ -68,6 +68,7 @@ class SessionsController {
         email: req.user.email,
         role: req.user.role,
         cartId: req.user.cartID,
+        purchase_made: req.user.purchase_made,
       };
       console.log(req.session.user);
       return res.redirect("/home");
@@ -83,9 +84,13 @@ class SessionsController {
       }
       req.session.user = {
         _id: req.user._id,
-        email: req.user.email,
         firstName: req.user.firstName,
+        lastName: req.user.lastName,
+        age: req.user.age,
+        email: req.user.email,
         role: req.user.role,
+        cartId: req.user.cartID,
+        purchase_made: req.user.purchase_made,
       };
       return res.redirect("/home");
     } catch (e) {

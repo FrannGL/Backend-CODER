@@ -14,6 +14,10 @@ const schema = new Schema({
     unique: true,
     default: () => generateCartId(),
   },
+  purchase_made: {
+    type: [String], // Cambiar el tipo a String
+    default: [],
+  },
 });
 
 export const UsersMongoose = model("users", schema);
