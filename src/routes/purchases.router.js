@@ -1,5 +1,5 @@
 import express from "express";
 export const purchasesRouter = express.Router();
-import { purchasesController } from "../controllers/purchases.controller.js";
+import { ticketsController } from "../controllers/tickets.controller.js";
 
-purchasesRouter.get("/", purchasesController.read);
+purchasesRouter.get("/", ticketsController.readByRender);

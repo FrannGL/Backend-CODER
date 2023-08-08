@@ -351,6 +351,23 @@ document.addEventListener("DOMContentLoaded", function () {
 			.then(response => response.json())
 			.then(data => {
 				console.log("Compra realizada:", data);
+				// Mostrar mensaje SweetAlert después de la compra
+				Swal.fire({
+					title: "¡Gracias por tu compra!",
+					text: "Podrás visualizarla en MIS COMPRAS.",
+					icon: "success",
+					confirmButtonText: "Aceptar",
+					confirmButtonColor: "#198754",
+					onAfterClose: () => {
+						window.location.href = "/home";
+					},
+					timer: 3000,
+				});
+
+				// Agregar tiempo de espera y redirigir después de 3 segundos
+				setTimeout(() => {
+					window.location.href = "/home";
+				}, 3000);
 			})
 			.catch(error => {
 				console.error("Error en la compra:", error);
