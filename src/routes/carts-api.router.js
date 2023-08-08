@@ -3,6 +3,7 @@ export const cartsApiRouter = express.Router();
 import { cartsController } from "../controllers/carts.controller.js";
 
 cartsApiRouter.post("/:cid/products/:pid", cartsController.addProduct);
+cartsApiRouter.post("/:cid/purcharse");
 cartsApiRouter.get("/", cartsController.read);
 cartsApiRouter.get("/:cid", cartsController.readById);
 cartsApiRouter.put("/:cid", cartsController.updateCart);

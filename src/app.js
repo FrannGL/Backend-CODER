@@ -7,6 +7,7 @@ import FileStore from "session-file-store";
 import env from "./config/enviroment.config.js";
 import { iniPassport } from "./config/passport.config.js";
 import { cartsApiRouter } from "./routes/carts-api.router.js";
+import { apiTickets } from "./routes/tickets.router.js";
 import { cartsRouter } from "./routes/carts.router.js";
 import { errorRouter } from "./routes/error.router.js";
 import { home } from "./routes/home.router.js";
@@ -124,6 +125,7 @@ app.use(passport.session());
 app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsApiRouter);
 app.use("/api/users", usersApiRouter);
+app.use("/api/tickets", apiTickets);
 app.use("/api/sessions", sessionsRouter);
 app.get(
   "/api/sessions/github",

@@ -3,9 +3,11 @@ import env from "../config/enviroment.config.js";
 import { productsModel } from "./mongo/models/products.model.js";
 import { usersModel } from "./mongo/models/users.model.js";
 import { cartsModel } from "./mongo/models/carts.model.js";
+import { ticketsModel } from "./mongo/models/tickets.model.js";
 import { productsMemory } from "./memory/products.memory.js";
 import { usersMemory } from "./memory/users.memory.js";
 import { cartsMemory } from "./memory/carts.memory.js";
+import { ticketsMemory } from "./memory/tickets.memory.js";
 
 async function importModels() {
 	let models;
@@ -18,6 +20,7 @@ async function importModels() {
 				products: productsModel,
 				users: usersModel,
 				carts: cartsModel,
+				tickets: ticketsModel,
 			};
 			break;
 
@@ -27,6 +30,7 @@ async function importModels() {
 				products: productsMemory,
 				users: usersMemory,
 				carts: cartsMemory,
+				tickets: ticketsMemory,
 			};
 			break;
 
