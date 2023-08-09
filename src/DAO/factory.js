@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 import env from "../config/enviroment.config.js";
-import { productsModel } from "./mongo/models/products.model.js";
-import { usersModel } from "./mongo/models/users.model.js";
-import { cartsModel } from "./mongo/models/carts.model.js";
-import { ticketsModel } from "./mongo/models/tickets.model.js";
+import { productsModel } from "./mongo/products.model.js";
+import { usersModel } from "./mongo/users.model.js";
+import { cartsModel } from "./mongo/carts.model.js";
+import { ticketsModel } from "./mongo/tickets.model.js";
 import { productsMemory } from "./memory/products.memory.js";
 import { usersMemory } from "./memory/users.memory.js";
 import { cartsMemory } from "./memory/carts.memory.js";

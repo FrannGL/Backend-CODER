@@ -2,7 +2,7 @@ import fetch from "node-fetch";
 import passport from "passport";
 import GitHubStrategy from "passport-github2";
 import local from "passport-local";
-import { UsersMongoose } from "../DAO/mongo/users.mongoose.js";
+import { UsersMongoose } from "../DAO/mongo/models/users.mongoose.js";
 import { cartService } from "../services/carts.service.js";
 import { createHash, isValidPassword } from "../utils/main.js";
 import UsersDTO from "../controllers/DTO/users.dto.js";

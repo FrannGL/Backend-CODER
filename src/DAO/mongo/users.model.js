@@ -1,4 +1,4 @@
-import { UsersMongoose } from "../users.mongoose.js";
+import { UsersMongoose } from "../mongo/models/users.mongoose.js";
 
 class UsersModel {
 	async readOne(email) {
@@ -41,7 +41,7 @@ class UsersModel {
 		}
 	}
 
-  // SE CREA UTILIZANDO PASSPORT
+	// SE CREA UTILIZANDO PASSPORT
 
 	// async create(firstName, lastName, age, email, password, role, cartId) {
 	// 	try {

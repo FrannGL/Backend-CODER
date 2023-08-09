@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { generateCartId } from "../../utils/main.js";
+import { generateCartId } from "../../../utils/main.js";
 
 const ticketSchema = new Schema({
 	code: { type: String, default: () => generateCartId(10), unique: true },

@@ -1,4 +1,4 @@
-import { TicketsMongoose } from "../ticket.mongoose.js";
+import { TicketsMongoose } from "../mongo/models/ticket.mongoose.js";
 
 class TicketsModel {
   async read(cartId) {

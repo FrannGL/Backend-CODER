@@ -1,5 +1,5 @@
 import { cartService } from "./carts.service.js";
-import { UsersMongoose } from "../DAO/mongo/users.mongoose.js";
+import { UsersMongoose } from "../DAO/mongo/models/users.mongoose.js";
 import importModels from "../DAO/factory.js";
 import { format } from "date-fns";
 

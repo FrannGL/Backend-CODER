@@ -18,8 +18,8 @@ export async function connectMongo() {
 
 // CONNECT-SOCKET
 import { Server } from "socket.io";
-import { MsgModel } from "../DAO/mongo/msgs.mongoose.js";
-import { ProductsMongoose } from "../DAO/mongo/products.mongoose.js";
+import { MsgModel } from "../DAO/mongo/models/msgs.mongoose.js";
+import { ProductsMongoose } from "../DAO/mongo/models/products.mongoose.js";
 
 export function connectSocketServer(httpServer) {
 	const socketServer = new Server(httpServer);

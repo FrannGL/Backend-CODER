@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { generateCartId } from "../../utils/main.js";
+import { generateCartId } from "../../../utils/main.js";
 
 const schema = new Schema({
   firstName: { type: String, required: false, max: 100 },
