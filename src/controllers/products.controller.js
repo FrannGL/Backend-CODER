@@ -60,7 +60,6 @@ class ProductsController {
         orderBy
       );
       const { firstName, role, cartId } = req.session.user;
-
       const cart = await cartService.readById(cartId);
       const cartQuantity = cart.products.reduce((total, product) => {
         return total + product.quantity;

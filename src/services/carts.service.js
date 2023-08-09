@@ -10,9 +10,9 @@ class CartService {
     return carts;
   }
 
-  async readById(_id) {
+  async readById(cartId) {
     try {
-      const productById = await cartsModel.readById(_id);
+      const productById = await cartsModel.readById(cartId);
       return productById;
     } catch (e) {
       console.log(e);

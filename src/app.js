@@ -56,56 +56,56 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
 
-const transport = nodemailer.createTransport({
-  service: "gmail",
-  port: 587,
-  auth: {
-    user: process.env.GOOGLE_EMAIL,
-    pass: process.env.GOOGLE_PASS,
-  },
-});
+// const transport = nodemailer.createTransport({
+//   service: "gmail",
+//   port: 587,
+//   auth: {
+//     user: process.env.GOOGLE_EMAIL,
+//     pass: process.env.GOOGLE_PASS,
+//   },
+// });
 
-app.get("/mail", async (req, res) => {
-  const result = await transport.sendMail({
-    from: process.env.GOOGLE_EMAIL,
-    to: "guillermofergnani@gmail.com",
-    subject: "Perdon me faltaba algo",
-    html: `
-				<div>
-					<h1>hola mundo</h1>
-					<img src="cid:image1" />
-				</div>
-			`,
-    attachments: [
-      {
-        filename: "image1.gif",
-        path: __dirname + "/images/image1.gif",
-        cid: "image1",
-      },
-    ],
-  });
+// app.get("/mail", async (req, res) => {
+//   const result = await transport.sendMail({
+//     from: process.env.GOOGLE_EMAIL,
+//     to: "guillermofergnani@gmail.com",
+//     subject: "Perdon me faltaba algo",
+//     html: `
+// 				<div>
+// 					<h1>hola mundo</h1>
+// 					<img src="cid:image1" />
+// 				</div>
+// 			`,
+//     attachments: [
+//       {
+//         filename: "image1.gif",
+//         path: __dirname + "/images/image1.gif",
+//         cid: "image1",
+//       },
+//     ],
+//   });
 
-  console.log(result);
-  res.send("Email sent");
-});
+//   console.log(result);
+//   res.send("Email sent");
+// });
 
 // const client = twilio(
 //   process.env.TWILIO_ACCOUNT_SID,
 //   process.env.TWILIO_AUTH_TOKEN
 // );
 
-app.get("/sms", async (req, res) => {
-  const result = await client.messages.create({
-    body: "que onda che",
-    from: process.env.TWILIO_PHONE_NUMBER,
-    to: "+541121557802",
-    body: "hola",
-  });
+// app.get("/sms", async (req, res) => {
+//   const result = await client.messages.create({
+//     body: "que onda che",
+//     from: process.env.TWILIO_PHONE_NUMBER,
+//     to: "+541121557802",
+//     body: "hola",
+//   });
 
-  console.log(result);
+//   console.log(result);
 
-  res.send("SMS sent");
-});
+//   res.send("SMS sent");
+// });
 
 // MIDDLEWARES BASICOS
 app.use(express.json());
@@ -150,7 +150,7 @@ app.use("/products", productsRouter);
 app.use("/products-admin", productsAdminRouter);
 app.use("/users", usersRouter);
 app.use("/cart", cartsRouter);
-app.use("/purchases", purchasesRouter)
+app.use("/purchases", purchasesRouter);
 app.use("/test-chat", testChatRouter);
 app.use("/error", errorRouter);
 

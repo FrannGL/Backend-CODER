@@ -15,7 +15,7 @@ const schema = new Schema({
     default: () => generateCartId(),
   },
   purchase_made: {
-    type: [String], // Cambiar el tipo a String
+    type: [String],
     default: [],
   },
 });

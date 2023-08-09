@@ -70,7 +70,6 @@ class SessionsController {
         cartId: req.user.cartID,
         purchase_made: req.user.purchase_made,
       };
-      console.log(req.session.user);
       return res.redirect("/home");
     } catch (e) {
       console.log(e);
