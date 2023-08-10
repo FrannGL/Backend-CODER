@@ -253,22 +253,10 @@ document.addEventListener("DOMContentLoaded", () => {
 	const addToCartButtons = document.querySelectorAll(".btnCart");
 	const cartLink = document.getElementById("cartLink");
 	const cartId = cartLink.getAttribute("href").split("/").pop();
+	const userRole = document.getElementById("role").textContent;
 
 	addToCartButtons.forEach(button => {
 		button.addEventListener("click", async () => {
-			const userRole = await getUserRole();
-			if (userRole !== "user") {
-				Swal.fire({
-					position: "center",
-					icon: "error",
-					title: "No tienes permiso para realizar esta accion. Solo los usuarios pueden realizar compras.",
-					showConfirmButton: true,
-					confirmButtonColor: "#0d6efd",
-					timer: 3000,
-				});
-				return userRole;
-			}
-
 			const productId = button.getAttribute("data-product-id");
 			console.log(`Producto agregado al carrito. ID: ${productId}`);
 			console.log(`El carrito tiene el ID: ${cartId}`);
@@ -279,26 +267,40 @@ document.addEventListener("DOMContentLoaded", () => {
 				});
 
 				if (response.ok) {
-					Toastify({
-						text: "Producto Agregado al Carrito",
-						duration: 3000,
-						newWindow: true,
-						close: true,
-						gravity: "bottom",
-						position: "left",
-						stopOnFocus: true,
-						style: {
-							background: "#000",
-						},
-					}).showToast();
+					if (userRole === "user") {
+						Toastify({
+							text: "Producto Agregado al Carrito",
+							duration: 3000,
+							newWindow: true,
+							close: true,
+							gravity: "bottom",
+							position: "left",
+							stopOnFocus: true,
+							style: {
+								background: "#000",
+							},
+						}).showToast();
 
-					const cartQuantityElement = document.querySelector("#cartLink span");
-					if (cartQuantityElement) {
-						const currentQuantity = parseInt(cartQuantityElement.innerText);
-						const newQuantity = currentQuantity + 1;
-						cartQuantityElement.innerText = newQuantity;
-
-						cartQuantity = newQuantity;
+						const cartQuantityElement = document.querySelector("#cartLink span");
+						if (cartQuantityElement) {
+							const currentQuantity = parseInt(cartQuantityElement.innerText);
+							const newQuantity = currentQuantity + 1;
+							cartQuantityElement.innerText = newQuantity;
+						}
+					} else {
+						Swal.fire({
+							title: "Solo los usuarios pueden agregar Productos al Carrito",
+							icon: "warning",
+							confirmButtonText: "Aceptar",
+							confirmButtonColor: "#000",
+							onAfterClose: () => {
+								window.location.href = "/home";
+							},
+							timer: 3000,
+						});
+						setTimeout(() => {
+							window.location.href = "/home";
+						}, 3000);
 					}
 				} else {
 					console.error("Error al agregar el producto al carrito.");
@@ -308,32 +310,17 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 		});
 	});
-
-	async function getUserRole() {
-		try {
-			const response = await fetch("/api/sessions/current");
-			if (response.ok) {
-				const data = await response.json();
-				return data.user.role;
-			} else {
-				console.error("Error al obtener el rol del usuario.");
-				return "";
-			}
-		} catch (error) {
-			console.error("Error de red:", error);
-			return "";
-		}
-	}
 });
 
 // GUARDAR COMPRA
 document.addEventListener("DOMContentLoaded", function () {
 	const comprarButton = document.getElementById("carrito-acciones-comprar");
-
+	const userEmail = document.getElementById("email").textContent;
+	console.log(userEmail);
 	comprarButton.addEventListener("click", async function () {
 		const cartId = document.querySelector(".cartId").textContent;
 		const totalCart = document.querySelector(".totalCart span").textContent;
-		const user = await getUser();
+		const user = userEmail;
 
 		const cartData = {
 			usuario: user,
@@ -351,20 +338,17 @@ document.addEventListener("DOMContentLoaded", function () {
 			.then(response => response.json())
 			.then(data => {
 				console.log("Compra realizada:", data);
-				// Mostrar mensaje SweetAlert después de la compra
 				Swal.fire({
 					title: "¡Gracias por tu compra!",
 					text: "Podrás visualizarla en MIS COMPRAS.",
 					icon: "success",
 					confirmButtonText: "Aceptar",
-					confirmButtonColor: "#198754",
+					confirmButtonColor: "#000",
 					onAfterClose: () => {
 						window.location.href = "/home";
 					},
 					timer: 3000,
 				});
-
-				// Agregar tiempo de espera y redirigir después de 3 segundos
 				setTimeout(() => {
 					window.location.href = "/home";
 				}, 3000);
@@ -372,22 +356,6 @@ document.addEventListener("DOMContentLoaded", function () {
 			.catch(error => {
 				console.error("Error en la compra:", error);
 			});
-
-		async function getUser() {
-			try {
-				const response = await fetch("/api/sessions/current");
-				if (response.ok) {
-					const data = await response.json();
-					return data.user.email;
-				} else {
-					console.error("Error al obtener el usuario.");
-					return "";
-				}
-			} catch (error) {
-				console.error("Error de red:", error);
-				return "";
-			}
-		}
 	});
 });
 
@@ -407,6 +375,7 @@ addProduct.addEventListener("submit", e => {
 		icon: "success",
 		title: "Producto Creado",
 		showConfirmButton: true,
+		confirmButtonColor: "#000",
 		timer: 1500,
 	});
 	socket.emit("new-product", newProduct);
@@ -432,7 +401,7 @@ container.addEventListener("click", event => {
 			text: "Se eliminará el producto del array original",
 			icon: "warning",
 			showCancelButton: true,
-			confirmButtonColor: "#0d6efd",
+			confirmButtonColor: "#000",
 			cancelButtonColor: "#d33",
 			confirmButtonText: "Si, borrar",
 			cancelButtonText: "Cancelar",

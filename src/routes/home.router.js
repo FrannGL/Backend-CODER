@@ -4,7 +4,6 @@ export const home = express.Router();
 home.get("/", async (req, res) => {
   try {
     const title = "Fuego Burgers®";
-    console.log(req.session);
     const { firstName, lastName, role } = req.session.user;
     return res.status(200).render("home", { title, firstName, lastName, role });
   } catch (err) {

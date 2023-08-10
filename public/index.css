@@ -207,6 +207,10 @@ body {
 	align-items: center;
 }
 
+.userEmail {
+	display: none;
+}
+
 /* .carrito-acciones-vaciar {
   border-radius: 20%;
   background-color: #000;

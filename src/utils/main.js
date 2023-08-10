@@ -25,7 +25,6 @@ export function connectSocketServer(httpServer) {
 	const socketServer = new Server(httpServer);
 
 	socketServer.on("connection", async socket => {
-		console.log(`Nuevo usuario conectado a traves de ${socket.id}`);
 
 		try {
 			const allProducts = await ProductsMongoose.find({});
