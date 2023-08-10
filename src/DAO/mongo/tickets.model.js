@@ -1,9 +1,9 @@
 import { TicketsMongoose } from "../mongo/models/ticket.mongoose.js";
 
 class TicketsModel {
-  async read(cartId) {
+  async readById(code) {
     try {
-      const ticket = await TicketsMongoose.findOne({ cartId });
+      const ticket = await TicketsMongoose.findOne({ code });
       return ticket;
     } catch (e) {
       console.log(e);
