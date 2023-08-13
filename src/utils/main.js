@@ -25,7 +25,6 @@ export function connectSocketServer(httpServer) {
 	const socketServer = new Server(httpServer);
 
 	socketServer.on("connection", async socket => {
-
 		try {
 			const allProducts = await ProductsMongoose.find({});
 			socket.emit("products", allProducts);
@@ -88,3 +87,37 @@ export function generateCartId() {
 	const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", 25);
 	return nanoid();
 }
+
+// FAKER-JS
+
+import { faker, fakerFR } from "@faker-js/faker";
+export const generateUser = () => {
+	const numOfProducts = parseInt(faker.string.numeric(1, { bannedDigits: ["0"] }));
+	const products = [];
+
+	for (let i = 0; i < numOfProducts; i++) {
+		products.push(generateProduct());
+	}
+
+	return {
+		name: faker.name.firstName(),
+		last_name: faker.name.lastName(),
+		birthgDate: faker.date.birthdate(),
+		email: faker.internet.email(),
+		phone: faker.phone.number(),
+		sex: faker.name.sex(),
+		products,
+	};
+};
+
+export const generateProduct = () => {
+	return {
+		id: faker.database.mongodbObjectId(),
+		title: faker.commerce.productName(),
+		description: faker.commerce.productDescription(),
+		price: faker.commerce.price(),
+		thumbnail: faker.image.url(),
+		code: faker.string.numeric(10),
+		stock: faker.string.numeric(1),
+	};
+};

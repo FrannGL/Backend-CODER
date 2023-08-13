@@ -1,4 +1,6 @@
 import { cartService } from "../services/carts.service.js";
+import CustomError from "../services/errors/custom-error.js";
+import Errors from "../services/errors/enums.js";
 class CartsController {
 	async read(req, res) {
 		try {
@@ -21,7 +23,12 @@ class CartsController {
 				payload: cartById,
 			});
 		} catch (error) {
-			res.status(404).json({ message: error.message });
+			CustomError.createError({
+				name: "ID not found",
+				cause: "Nonexistent ID",
+				message: "The ID you are trying to access does not exist",
+				code: Errors.ID_ERROR,
+			});
 		}
 	}
 

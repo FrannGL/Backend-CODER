@@ -12,6 +12,7 @@ import { cartsRouter } from "./routes/carts.router.js";
 import { errorRouter } from "./routes/error.router.js";
 import { home } from "./routes/home.router.js";
 import { login } from "./routes/login.router.js";
+import { mockingProductsRouter } from "./routes/mocking-products.router.js";
 import { productsAdminRouter } from "./routes/products-admin-router.js";
 import { productsApiRouter } from "./routes/products-api.router.js";
 import { productsRouter } from "./routes/products.router.js";
@@ -21,11 +22,16 @@ import { usersApiRouter } from "./routes/users-api.router.js";
 import { usersRouter } from "./routes/users.router.js";
 import { purchasesRouter } from "./routes/purchases.router.js";
 import { connectMongo, connectSocketServer } from "./utils/main.js";
+import compression from "express-compression";
+import { errorHandler } from "./middlewares/main.js";
+import CustomError from "./services/errors/custom-error.js";
+import Errors from "./services/errors/enums.js";
 import nodemailer from "nodemailer";
 import twilio from "twilio";
 
 // CONFIG BASICAS Y CONEXION A DB
 const app = express();
+app.use(compression({ brotli: { enabled: true, zlib: {} } }));
 const PORT = env.port;
 const fileStore = FileStore(session);
 
@@ -33,21 +39,21 @@ connectMongo();
 
 // HTTP SERVER
 const httpServer = app.listen(PORT, () => {
-  console.log(`Levantando en puerto http://localhost:${PORT}`);
+	console.log(`Levantando en puerto http://localhost:${PORT}`);
 });
 
 connectSocketServer(httpServer);
 app.use(
-  session({
-    secret: "jhasdkjh671246JHDAhjd",
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl: env.mongoUrl,
-      mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-      ttl: 3600,
-    }),
-  })
+	session({
+		secret: "jhasdkjh671246JHDAhjd",
+		resave: false,
+		saveUninitialized: false,
+		store: MongoStore.create({
+			mongoUrl: env.mongoUrl,
+			mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+			ttl: 3600,
+		}),
+	})
 );
 
 // DIRNAME CONFIG
@@ -126,23 +132,17 @@ app.use(passport.session());
 app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsApiRouter);
 app.use("/api/users", usersApiRouter);
+app.use("/api/mockingproducts", mockingProductsRouter);
 app.use("/api/tickets", apiTickets);
 app.use("/api/sessions", sessionsRouter);
-app.get(
-  "/api/sessions/github",
-  passport.authenticate("github", { scope: ["user:email"] })
-);
-app.get(
-  "/api/sessions/githubcallback",
-  passport.authenticate("github", { failureRedirect: "/error" }),
-  (req, res) => {
-    req.session.user = {
-      firstName: req.user.firstName,
-      role: req.user.role,
-    };
-    res.redirect("/home");
-  }
-);
+app.get("/api/sessions/github", passport.authenticate("github", { scope: ["user:email"] }));
+app.get("/api/sessions/githubcallback", passport.authenticate("github", { failureRedirect: "/error" }), (req, res) => {
+	req.session.user = {
+		firstName: req.user.firstName,
+		role: req.user.role,
+	};
+	res.redirect("/home");
+});
 // PLANTILLAS
 app.use("/", login);
 app.use("/home", home);
@@ -154,7 +154,17 @@ app.use("/purchases", purchasesRouter);
 app.use("/test-chat", testChatRouter);
 app.use("/error", errorRouter);
 
-app.get("*", (req, res) => {
-  const notFound = "Esta página no existe";
-  return res.status(500).render("error", { notFound });
+app.get("*", (req, res, next) => {
+	try {
+		throw new CustomError({
+			name: "Page Not Found",
+			cause: "Nonexistent path",
+			message: "The path you are trying to access does not exist",
+			code: Errors.ROUTING_ERROR,
+		});
+	} catch (error) {
+		next(error); // Lanza el error al siguiente middleware de manejo de errores
+	}
 });
+
+app.use(errorHandler);
