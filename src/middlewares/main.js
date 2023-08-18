@@ -8,7 +8,7 @@ export function checkLogin(req, res, next) {
 			return next();
 		}
 	} catch (e) {
-		console.log(e);
+		logger.error(e);
 		const isLogin = "Debes iniciar sesión para acceder a esta página";
 		return res.status(201).render("error", { isLogin });
 	}
@@ -27,7 +27,7 @@ export function checkUser(req, res, next) {
 	if (req.session?.user?.role == "user") {
 		return next();
 	} else {
-		console.log("Debes ser usuario para realizar esta acción.");
+		logger.error("Debes ser usuario para realizar esta acción.");
 		const isUser = "Debes ser usuario para realizar esta acción.";
 		return res.status(201).render("error", { isUser });
 	}

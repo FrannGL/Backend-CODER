@@ -1,4 +1,5 @@
 import { CartsMongoose } from "../mongo/models/carts.mongoose.js";
+import { logger } from "../../utils/main.js";
 
 class CartsModel {
 	async read() {
@@ -6,7 +7,7 @@ class CartsModel {
 			const carts = await CartsMongoose.find({});
 			return carts;
 		} catch (e) {
-			console.log(e);
+			logger.info(e);
 		}
 	}
 
@@ -15,7 +16,7 @@ class CartsModel {
 			const cartById = await CartsMongoose.findById(cartId);
 			return cartById;
 		} catch (e) {
-			console.log(e);
+			logger.info(e);
 			throw e;
 		}
 	}
@@ -25,7 +26,7 @@ class CartsModel {
 			const cart = await CartsMongoose.findById(cartId).populate("products.product");
 			return cart;
 		} catch (e) {
-			console.log(e);
+			logger.info(e);
 		}
 	}
 
@@ -35,7 +36,7 @@ class CartsModel {
 			const cartCreated = await CartsMongoose.create({ _id: cartId });
 			return cartCreated;
 		} catch (e) {
-			console.log(e);
+			logger.info(e);
 		}
 	}
 

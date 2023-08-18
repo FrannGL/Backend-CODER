@@ -1,4 +1,5 @@
 import { ProductsMongoose } from "../mongo/models/products.mongoose.js";
+import { logger } from "../../utils/main.js";
 
 class ProductsModel {
 	async read() {
@@ -6,7 +7,7 @@ class ProductsModel {
 			const products = await ProductsMongoose.find({});
 			return products;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 
@@ -19,7 +20,7 @@ class ProductsModel {
 			});
 			return queryResult;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 
@@ -28,7 +29,7 @@ class ProductsModel {
 			const productById = await ProductsMongoose.findOne({ _id });
 			return productById;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 
@@ -37,7 +38,7 @@ class ProductsModel {
 			const products = await ProductsMongoose.find({ _id: { $in: ids } });
 			return products;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			throw e;
 		}
 	}
@@ -47,7 +48,7 @@ class ProductsModel {
 			const ProductCreated = await ProductsMongoose.create(product);
 			return ProductCreated;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 
@@ -56,7 +57,7 @@ class ProductsModel {
 			const productUpdated = await ProductsMongoose.findByIdAndUpdate(_id, product, { new: true });
 			return productUpdated;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			throw e;
 		}
 	}
@@ -66,7 +67,7 @@ class ProductsModel {
 			const result = await ProductsMongoose.deleteOne({ _id: id });
 			return result;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 }

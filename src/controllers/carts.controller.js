@@ -1,6 +1,6 @@
 import { cartService } from "../services/carts.service.js";
-import CustomError from "../services/errors/custom-error.js";
-import Errors from "../services/errors/enums.js";
+import { logger } from "../utils/main.js";
+
 class CartsController {
 	async read(req, res) {
 		try {
@@ -18,17 +18,20 @@ class CartsController {
 		try {
 			const cartId = req.params.cid;
 			const cartById = await cartService.readById(cartId);
-			res.status(200).json({
-				status: "success",
-				payload: cartById,
-			});
+			if (cartById) {
+				res.status(200).json({
+					status: "success",
+					payload: cartById,
+				});
+			} else {
+				logger.error(`El carrito con ID ${cartId} no existe`);
+				res.status(200).json({
+					status: "error",
+					msg: `El carrito con ID ${cartId} no existe`,
+				});
+			}
 		} catch (error) {
-			CustomError.createError({
-				name: "ID not found",
-				cause: "Nonexistent ID",
-				message: "The ID you are trying to access does not exist",
-				code: Errors.ID_ERROR,
-			});
+			throw new Error(error);
 		}
 	}
 

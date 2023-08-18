@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { createHash, isValidPassword } from "../utils/main.js";
 import { generateCartId } from "../utils/main.js";
 import { cartService } from "./carts.service.js";
+import { logger } from "../utils/main.js";
 
 const models = await importModels();
 const usersModel = models.users;
@@ -17,7 +18,7 @@ class UserService {
 				return false;
 			}
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 
@@ -26,7 +27,7 @@ class UserService {
 			const users = await usersModel.read();
 			return users;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 
@@ -35,7 +36,7 @@ class UserService {
 			const user = await usersModel.readById(_id);
 			return user;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			throw e;
 		}
 	}
@@ -49,7 +50,7 @@ class UserService {
 			const userUpdated = await usersModel.update(_id, user);
 			return userUpdated;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 
@@ -58,7 +59,7 @@ class UserService {
 			const userDeleted = await usersModel.delete(_id);
 			return userDeleted;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 
@@ -72,7 +73,7 @@ class UserService {
 
 			return user;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			throw e;
 		}
 	}
@@ -92,7 +93,7 @@ class UserService {
 
 			return userCreated;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			throw e;
 		}
 	}

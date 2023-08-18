@@ -178,8 +178,8 @@ document.addEventListener("DOMContentLoaded", () => {
       button.addEventListener("click", async () => {
         const productId = button.getAttribute("data-product-id");
         const cartId = button.getAttribute("data-cart-id");
-        console.log(`Producto a eliminar del carrito. ID: ${productId}`);
-        console.log(`El carrito tiene el ID: ${cartId}`);
+        // console.log(`Producto a eliminar del carrito. ID: ${productId}`);
+        // console.log(`El carrito tiene el ID: ${cartId}`);
 
         await (async () => {
           const result = await Swal.fire({
@@ -209,13 +209,13 @@ document.addEventListener("DOMContentLoaded", () => {
               );
 
               if (response.ok) {
-                console.log("Producto eliminado del carrito con éxito.");
+                // console.log("Producto eliminado del carrito con éxito.");
                 location.reload();
               } else {
-                console.error("Error al eliminar el producto del carrito.");
+                // console.error("Error al eliminar el producto del carrito.");
               }
             } catch (error) {
-              console.error("Error de red:", error);
+              // console.error("Error de red:", error);
             }
           }
         })();
@@ -246,17 +246,17 @@ document.addEventListener("DOMContentLoaded", () => {
           });
 
           if (response.ok) {
-            console.log("Carrito vaciado con éxito.");
+            // console.log("Carrito vaciado con éxito.");
             Swal.fire("Hecho!", "Has vaciado el carrito", "success");
             setTimeout(() => {
               location.reload();
               window.location.href = "/products";
             }, 1500);
           } else {
-            console.error("Error al vaciar el carrito.");
+            // console.error("Error al vaciar el carrito.");
           }
         } catch (error) {
-          console.error("Error de red:", error);
+          // console.error("Error de red:", error);
         }
       }
     });
@@ -273,8 +273,8 @@ document.addEventListener("DOMContentLoaded", () => {
   addToCartButtons.forEach((button) => {
     button.addEventListener("click", async () => {
       const productId = button.getAttribute("data-product-id");
-      console.log(`Producto agregado al carrito. ID: ${productId}`);
-      console.log(`El carrito tiene el ID: ${cartId}`);
+      // console.log(`Producto agregado al carrito. ID: ${productId}`);
+      // console.log(`El carrito tiene el ID: ${cartId}`);
 
       try {
         const response = await fetch(`/cart/${cartId}/products/${productId}`, {
@@ -352,7 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Compra realizada:", data);
+        // console.log("Compra realizada:", data);
         Swal.fire({
           title: "¡Gracias por tu compra!",
           text: "Podrás visualizarla en MIS COMPRAS.",

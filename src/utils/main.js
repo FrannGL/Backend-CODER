@@ -9,9 +9,9 @@ import env from "../config/enviroment.config.js";
 export async function connectMongo() {
 	try {
 		await connect(env.mongoUrl);
-		console.log("Conexión exitosa a la base de datos.");
+		logger.info("Conexión exitosa a la base de datos.");
 	} catch (e) {
-		console.log("Falló la conexión a la base de datos.");
+		logger.error("Falló la conexión a la base de datos.");
 		throw "Falló la conexion";
 	}
 }
@@ -29,7 +29,7 @@ export function connectSocketServer(httpServer) {
 			const allProducts = await ProductsMongoose.find({});
 			socket.emit("products", allProducts);
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 
 		socket.on("new-product", async newProd => {
@@ -38,19 +38,17 @@ export function connectSocketServer(httpServer) {
 				const prods = await ProductsMongoose.find({});
 				socketServer.emit("products", prods);
 			} catch (e) {
-				console.log(e);
+				logger.error(e);
 			}
 		});
 
 		socket.on("productModified", async (id, newProd) => {
 			try {
-				console.log(id);
-				console.log(newProd);
 				await ProductsMongoose.findOneAndUpdate({ _id: id }, newProd);
 				const prod = await ProductsMongoose.find({});
 				socketServer.emit("products", prod);
 			} catch (e) {
-				console.log(e);
+				logger.error(e);
 			}
 		});
 
@@ -60,7 +58,7 @@ export function connectSocketServer(httpServer) {
 				const prods = await ProductsMongoose.find({});
 				socketServer.emit("products", prods);
 			} catch (e) {
-				console.log(e);
+				logger.error(e);
 			}
 		});
 
@@ -68,13 +66,13 @@ export function connectSocketServer(httpServer) {
 			try {
 				await MsgModel.create(msg);
 			} catch (e) {
-				console.log(e);
+				logger.error(e);
 			}
 			try {
 				const msgs = await MsgModel.find({});
 				socketServer.emit("listado_de_msgs", msgs);
 			} catch (e) {
-				console.log(e);
+				logger.error(e);
 			}
 		});
 	});
@@ -121,3 +119,26 @@ export const generateProduct = () => {
 		stock: faker.string.numeric(1),
 	};
 };
+
+// LOGGER CON WINSTON
+
+import winston from "winston";
+
+export const logger = winston.createLogger({
+	transports: [
+		new winston.transports.Console({
+			level: "info",
+			format: winston.format.colorize({ all: true }),
+		}),
+		new winston.transports.File({
+			filename: "./errors.log",
+			level: "warn",
+			format: winston.format.combine(
+				winston.format.timestamp(),
+				winston.format.printf(({ timestamp, level, message }) => {
+					return `${timestamp} ${level}: ${message}`;
+				})
+			),
+		}),
+	],
+});

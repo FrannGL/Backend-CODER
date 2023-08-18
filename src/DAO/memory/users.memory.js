@@ -1,3 +1,5 @@
+import { logger } from "../../utils/main.js";
+
 export default class UsersMemory {
 	constructor() {
 		this.data = [];
@@ -18,7 +20,7 @@ export default class UsersMemory {
 			);
 			return user;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 	async read() {
@@ -37,7 +39,7 @@ export default class UsersMemory {
 			);
 			return users;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 	async create(firstName, lastName, age, email, password, role) {
@@ -53,22 +55,19 @@ export default class UsersMemory {
 			});
 			return userCreated;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 	async update({ _id, firstName, lastName, age, email, password, role }) {
 		try {
-			const userUpdated = await this.data.find(
-				{ _id: _id },
-				{ firstName, lastName, age, email, password, role }
-			);
+			const userUpdated = await this.data.find({ _id: _id }, { firstName, lastName, age, email, password, role });
 			if (userUpdated.nModified > 0) {
 				return true;
 			} else {
 				return false;
 			}
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			return false;
 		}
 	}
@@ -77,7 +76,7 @@ export default class UsersMemory {
 			const deletedUser = await this.data.find({ _id: _id });
 			return deletedUser;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 }

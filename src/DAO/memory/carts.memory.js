@@ -1,3 +1,5 @@
+import { logger } from "../../utils/main.js";
+
 export default class CartsMemory {
 	constructor() {
 		this.data = [];
@@ -12,7 +14,7 @@ export default class CartsMemory {
 			const cartId = await this.data.find(cart => cart.id === _id);
 			return cartId;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 
@@ -21,7 +23,7 @@ export default class CartsMemory {
 			const cart = await this.data.find(cart => cart.id === cartId);
 			return cart;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 

@@ -1,6 +1,7 @@
 import ProductsDTO from "./DTO/products.dto.js";
 import { productService } from "../services/products.service.js";
 import { cartService } from "../services/carts.service.js";
+import { logger } from "../utils/main.js";
 import env from "../config/enviroment.config.js";
 
 class ProductsController {
@@ -24,7 +25,7 @@ class ProductsController {
 				nextLink: hasNextPage ? `/api/products?limit=${data.limit}&pagina=${nextPage}` : null,
 			});
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			return res.status(500).json({
 				status: "error",
 				msg: "Error en el servidor",
@@ -70,8 +71,8 @@ class ProductsController {
 					payload: { data },
 				});
 			}
-		} catch (err) {
-			console.log(err);
+		} catch (e) {
+			logger.error(e);
 			res.status(501).send({ status: "error", msg: "Error en el servidor", error: err });
 		}
 	}
@@ -94,8 +95,8 @@ class ProductsController {
 			const firstName = req.session.user.firstName;
 			const role = req.session.user.role;
 			return res.status(200).render("products-admin", { dataParse, title, firstName, role });
-		} catch (err) {
-			console.log(err);
+		} catch (e) {
+			logger.error(e);
 			res.status(501).send({ status: "error", msg: "Error en el servidor", error: err });
 		}
 	}
@@ -104,13 +105,21 @@ class ProductsController {
 		try {
 			const { _id } = req.params;
 			const productById = await productService.readById(_id);
-			return res.status(201).json({
-				status: "success",
-				msg: `Mostrando el producto con id ${_id}`,
-				payload: { productById },
-			});
+			if (productById) {
+				return res.status(201).json({
+					status: "success",
+					msg: `Mostrando el producto con id ${_id}`,
+					payload: { productById },
+				});
+			} else {
+				logger.error(`El producto con ID ${_id} no existe`);
+				return res.status(201).json({
+					status: "success",
+					msg: `El producto con ID ${_id} no existe`,
+				});
+			}
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 
@@ -142,7 +151,7 @@ class ProductsController {
 				},
 			});
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			return res.status(500).json({
 				status: "error",
 				msg: "Error en el servidor",
@@ -180,7 +189,7 @@ class ProductsController {
 					});
 				}
 			} catch (e) {
-				console.log(e);
+				logger.error(e);
 				return res.status(500).json({
 					status: "error",
 					msg: "Error al actualizar el producto",
@@ -188,7 +197,7 @@ class ProductsController {
 				});
 			}
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			return res.status(500).json({
 				status: "error",
 				msg: "Error en el servidor",
@@ -217,7 +226,7 @@ class ProductsController {
 				});
 			}
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			return res.status(500).json({
 				status: "error",
 				msg: "Error en el servidor",

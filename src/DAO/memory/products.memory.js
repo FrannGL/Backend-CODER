@@ -1,3 +1,5 @@
+import { logger } from "../../utils/main.js";
+
 class ProductsMemory {
 	constructor() {
 		this.data = [
@@ -106,7 +108,7 @@ class ProductsMemory {
 			const productById = this.data.find(product => product._id === _id);
 			return productById;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 	async create({ title, description, price, thumbnail, code, stock }) {
@@ -123,7 +125,7 @@ class ProductsMemory {
 			this.data.push(newProduct);
 			return newProduct;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 	async update({ _id, title, description, price, thumbnail, code, stock }) {
@@ -143,7 +145,7 @@ class ProductsMemory {
 			}
 			return null; // Product not found
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 	async delete(id) {
@@ -155,7 +157,7 @@ class ProductsMemory {
 			}
 			return null; // Product not found
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 import UsersDTO from "./DTO/users.dto.js";
 import { userService } from "../services/users.service.js";
+import { logger } from "../utils/main.js";
 
 class UserController {
 	async read(req, res) {
@@ -11,7 +12,7 @@ class UserController {
 				payload: users,
 			});
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			return res.status(500).json({
 				status: "error",
 				msg: "something went wrong :(",
@@ -30,7 +31,7 @@ class UserController {
 				payload: { userById },
 			});
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 
@@ -53,7 +54,7 @@ class UserController {
 			const title = "Fuego Burgers® - Users";
 			return res.status(200).render("users", { dataParse, title, firstName, role });
 		} catch (err) {
-			console.log(err);
+			logger.error(err);
 			res.status(501).send({ status: "error", msg: "Error en el servidor", error: err });
 		}
 	}
@@ -114,7 +115,7 @@ class UserController {
 				});
 			}
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			return res.status(500).json({
 				status: "error",
 				msg: "something went wrong :(",
@@ -141,7 +142,7 @@ class UserController {
 				});
 			}
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			return res.status(500).json({
 				status: "error",
 				msg: "something went wrong :(",
@@ -155,7 +156,7 @@ class UserController {
 			const user = await userService.authenticateUser(email, password);
 			return user;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			return null;
 		}
 	}
@@ -165,10 +166,9 @@ class UserController {
 			const { firstName, lastName, age, email, password } = req.body;
 			const role = "user";
 			const userCreated = await userService.registerUser(firstName, lastName, age, email, password, role);
-			console.log("El userCreated que recibo desde el controller es: ", userCreated);
 			return userCreated;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			return null;
 		}
 	}

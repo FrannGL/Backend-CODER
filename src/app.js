@@ -26,6 +26,7 @@ import compression from "express-compression";
 import { errorHandler } from "./middlewares/main.js";
 import CustomError from "./services/errors/custom-error.js";
 import Errors from "./services/errors/enums.js";
+import { logger } from "./utils/main.js";
 import nodemailer from "nodemailer";
 import twilio from "twilio";
 
@@ -39,7 +40,7 @@ connectMongo();
 
 // HTTP SERVER
 const httpServer = app.listen(PORT, () => {
-	console.log(`Levantando en puerto http://localhost:${PORT}`);
+	logger.info(`Levantando en puerto http://localhost:${PORT}`);
 });
 
 connectSocketServer(httpServer);

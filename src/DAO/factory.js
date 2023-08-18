@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import env from "../config/enviroment.config.js";
+import { logger } from "../utils/main.js";
 import { productsModel } from "./mongo/products.model.js";
 import { usersModel } from "./mongo/users.model.js";
 import { cartsModel } from "./mongo/carts.model.js";
@@ -14,7 +15,7 @@ async function importModels() {
 
 	switch (env.persistence) {
 		case "MONGO":
-			console.log("Database: MongoDB");
+			logger.info("Database: MongoDB");
 			mongoose.connect(env.mongoUrl);
 			models = {
 				products: productsModel,
@@ -25,7 +26,7 @@ async function importModels() {
 			break;
 
 		case "MEMORY":
-			console.log("Database: Persistencia en memoria");
+			logger.info("Database: Persistencia en memoria");
 			models = {
 				products: productsMemory,
 				users: usersMemory,

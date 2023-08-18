@@ -1,4 +1,5 @@
 import { UsersMongoose } from "../mongo/models/users.mongoose.js";
+import { logger } from "../../utils/main.js";
 
 class UsersModel {
 	async readOne(email) {
@@ -19,7 +20,7 @@ class UsersModel {
 			);
 			return user;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 
@@ -41,7 +42,7 @@ class UsersModel {
 			);
 			return users;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 
@@ -50,7 +51,7 @@ class UsersModel {
 			const userById = await UsersMongoose.findOne({ _id });
 			return userById;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 
@@ -68,7 +69,7 @@ class UsersModel {
 			});
 			return userCreated;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 
@@ -79,7 +80,7 @@ class UsersModel {
 			});
 			return userUpdated;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			return false;
 		}
 	}
@@ -89,7 +90,7 @@ class UsersModel {
 			const deletedUser = await UsersMongoose.deleteOne({ _id: _id });
 			return deletedUser;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 		}
 	}
 }

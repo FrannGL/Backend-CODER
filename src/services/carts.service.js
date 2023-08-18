@@ -1,4 +1,5 @@
 import importModels from "../DAO/factory.js";
+import { logger } from "../utils/main.js";
 
 const models = await importModels();
 const productsModel = models.products;
@@ -15,7 +16,7 @@ class CartService {
 			const cartById = await cartsModel.readById(cartId);
 			return cartById;
 		} catch (e) {
-			console.log(e);
+			logger.error(e);
 			throw e;
 		}
 	}
@@ -102,8 +103,6 @@ class CartService {
 	async deleteProduct(cartId, productId) {
 		try {
 			const cart = await cartsModel.readById(cartId);
-			console.log(cartId);
-			console.log(productId);
 
 			if (!cart) {
 				throw new Error("Cart not found");
@@ -112,11 +111,10 @@ class CartService {
 			const productIndex = cart.products.map(product => product.product.toString()).indexOf(productId);
 
 			if (productIndex !== -1) {
-				console.log("Producto encontrado exitosamente");
 				cart.products.splice(productIndex, 1);
 				await cart.save();
 			} else {
-				console.log("Producto no encontrado");
+				logger.error("Producto no encontrado");
 			}
 
 			const updatedCart = await cartsModel.updateCart(cartId, productIndex);
