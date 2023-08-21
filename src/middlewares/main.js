@@ -57,14 +57,13 @@ export async function checkTicket(req, res, next) {
 }
 
 export function errorHandler(error, req, res, next) {
-	console.error(error);
-
 	switch (error.code) {
 		case Errors.ROUTING_ERROR:
 			const notFound = "Esta página no existe";
 			return res.status(404).render("error", { notFound });
 		case Errors.ID_ERROR:
-			return res.status(404).send("error");
+			const errorId = "El ID ingresado no existe";
+			return res.status(404).render("error", { errorId });
 		default:
 			res.status(500).send({ status: "error", error: "Unhandled error" });
 			break;

@@ -16,6 +16,7 @@ import { mockingProductsRouter } from "./routes/mocking-products.router.js";
 import { productsAdminRouter } from "./routes/products-admin-router.js";
 import { productsApiRouter } from "./routes/products-api.router.js";
 import { productsRouter } from "./routes/products.router.js";
+import { loggers } from "./routes/loggers.router.js";
 import { sessionsRouter } from "./routes/sessions.router.js";
 import { testChatRouter } from "./routes/test-chat.router.js";
 import { usersApiRouter } from "./routes/users-api.router.js";
@@ -134,6 +135,7 @@ app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsApiRouter);
 app.use("/api/users", usersApiRouter);
 app.use("/api/mockingproducts", mockingProductsRouter);
+app.use("/loggerTest", loggers);
 app.use("/api/tickets", apiTickets);
 app.use("/api/sessions", sessionsRouter);
 app.get("/api/sessions/github", passport.authenticate("github", { scope: ["user:email"] }));
@@ -157,14 +159,14 @@ app.use("/error", errorRouter);
 
 app.get("*", (req, res, next) => {
 	try {
-		throw new CustomError({
+		CustomError.createError({
 			name: "Page Not Found",
-			cause: "Nonexistent path",
+			cause: "Non existent path",
 			message: "The path you are trying to access does not exist",
 			code: Errors.ROUTING_ERROR,
 		});
 	} catch (error) {
-		next(error); // Lanza el error al siguiente middleware de manejo de errores
+		next(error);
 	}
 });
 

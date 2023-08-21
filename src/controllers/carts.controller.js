@@ -1,16 +1,30 @@
 import { cartService } from "../services/carts.service.js";
 import { logger } from "../utils/main.js";
+import CustomError from "../services/errors/custom-error.js";
+import Errors from "../services/errors/enums.js";
 
 class CartsController {
 	async read(req, res) {
 		try {
-			const cart = await cartService.read();
+			const carts = await cartService.read();
+			if (!carts) {
+				logger.error(`Error al leer los carritos`);
+				res.status(200).json({
+					status: "error",
+					msg: `Error al leer los carritos`,
+				});
+			}
 			res.status(200).json({
 				status: "success",
-				payload: cart,
+				payload: carts,
 			});
 		} catch (error) {
-			res.status(404).json({ message: error.message });
+			CustomError.createError({
+				name: "Invalid ID",
+				cause: "Non existent ID",
+				message: "The ID you are trying to access does not exist",
+				code: Errors.ID_ERROR,
+			});
 		}
 	}
 
@@ -18,20 +32,24 @@ class CartsController {
 		try {
 			const cartId = req.params.cid;
 			const cartById = await cartService.readById(cartId);
-			if (cartById) {
-				res.status(200).json({
-					status: "success",
-					payload: cartById,
-				});
-			} else {
+			if (!cartById) {
 				logger.error(`El carrito con ID ${cartId} no existe`);
 				res.status(200).json({
 					status: "error",
 					msg: `El carrito con ID ${cartId} no existe`,
 				});
 			}
-		} catch (error) {
-			throw new Error(error);
+			res.status(200).json({
+				status: "success",
+				payload: cartById,
+			});
+		} catch {
+			CustomError.createError({
+				name: "Invalid ID",
+				cause: "Non existent ID",
+				message: "The ID you are trying to access does not exist",
+				code: Errors.ID_ERROR,
+			});
 		}
 	}
 
