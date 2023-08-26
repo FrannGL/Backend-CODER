@@ -4,6 +4,7 @@ const Errors = {
 	DATABASES_ERROR: 3,
 	AUTH_VALIDATION: 4,
 	MONGO_SCHEMA_VALIDATION: 5,
+	UNEXPECTED_ERROR: 6,
 };
 
 export default Errors;
