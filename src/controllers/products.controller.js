@@ -39,6 +39,7 @@ class ProductsController {
 			const { limit, pagina, category, orderBy } = req.query;
 			const data = await productService.readWithPagination(limit, pagina, category, orderBy);
 			const { firstName, role, cartId, email } = req.session.user;
+			console.log(req.session.user);
 			const cart = await cartService.readById(cartId);
 			const cartQuantity = cart.products.reduce((total, product) => {
 				return total + product.quantity;
@@ -73,7 +74,7 @@ class ProductsController {
 			}
 		} catch (e) {
 			logger.error(e);
-			res.status(501).send({ status: "error", msg: "Error en el servidor", error: err });
+			res.status(501).send({ status: "error", msg: "Error en el servidor", error: e });
 		}
 	}
 
@@ -97,7 +98,7 @@ class ProductsController {
 			return res.status(200).render("products-admin", { dataParse, title, firstName, role });
 		} catch (e) {
 			logger.error(e);
-			res.status(501).send({ status: "error", msg: "Error en el servidor", error: err });
+			res.status(501).send({ status: "error", msg: "Error en el servidor", error: e });
 		}
 	}
 

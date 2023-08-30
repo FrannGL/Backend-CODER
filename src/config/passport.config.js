@@ -87,7 +87,7 @@ export function iniPassport() {
 							role: "user",
 							password: "nopass",
 						};
-						let userCreated = await UserModel.create(newUser);
+						let userCreated = await UsersMongoose.create(newUser);
 						logger.info("User Registration succesful");
 						return done(null, userCreated);
 					} else {

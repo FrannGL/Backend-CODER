@@ -18,7 +18,7 @@ class SessionsController {
 			return res.status(200).render("register", { title });
 		} catch (e) {
 			logger.error(e);
-			res.status(501).send({ status: "error", msg: "Error en el servidor", error: err });
+			res.status(501).send({ status: "error", msg: "Error en el servidor", error: e });
 		}
 	}
 

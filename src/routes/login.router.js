@@ -10,6 +10,6 @@ login.get("/", async (req, res) => {
 		logger.error(e);
 		res
 			.status(501)
-			.send({ status: "error", msg: "Error en el servidor", error: err });
+			.send({ status: "error", msg: "Error en el servidor", error: e });
 	}
 });

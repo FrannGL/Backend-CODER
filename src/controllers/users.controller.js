@@ -53,9 +53,9 @@ class UserController {
 			const role = req.session.user.role;
 			const title = "Fuego Burgers® - Users";
 			return res.status(200).render("users", { dataParse, title, firstName, role });
-		} catch (err) {
-			logger.error(err);
-			res.status(501).send({ status: "error", msg: "Error en el servidor", error: err });
+		} catch (e) {
+			logger.error(e);
+			res.status(501).send({ status: "error", msg: "Error en el servidor", error: e });
 		}
 	}
 
