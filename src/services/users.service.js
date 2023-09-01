@@ -18,7 +18,7 @@ class UserService {
 				return false;
 			}
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -27,7 +27,7 @@ class UserService {
 			const users = await usersModel.read();
 			return users;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -36,7 +36,7 @@ class UserService {
 			const user = await usersModel.readById(_id);
 			return user;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			throw e;
 		}
 	}
@@ -50,7 +50,7 @@ class UserService {
 			const userUpdated = await usersModel.update(_id, user);
 			return userUpdated;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -59,7 +59,7 @@ class UserService {
 			const userDeleted = await usersModel.delete(_id);
 			return userDeleted;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -73,7 +73,7 @@ class UserService {
 
 			return user;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			throw e;
 		}
 	}
@@ -93,7 +93,7 @@ class UserService {
 
 			return userCreated;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			throw e;
 		}
 	}

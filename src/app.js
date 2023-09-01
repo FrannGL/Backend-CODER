@@ -12,6 +12,7 @@ import { cartsRouter } from "./routes/carts.router.js";
 import { errorRouter } from "./routes/error.router.js";
 import { home } from "./routes/home.router.js";
 import { login } from "./routes/login.router.js";
+import { recovery } from "./routes/recovery.router.js";
 import { mockingProductsRouter } from "./routes/mocking-products.router.js";
 import { productsAdminRouter } from "./routes/products-admin-router.js";
 import { productsApiRouter } from "./routes/products-api.router.js";
@@ -28,8 +29,6 @@ import { errorHandler } from "./middlewares/main.js";
 import CustomError from "./services/errors/custom-error.js";
 import Errors from "./services/errors/enums.js";
 import { logger } from "./utils/main.js";
-import nodemailer from "nodemailer";
-import twilio from "twilio";
 
 // CONFIG BASICAS Y CONEXION A DB
 const app = express();
@@ -41,21 +40,21 @@ connectMongo();
 
 // HTTP SERVER
 const httpServer = app.listen(PORT, () => {
-	logger.info(`Levantando en puerto http://localhost:${PORT}`);
+  logger.info(`Levantando en puerto http://localhost:${PORT}`);
 });
 
 connectSocketServer(httpServer);
 app.use(
-	session({
-		secret: "jhasdkjh671246JHDAhjd",
-		resave: false,
-		saveUninitialized: false,
-		store: MongoStore.create({
-			mongoUrl: env.mongoUrl,
-			mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-			ttl: 3600,
-		}),
-	})
+  session({
+    secret: "jhasdkjh671246JHDAhjd",
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: env.mongoUrl,
+      mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+      ttl: 3600,
+    }),
+  }),
 );
 
 // DIRNAME CONFIG
@@ -63,57 +62,6 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 export const __dirname = dirname(__filename);
-
-// const transport = nodemailer.createTransport({
-//   service: "gmail",
-//   port: 587,
-//   auth: {
-//     user: process.env.GOOGLE_EMAIL,
-//     pass: process.env.GOOGLE_PASS,
-//   },
-// });
-
-// app.get("/mail", async (req, res) => {
-//   const result = await transport.sendMail({
-//     from: process.env.GOOGLE_EMAIL,
-//     to: "guillermofergnani@gmail.com",
-//     subject: "Perdon me faltaba algo",
-//     html: `
-// 				<div>
-// 					<h1>hola mundo</h1>
-// 					<img src="cid:image1" />
-// 				</div>
-// 			`,
-//     attachments: [
-//       {
-//         filename: "image1.gif",
-//         path: __dirname + "/images/image1.gif",
-//         cid: "image1",
-//       },
-//     ],
-//   });
-
-//   console.log(result);
-//   res.send("Email sent");
-// });
-
-// const client = twilio(
-//   process.env.TWILIO_ACCOUNT_SID,
-//   process.env.TWILIO_AUTH_TOKEN
-// );
-
-// app.get("/sms", async (req, res) => {
-//   const result = await client.messages.create({
-//     body: "que onda che",
-//     from: process.env.TWILIO_PHONE_NUMBER,
-//     to: "+541121557802",
-//     body: "hola",
-//   });
-
-//   console.log(result);
-
-//   res.send("SMS sent");
-// });
 
 // MIDDLEWARES BASICOS
 app.use(express.json());
@@ -138,17 +86,25 @@ app.use("/api/mockingproducts", mockingProductsRouter);
 app.use("/loggerTest", loggers);
 app.use("/api/tickets", apiTickets);
 app.use("/api/sessions", sessionsRouter);
-app.get("/api/sessions/github", passport.authenticate("github", { scope: ["user:email"] }));
-app.get("/api/sessions/githubcallback", passport.authenticate("github", { failureRedirect: "/error" }), (req, res) => {
-	req.session.user = {
-		firstName: req.user.firstName,
-		role: req.user.role,
-	};
-	res.redirect("/home");
-});
+app.get(
+  "/api/sessions/github",
+  passport.authenticate("github", { scope: ["user:email"] }),
+);
+app.get(
+  "/api/sessions/githubcallback",
+  passport.authenticate("github", { failureRedirect: "/error" }),
+  (req, res) => {
+    req.session.user = {
+      firstName: req.user.firstName,
+      role: req.user.role,
+    };
+    res.redirect("/home");
+  },
+);
 // PLANTILLAS
 app.use("/", login);
 app.use("/home", home);
+app.use("/recovery", recovery);
 app.use("/products", productsRouter);
 app.use("/products-admin", productsAdminRouter);
 app.use("/users", usersRouter);
@@ -158,16 +114,16 @@ app.use("/test-chat", testChatRouter);
 app.use("/error", errorRouter);
 
 app.get("*", (req, res, next) => {
-	try {
-		CustomError.createError({
-			name: "Page Not Found",
-			cause: "Non existent path",
-			message: "The path you are trying to access does not exist",
-			code: Errors.ROUTING_ERROR,
-		});
-	} catch (error) {
-		next(error);
-	}
+  try {
+    CustomError.createError({
+      name: "Page Not Found",
+      cause: "Non existent path",
+      message: "The path you are trying to access does not exist",
+      code: Errors.ROUTING_ERROR,
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 app.use(errorHandler);

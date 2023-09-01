@@ -14,7 +14,7 @@ export default class CartsMemory {
 			const cartId = await this.data.find(cart => cart.id === _id);
 			return cartId;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -23,7 +23,7 @@ export default class CartsMemory {
 			const cart = await this.data.find(cart => cart.id === cartId);
 			return cart;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 

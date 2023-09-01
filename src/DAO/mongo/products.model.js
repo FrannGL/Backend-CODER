@@ -7,7 +7,7 @@ class ProductsModel {
 			const products = await ProductsMongoose.find({});
 			return products;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -20,7 +20,7 @@ class ProductsModel {
 			});
 			return queryResult;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -29,7 +29,7 @@ class ProductsModel {
 			const productById = await ProductsMongoose.findOne({ _id });
 			return productById;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -38,7 +38,7 @@ class ProductsModel {
 			const products = await ProductsMongoose.find({ _id: { $in: ids } });
 			return products;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			throw e;
 		}
 	}
@@ -48,7 +48,7 @@ class ProductsModel {
 			const ProductCreated = await ProductsMongoose.create(product);
 			return ProductCreated;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -57,7 +57,7 @@ class ProductsModel {
 			const productUpdated = await ProductsMongoose.findByIdAndUpdate(_id, product, { new: true });
 			return productUpdated;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			throw e;
 		}
 	}
@@ -67,7 +67,7 @@ class ProductsModel {
 			const result = await ProductsMongoose.deleteOne({ _id: id });
 			return result;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 }

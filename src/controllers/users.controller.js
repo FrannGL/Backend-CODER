@@ -12,7 +12,7 @@ class UserController {
 				payload: users,
 			});
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			return res.status(500).json({
 				status: "error",
 				msg: "something went wrong :(",
@@ -31,7 +31,7 @@ class UserController {
 				payload: { userById },
 			});
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -54,38 +54,10 @@ class UserController {
 			const title = "Fuego Burgers® - Users";
 			return res.status(200).render("users", { dataParse, title, firstName, role });
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			res.status(501).send({ status: "error", msg: "Error en el servidor", error: e });
 		}
 	}
-
-	// async create(req, res) {
-	//   try {
-	//     const { firstName, lastName, age, email, password } = req.body;
-	//     let user = new UsersDTO({ firstName, lastName, age, email, password });
-	//     console.log(user);
-	//     const userCreated = await userService.create(user);
-	//     return res.status(201).json({
-	//       status: "success",
-	//       msg: "user created",
-	//       payload: {
-	//         _id: userCreated._id,
-	//         firstName: userCreated.firstName,
-	//         lastName: userCreated.lastName,
-	//         age: userCreated.age,
-	//         email: userCreated.email,
-	//         password: userCreated.password,
-	//       },
-	//     });
-	//   } catch (e) {
-	//     console.log(e);
-	//     return res.status(500).json({
-	//       status: "error",
-	//       msg: "something went wrong :(",
-	//       payload: {},
-	//     });
-	//   }
-	// }
 
 	async update(req, res) {
 		try {
@@ -115,7 +87,7 @@ class UserController {
 				});
 			}
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			return res.status(500).json({
 				status: "error",
 				msg: "something went wrong :(",
@@ -142,7 +114,7 @@ class UserController {
 				});
 			}
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			return res.status(500).json({
 				status: "error",
 				msg: "something went wrong :(",
@@ -156,7 +128,7 @@ class UserController {
 			const user = await userService.authenticateUser(email, password);
 			return user;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			return null;
 		}
 	}
@@ -168,7 +140,7 @@ class UserController {
 			const userCreated = await userService.registerUser(firstName, lastName, age, email, password, role);
 			return userCreated;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			return null;
 		}
 	}

@@ -23,7 +23,7 @@ class TicketsController {
 				},
 			});
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			res.status(500).json({ error: "Error en el servidor" });
 		}
 	}
@@ -46,7 +46,7 @@ class TicketsController {
 				throw Error;
 			}
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -71,7 +71,7 @@ class TicketsController {
 				},
 			});
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			res.status(500).json({ error: "Error en el servidor" });
 		}
 	}

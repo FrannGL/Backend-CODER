@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
         actualizarTotalCart();
       } else {
         console.error(
-          "Error al actualizar la cantidad del producto en el carrito"
+          "Error al actualizar la cantidad del producto en el carrito",
         );
       }
     } catch (error) {
@@ -139,26 +139,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function actualizarTotalCart() {
     let total = 0;
-    cartItems.forEach((cartItem) => {
+    cartItems.forEach(cartItem => {
       const subtotalElement = cartItem.querySelector("#subtotal");
       const subtotal = parseFloat(
-        subtotalElement.textContent.replace("$ ", "")
+        subtotalElement.textContent.replace("$ ", ""),
       );
       total += subtotal;
     });
     totalCartElement.textContent = total;
   }
 
-  cartItems.forEach((cartItem) => {
+  cartItems.forEach(cartItem => {
     calcularSubtotal(cartItem);
 
     const botonIncrementar = cartItem.querySelector(
-      ".butonController:nth-child(1)"
+      ".butonController:nth-child(1)",
     );
     botonIncrementar.addEventListener("click", botonIncrementarClick);
 
     const botonDecrementar = cartItem.querySelector(
-      ".butonController:nth-child(2)"
+      ".butonController:nth-child(2)",
     );
     botonDecrementar.addEventListener("click", botonDecrementarClick);
   });
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (cartIdElement) {
     const cartId = cartIdElement.textContent.trim();
-    deleteButtons.forEach((button) => {
+    deleteButtons.forEach(button => {
       button.setAttribute("data-cart-id", cartId);
       button.addEventListener("click", async () => {
         const productId = button.getAttribute("data-product-id");
@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 `/cart/${cartId}/products/${productId}`,
                 {
                   method: "DELETE",
-                }
+                },
               );
 
               if (response.ok) {
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const vaciarCarritoButton = document.getElementById(
-    "carrito-acciones-vaciar"
+    "carrito-acciones-vaciar",
   );
   vaciarCarritoButton.addEventListener("click", async () => {
     const cartId = cartIdElement.textContent.trim();
@@ -238,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
       cancelButtonColor: "#FF0000",
       cancelButtonText: "Cancelar",
       confirmButtonText: "Confirmar",
-    }).then(async (result) => {
+    }).then(async result => {
       if (result.isConfirmed) {
         try {
           const response = await fetch(`/cart/${cartId}`, {
@@ -270,7 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const cartId = cartLink.getAttribute("href").split("/").pop();
   const userRole = document.getElementById("role").textContent;
 
-  addToCartButtons.forEach((button) => {
+  addToCartButtons.forEach(button => {
     button.addEventListener("click", async () => {
       const productId = button.getAttribute("data-product-id");
       // console.log(`Producto agregado al carrito. ID: ${productId}`);
@@ -350,8 +350,8 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       body: JSON.stringify({ cartData }),
     })
-      .then((response) => response.json())
-      .then((data) => {
+      .then(response => response.json())
+      .then(data => {
         // console.log("Compra realizada:", data);
         Swal.fire({
           title: "¡Gracias por tu compra!",
@@ -368,13 +368,13 @@ document.addEventListener("DOMContentLoaded", function () {
           window.location.href = "/home";
         }, 3000);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error("Error en la compra:", error);
       });
   });
 });
 
-addProduct.addEventListener("submit", (e) => {
+addProduct.addEventListener("submit", e => {
   e.preventDefault();
   const newProduct = {
     title: inputTitle.value,
@@ -396,7 +396,7 @@ addProduct.addEventListener("submit", (e) => {
   socket.emit("new-product", newProduct);
 });
 
-container.addEventListener("click", (event) => {
+container.addEventListener("click", event => {
   if (event.target.classList.contains("btnEdit")) {
     const button = event.target;
     const cardId = button.getAttribute("data-id");
@@ -420,7 +420,7 @@ container.addEventListener("click", (event) => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Si, borrar",
       cancelButtonText: "Cancelar",
-    }).then((result) => {
+    }).then(result => {
       if (result.isConfirmed) {
         const productId = cardId;
         socket.emit("delete-product", productId);
@@ -430,9 +430,9 @@ container.addEventListener("click", (event) => {
   }
 });
 
-socket.on("products", (producto) => {
+socket.on("products", producto => {
   container.innerHTML = producto
-    .map((prod) => {
+    .map(prod => {
       return `
       <div class="card" style="width: 15rem; border: 1px solid black">
         <img src=${prod.thumbnail} class="card-img" alt="${prod.title}" />

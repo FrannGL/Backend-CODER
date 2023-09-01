@@ -25,7 +25,7 @@ class ProductsController {
 				nextLink: hasNextPage ? `/api/products?limit=${data.limit}&pagina=${nextPage}` : null,
 			});
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			return res.status(500).json({
 				status: "error",
 				msg: "Error en el servidor",
@@ -73,7 +73,7 @@ class ProductsController {
 				});
 			}
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			res.status(501).send({ status: "error", msg: "Error en el servidor", error: e });
 		}
 	}
@@ -97,7 +97,7 @@ class ProductsController {
 			const role = req.session.user.role;
 			return res.status(200).render("products-admin", { dataParse, title, firstName, role });
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			res.status(501).send({ status: "error", msg: "Error en el servidor", error: e });
 		}
 	}
@@ -120,7 +120,7 @@ class ProductsController {
 				});
 			}
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -152,7 +152,7 @@ class ProductsController {
 				},
 			});
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			return res.status(500).json({
 				status: "error",
 				msg: "Error en el servidor",
@@ -190,7 +190,7 @@ class ProductsController {
 					});
 				}
 			} catch (e) {
-				logger.error(e);
+				logger.error(e.message);
 				return res.status(500).json({
 					status: "error",
 					msg: "Error al actualizar el producto",
@@ -198,7 +198,7 @@ class ProductsController {
 				});
 			}
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			return res.status(500).json({
 				status: "error",
 				msg: "Error en el servidor",
@@ -227,7 +227,7 @@ class ProductsController {
 				});
 			}
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			return res.status(500).json({
 				status: "error",
 				msg: "Error en el servidor",

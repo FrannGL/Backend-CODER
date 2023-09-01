@@ -10,7 +10,7 @@ class ProductService {
 			const products = await productsModel.read();
 			return products;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -32,7 +32,7 @@ class ProductService {
 
 			return queryResult;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -41,7 +41,7 @@ class ProductService {
 			const productById = await productsModel.readById(_id);
 			return productById;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			throw e;
 		}
 	}
@@ -51,7 +51,7 @@ class ProductService {
 			const products = await productsModel.readByIds(ids);
 			return products;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			throw e;
 		}
 	}
@@ -61,7 +61,7 @@ class ProductService {
 			const ProductCreated = await productsModel.create(product);
 			return ProductCreated;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -70,7 +70,7 @@ class ProductService {
 			const productUpdated = await productsModel.update(_id, product);
 			return productUpdated;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -79,7 +79,7 @@ class ProductService {
 			const result = await productsModel.delete({ _id: id });
 			return result;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 }

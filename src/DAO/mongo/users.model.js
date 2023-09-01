@@ -20,7 +20,7 @@ class UsersModel {
 			);
 			return user;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -42,7 +42,7 @@ class UsersModel {
 			);
 			return users;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -51,7 +51,7 @@ class UsersModel {
 			const userById = await UsersMongoose.findOne({ _id });
 			return userById;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -69,7 +69,7 @@ class UsersModel {
 			});
 			return userCreated;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -80,7 +80,7 @@ class UsersModel {
 			});
 			return userUpdated;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			return false;
 		}
 	}
@@ -90,7 +90,7 @@ class UsersModel {
 			const deletedUser = await UsersMongoose.deleteOne({ _id: _id });
 			return deletedUser;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 }

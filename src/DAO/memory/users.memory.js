@@ -20,7 +20,7 @@ export default class UsersMemory {
 			);
 			return user;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 	async read() {
@@ -39,7 +39,7 @@ export default class UsersMemory {
 			);
 			return users;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 	async create(firstName, lastName, age, email, password, role) {
@@ -55,7 +55,7 @@ export default class UsersMemory {
 			});
 			return userCreated;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 	async update({ _id, firstName, lastName, age, email, password, role }) {
@@ -67,7 +67,7 @@ export default class UsersMemory {
 				return false;
 			}
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			return false;
 		}
 	}
@@ -76,7 +76,7 @@ export default class UsersMemory {
 			const deletedUser = await this.data.find({ _id: _id });
 			return deletedUser;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 }

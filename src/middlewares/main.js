@@ -8,7 +8,7 @@ export function checkLogin(req, res, next) {
 			return next();
 		}
 	} catch (e) {
-		logger.error(e);
+		logger.error(e.message);
 		const isLogin = "Debes iniciar sesión para acceder a esta página";
 		return res.status(201).render("error", { isLogin });
 	}

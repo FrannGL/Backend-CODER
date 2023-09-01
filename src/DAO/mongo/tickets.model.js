@@ -7,7 +7,7 @@ class TicketsModel {
 			const ticket = await TicketsMongoose.findOne({ code });
 			return ticket;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -16,7 +16,7 @@ class TicketsModel {
 			const tickets = await TicketsMongoose.find({ cartId });
 			return tickets;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -25,7 +25,7 @@ class TicketsModel {
 			const newTicket = await TicketsMongoose.create(purchase);
 			return newTicket;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 }

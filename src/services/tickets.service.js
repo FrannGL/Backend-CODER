@@ -14,7 +14,7 @@ class TicketService {
 			const ticket = await ticketsModel.readById(code);
 			return ticket;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -23,7 +23,7 @@ class TicketService {
 			const tickets = await ticketsModel.readAll(cartId);
 			return tickets;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -53,7 +53,7 @@ class TicketService {
 
 			return formattedTickets;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -74,7 +74,7 @@ class TicketService {
 				logger.error("No se pudo crear el ticket debido a la falta de stock");
 			}
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 
@@ -94,7 +94,7 @@ class TicketService {
 			}
 			return true;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 }

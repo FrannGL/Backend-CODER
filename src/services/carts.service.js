@@ -16,7 +16,7 @@ class CartService {
 			const cartById = await cartsModel.readById(cartId);
 			return cartById;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 			throw e;
 		}
 	}

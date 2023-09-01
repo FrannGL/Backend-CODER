@@ -108,7 +108,7 @@ class ProductsMemory {
 			const productById = this.data.find(product => product._id === _id);
 			return productById;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 	async create({ title, description, price, thumbnail, code, stock }) {
@@ -125,7 +125,7 @@ class ProductsMemory {
 			this.data.push(newProduct);
 			return newProduct;
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 	async update({ _id, title, description, price, thumbnail, code, stock }) {
@@ -145,7 +145,7 @@ class ProductsMemory {
 			}
 			return null; // Product not found
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 	async delete(id) {
@@ -157,7 +157,7 @@ class ProductsMemory {
 			}
 			return null; // Product not found
 		} catch (e) {
-			logger.error(e);
+			logger.error(e.message);
 		}
 	}
 }
