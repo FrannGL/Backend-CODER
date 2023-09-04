@@ -9,7 +9,7 @@ import { RecoverTokensMongoose } from "../DAO/mongo/models/recover-tokens.mongoo
 import { createHash } from "../utils/main.js";
 
 class RecoveryService {
-  async findEmail(email) {
+  async sendEmail(email) {
     try {
       if (IsValidEmail(email)) {
         const validEmail = email;
@@ -39,7 +39,8 @@ class RecoveryService {
 
           return user.email;
         } else {
-          throw new Error("No existe un usuario con el email proporcionado");
+          const user = null;
+          return user
         }
       } else {
         throw new Error("Correo Electrónico inválido.");
@@ -55,7 +56,7 @@ class RecoveryService {
       const foundToken = await RecoverTokensMongoose.findOne({ token, email });
       return foundToken;
     } catch (e) {
-			logger.error(e.message);
+      logger.error(e.message);
     }
   }
 
@@ -66,19 +67,14 @@ class RecoveryService {
       if (foundToken && foundToken.expire > Date.now() && password) {
         const user = foundUser.email;
         password = createHash(password);
-        const updatedUser = await UsersMongoose.updateOne(
-          { email: user },
-          { password },
-        );
+        const updatedUser = await UsersMongoose.updateOne({ email: user }, { password });
         return updatedUser;
       }
       if (!foundUser) {
-        logger.error(
-          `No se encontró ningún usuario con el correo electrónico: ${email}`,
-        );
+        logger.error(`No se encontró ningún usuario con el correo electrónico: ${email}`);
       }
     } catch (e) {
-			logger.error(e.message);
+      logger.error(e.message);
       throw new Error(e);
     }
   }

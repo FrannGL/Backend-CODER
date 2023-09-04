@@ -14,6 +14,7 @@ class UsersModel {
 					email: true,
 					password: true,
 					role: true,
+					premium: true,
 					cartID: true,
 					purchase_made: true,
 				}

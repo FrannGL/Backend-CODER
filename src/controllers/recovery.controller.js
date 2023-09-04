@@ -2,21 +2,17 @@ import { logger } from "../utils/main.js";
 import { recoveryService } from "../services/recovery.service.js";
 
 class RecoveryController {
-  async findEmail(req, res) {
+  async sendEmail(req, res) {
     try {
       const { email } = req.body;
-      const result = await recoveryService.findEmail(email);
-      res
-        .status(200)
-        .render("error", { emailSend: "Email Enviado! Revisa tu casilla." });
-    } catch (e) {
-      if (e.message === "No existe un usuario con el email proporcionado") {
-        res
-          .status(404)
-          .json({ msg: "No existe un usuario con el email proporcionado" });
+      const result = await recoveryService.sendEmail(email);
+      if (result !== null) {
+        res.status(200).render("error", { emailSend: "Email Enviado! Revisa tu casilla." });
       } else {
-        res.status(500).send({ status: "error", msg: "Error en el servidor" });
+        return res.status(400).render("error", { errorMsg: "Email inexistente" });
       }
+    } catch (e) {
+      logger.error(e.message);
     }
   }
 
@@ -28,19 +24,13 @@ class RecoveryController {
         const validToken = foundToken.token;
         const validEmail = foundToken.email;
         const title = "Fuego Burgers®";
-        return res
-          .status(200)
-          .render("recovery-pass", { title, validToken, validEmail });
+        return res.status(200).render("recovery-pass", { title, validToken, validEmail });
       } else {
-        return res
-          .status(404)
-          .render("error", { errorMsg: "Token expirado o inválido" });
+        return res.status(404).render("error", { errorMsg: "Token expirado o inválido" });
       }
     } catch (e) {
-			logger.error(e.message);
-      res
-        .status(501)
-        .send({ status: "error", msg: "Error en el servidor", error: e });
+      logger.error(e.message);
+      res.status(501).send({ status: "error", msg: "Error en el servidor", error: e });
     }
   }
 
@@ -49,24 +39,14 @@ class RecoveryController {
       let { token, email, password } = req.body;
       const foundToken = await recoveryService.findToken(token, email);
       const userEmail = foundToken.email;
-      const foundUser = await recoveryService.newPassword(
-        userEmail,
-        password,
-        token,
-      );
-      console.log(foundUser);
+      const foundUser = await recoveryService.newPassword(userEmail, password, token);
       if (foundToken && foundToken.expire > Date.now() && password) {
-        const title = "Fuego Burgers®";
-        return res
-          .status(200)
-          .render("error", { changePassword: "Contraseña Actualizada!" });
+        return res.status(200).render("error", { changePassword: "Contraseña Actualizada!" });
       } else {
-        return res
-          .status(404)
-          .render("error", { errorMsg: "Token expirado o inválido" });
+        return res.status(404).render("error", { errorMsg: "Token expirado o inválido" });
       }
     } catch (e) {
-			logger.error(e.message);
+      logger.error(e.message);
       throw new Error(e);
     }
   }

@@ -15,6 +15,6 @@ recovery.get("/", async (req, res) => {
   }
 });
 
-recovery.post("/", recoveryController.findEmail);
+recovery.post("/", recoveryController.sendEmail);
 recovery.get("/pass", recoveryController.findToken);
 recovery.post("/pass", recoveryController.newPassword)

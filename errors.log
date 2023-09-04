@@ -29,3 +29,70 @@
 2023-09-01T22:34:35.046Z error: Assignment to constant variable.
 2023-09-01T22:34:47.026Z error: Assignment to constant variable.
 2023-09-01T22:36:15.356Z error: Assignment to constant variable.
+2023-09-02T21:46:24.052Z error: Invalid credentials
+2023-09-02T21:46:24.054Z error: Invalid credentials
+2023-09-02T21:46:32.114Z error: Invalid credentials
+2023-09-02T21:46:32.115Z error: Invalid credentials
+2023-09-02T22:01:57.001Z error: Cast to ObjectId failed for value "{ uid: '64f3b054555a1ed40f3e3285' }" (type Object) at path "_id" for model "users"
+2023-09-02T22:02:13.219Z error: Cast to ObjectId failed for value "{ userId: { uid: '64f3b054555a1ed40f3e3285' } }" (type Object) at path "_id" for model "users"
+2023-09-02T22:25:28.087Z error: Usuario inexistente
+2023-09-02T22:29:27.745Z error: Cannot read properties of undefined (reading 'readById')
+2023-09-02T22:30:08.176Z error: Usuario inexistente
+2023-09-03T21:08:21.727Z error: Usuario inexistente
+2023-09-03T21:27:36.136Z error: Usuario inexistente
+2023-09-03T22:03:27.623Z error: Invalid credentials
+2023-09-03T22:03:27.625Z error: Invalid credentials
+2023-09-03T22:20:57.108Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:22:53.265Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:25:16.851Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:31:07.595Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:40:51.743Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:42:58.088Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:44:03.779Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:44:07.596Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:45:08.434Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:47:20.119Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:47:56.313Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:48:40.340Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:50:10.790Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:50:26.716Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:50:58.699Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:51:26.957Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:51:32.710Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:51:54.201Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:51:56.606Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T22:56:05.174Z error: Cannot destructure property 'firstName' of 'req.session.user' as it is undefined.
+2023-09-03T23:10:00.038Z error: Cannot destructure property 'firstName' of 'req.session.user' as it is undefined.
+2023-09-03T23:12:51.692Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T23:32:47.964Z error: No puedes agregar un producto que hayas creado.
+2023-09-03T23:40:41.079Z error: No existe un usuario con el email proporcionado
+2023-09-03T23:41:02.709Z error: No existe un usuario con el email proporcionado
+2023-09-03T23:42:45.805Z error: No existe un usuario con el email proporcionado
+2023-09-03T23:43:15.522Z error: No existe un usuario con el email proporcionado
+2023-09-03T23:43:50.863Z error: No existe un usuario con el email proporcionado
+2023-09-03T23:44:02.867Z error: No existe un usuario con el email proporcionado
+2023-09-03T23:49:27.159Z error: Invalid credentials
+2023-09-03T23:49:27.161Z error: Invalid credentials
+2023-09-03T23:59:08.159Z error: User already exists
+2023-09-04T00:01:06.174Z error: Cannot read properties of null (reading 'products')
+2023-09-04T00:03:24.867Z error: User already exists
+2023-09-04T00:12:37.351Z error: Error en auth github
+2023-09-04T00:13:19.110Z error: Cannot read properties of null (reading 'products')
+2023-09-04T00:20:12.120Z error: Error en auth github
+2023-09-04T00:20:57.605Z error: Error en auth github
+2023-09-04T00:21:35.544Z error: Error en auth github
+2023-09-04T00:24:50.103Z error: Error en auth github
+2023-09-04T00:25:17.341Z error: Error en auth github
+2023-09-04T00:27:24.975Z error: Error en auth github
+2023-09-04T00:29:53.986Z error: Cannot destructure property 'firstName' of 'req.session.user' as it is undefined.
+2023-09-04T00:30:10.640Z error: User already exists
+2023-09-04T00:55:09.606Z error: User already exists
+2023-09-04T00:55:41.300Z error: User already exists
+2023-09-04T00:58:26.944Z error: Error en auth github
+2023-09-04T00:59:09.473Z error: Error en auth github
+2023-09-04T01:05:08.618Z error: User already exists
+2023-09-04T01:05:58.326Z error: User already exists
+2023-09-04T01:11:43.482Z error: Invalid credentials
+2023-09-04T01:11:43.485Z error: Invalid credentials
+2023-09-04T01:12:06.737Z error: User already exists
+2023-09-04T01:12:11.341Z error: Cannot read properties of null (reading 'products')

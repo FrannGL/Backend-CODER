@@ -87,9 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function actualizarCantidadBackend(cartItem, cantidad) {
     const cartId = document.querySelector(".cartId").textContent;
-    const productId = cartItem
-      .querySelector(".butonDelete")
-      .getAttribute("data-product-id");
+    const productId = cartItem.querySelector(".butonDelete").getAttribute("data-product-id");
 
     try {
       const response = await fetch(`/cart/${cartId}/products/${productId}`, {
@@ -108,9 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
         calcularSubtotal(cartItem);
         actualizarTotalCart();
       } else {
-        console.error(
-          "Error al actualizar la cantidad del producto en el carrito",
-        );
+        console.error("Error al actualizar la cantidad del producto en el carrito");
       }
     } catch (error) {
       console.error("Error de red:", error);
@@ -141,9 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let total = 0;
     cartItems.forEach(cartItem => {
       const subtotalElement = cartItem.querySelector("#subtotal");
-      const subtotal = parseFloat(
-        subtotalElement.textContent.replace("$ ", ""),
-      );
+      const subtotal = parseFloat(subtotalElement.textContent.replace("$ ", ""));
       total += subtotal;
     });
     totalCartElement.textContent = total;
@@ -152,14 +146,10 @@ document.addEventListener("DOMContentLoaded", () => {
   cartItems.forEach(cartItem => {
     calcularSubtotal(cartItem);
 
-    const botonIncrementar = cartItem.querySelector(
-      ".butonController:nth-child(1)",
-    );
+    const botonIncrementar = cartItem.querySelector(".butonController:nth-child(1)");
     botonIncrementar.addEventListener("click", botonIncrementarClick);
 
-    const botonDecrementar = cartItem.querySelector(
-      ".butonController:nth-child(2)",
-    );
+    const botonDecrementar = cartItem.querySelector(".butonController:nth-child(2)");
     botonDecrementar.addEventListener("click", botonDecrementarClick);
   });
 
@@ -201,12 +191,9 @@ document.addEventListener("DOMContentLoaded", () => {
               confirmButtonColor: "#000000",
             });
             try {
-              const response = await fetch(
-                `/cart/${cartId}/products/${productId}`,
-                {
-                  method: "DELETE",
-                },
-              );
+              const response = await fetch(`/cart/${cartId}/products/${productId}`, {
+                method: "DELETE",
+              });
 
               if (response.ok) {
                 // console.log("Producto eliminado del carrito con éxito.");
@@ -223,9 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  const vaciarCarritoButton = document.getElementById(
-    "carrito-acciones-vaciar",
-  );
+  const vaciarCarritoButton = document.getElementById("carrito-acciones-vaciar");
   vaciarCarritoButton.addEventListener("click", async () => {
     const cartId = cartIdElement.textContent.trim();
 
@@ -273,9 +258,33 @@ document.addEventListener("DOMContentLoaded", () => {
   addToCartButtons.forEach(button => {
     button.addEventListener("click", async () => {
       const productId = button.getAttribute("data-product-id");
-      // console.log(`Producto agregado al carrito. ID: ${productId}`);
-      // console.log(`El carrito tiene el ID: ${cartId}`);
-
+      const productOwner = button.getAttribute("data-owner");
+      const roleSpan = document.getElementById("role");
+      const userSession = roleSpan.getAttribute("data-user");
+      if (userRole === "user" && productOwner === userSession) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "No puedes agregar productos que tu hayas creado.",
+          showConfirmButton: true,
+          confirmButtonColor: "#000",
+          timer: 3000,
+        });
+      } else if (userRole === "admin" && productOwner === userSession) {
+        Swal.fire({
+          title: "Solo los usuarios pueden agregar Productos al Carrito",
+          icon: "warning",
+          confirmButtonText: "Aceptar",
+          confirmButtonColor: "#000",
+          onAfterClose: () => {
+            window.location.href = "/home";
+          },
+          timer: 3000,
+        });
+        setTimeout(() => {
+          window.location.href = "/home";
+        }, 3000);
+      }
       try {
         const response = await fetch(`/cart/${cartId}/products/${productId}`, {
           method: "POST",
@@ -296,27 +305,12 @@ document.addEventListener("DOMContentLoaded", () => {
               },
             }).showToast();
 
-            const cartQuantityElement =
-              document.querySelector("#cartLink span");
+            const cartQuantityElement = document.querySelector("#cartLink span");
             if (cartQuantityElement) {
               const currentQuantity = parseInt(cartQuantityElement.innerText);
               const newQuantity = currentQuantity + 1;
               cartQuantityElement.innerText = newQuantity;
             }
-          } else {
-            Swal.fire({
-              title: "Solo los usuarios pueden agregar Productos al Carrito",
-              icon: "warning",
-              confirmButtonText: "Aceptar",
-              confirmButtonColor: "#000",
-              onAfterClose: () => {
-                window.location.href = "/home";
-              },
-              timer: 3000,
-            });
-            setTimeout(() => {
-              window.location.href = "/home";
-            }, 3000);
           }
         } else {
           console.error("Error al agregar el producto al carrito.");
@@ -330,10 +324,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // GUARDAR COMPRA
 document.addEventListener("DOMContentLoaded", function () {
-  const comprarButton = document.getElementById("carrito-acciones-comprar ");
+  const comprarButton = document.getElementById("carrito-acciones-comprar");
   const userEmail = document.getElementById("email").textContent;
   comprarButton.addEventListener("click", async function () {
     const cartId = document.querySelector(".cartId").textContent;
+    console.log(cartId);
     const totalCart = document.querySelector(".totalCart span").textContent;
     const user = userEmail;
 
@@ -352,7 +347,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       .then(response => response.json())
       .then(data => {
-        // console.log("Compra realizada:", data);
+        console.log("Compra realizada:", data);
         Swal.fire({
           title: "¡Gracias por tu compra!",
           text: "Podrás visualizarla en MIS COMPRAS.",
@@ -373,6 +368,8 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 });
+
+// ADMINISTRADOR DE PRODUCTOS
 
 addProduct.addEventListener("submit", e => {
   e.preventDefault();
@@ -430,182 +427,182 @@ container.addEventListener("click", event => {
   }
 });
 
-socket.on("products", producto => {
-  container.innerHTML = producto
-    .map(prod => {
-      return `
-      <div class="card" style="width: 15rem; border: 1px solid black">
-        <img src=${prod.thumbnail} class="card-img" alt="${prod.title}" />
-        <div class="card-body text-center">
-          <h6 class="card-id">ID: ${prod._id}</h6>
-          <div class="card-title">
-            <h4 class="m-0">${prod.title}</h4>
-          </div>
-          <div>
-            <h6 class="m-0">${prod.category}</h6>
-          </div>
-          <div class="card-description">
-            <p class="m-0 py-2">${prod.description}</p>
-          </div>
-          <div class="card-price">
-            <p class="m-0">$ ${prod.price}.-</p>
-          </div>
-          <div class="card-item-detail">
-            <p class="code m-0"><b>Code:</b> ${prod.code}</p>
-            <p class="stock m-0"><b>Stock:</b> ${prod.stock}</p>
-          </div>
-          <div class="btnContainer">
-            <a
-              href="#"
-              class="btn btn-primary btn-sm btnEdit"
-              data-id=${prod._id}
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-              onclick="setModalTitle(this.getAttribute('data-id'))"
-            ><i class="bi bi-pencil me-1"></i>Editar</a>
-            <a
-              href="#"
-              class="btn btn-danger btn-sm ms-2 btnDelete"
-              data-id=${prod._id}
-            ><i class="bi bi-trash3 me-1"></i>Eliminar</a>
-          </div>
-        </div>
-      </div>
-      <div
-      class="modal fade"
-      id="exampleModal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header" id="modalHeader">
-            <h2 class="modal-title fs-5" id="exampleModalLabel">Editar
-              Producto
-            </h2>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form id="addProductForm">
-              <div class="row">
-                <div class="col-6">
-                  <div class="form-floating mb-3">
-                    <input
-                      type="text"
-                      class="form-control border-0 border-bottom border-dark"
-                      id="input-editTitle"
-                      placeholder="Nombre"
-                    />
-                    <label for="input-title"><i
-                        class="bi bi-pencil-square me-1"
-                      ></i>Nombre</label>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="form-floating">
-                    <input
-                      type="text"
-                      class="form-control border-0 border-bottom border-dark"
-                      id="input-editDescription"
-                      placeholder="Descripcion"
-                    />
-                    <label for="input-description"><i
-                        class="bi bi-file-bar-graph me-1"
-                      ></i>Descripcion</label>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-4">
-                  <div class="form-floating mb-3">
-                    <input
-                      type="text"
-                      class="form-control border-0 border-bottom border-dark"
-                      id="input-editCategory"
-                      placeholder="Categoria"
-                    />
-                    <label for="input-categoria"><i class="bi bi-tag me-1"></i>Categoria</label>
-                 </div>
-               </div>
-                <div class="col-4">
-                  <div class="form-floating mb-3">
-                    <input
-                      type="number"
-                      class="form-control border-0 border-bottom border-dark"
-                      id="input-editPrice"
-                      placeholder="Precio"
-                    />
-                    <label for="input-price"><i
-                        class="bi bi-currency-dollar me-1"
-                      ></i>Precio</label>
-                  </div>
-                </div>
-                <div class="col-4">
-                  <div class="form-floating">
-                    <input
-                      type="text"
-                      class="form-control border-0 border-bottom border-dark"
-                      id="input-editThumbnail"
-                      placeholder="Imagen"
-                    />
-                    <label for="input-thumbnail"><i
-                        class="bi bi-card-image me-1"
-                      ></i>Imagen</label>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-6">
-                  <div class="form-floating mb-3">
-                    <input
-                      type="number"
-                      class="form-control border-0 border-bottom border-dark"
-                      id="input-editCode"
-                      placeholder="Codigo"
-                    />
-                    <label for="input-code"><i
-                        class="bi bi-qr-code me-1"
-                      ></i>Codigo</label>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="form-floating">
-                    <input
-                      type="number"
-                      class="form-control border-0 border-bottom border-dark"
-                      id="input-editStock"
-                      placeholder="Stock"
-                    />
-                    <label for="input-stock"><i
-                        class="bi bi-list-ol me-1"
-                      ></i>Stock</label>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-danger"
-              data-bs-dismiss="modal"
-            >Cancelar</button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              id="btn-edit"
-              onclick="saveChanges()"
-            >Guardar</button>
-          </div>
-        </div>
-      </div>
-    </div>`;
-    })
-    .join("");
-});
+// socket.on("products", producto => {
+//   container.innerHTML = producto
+//     .map(prod => {
+//       return `
+//       <div class="card" style="width: 15rem; border: 1px solid black">
+//         <img src=${prod.thumbnail} class="card-img" alt="${prod.title}" />
+//         <div class="card-body text-center">
+//           <h6 class="card-id">ID: ${prod._id}</h6>
+//           <div class="card-title">
+//             <h4 class="m-0">${prod.title}</h4>
+//           </div>
+//           <div>
+//             <h6 class="m-0">${prod.category}</h6>
+//           </div>
+//           <div class="card-description">
+//             <p class="m-0 py-2">${prod.description}</p>
+//           </div>
+//           <div class="card-price">
+//             <p class="m-0">$ ${prod.price}.-</p>
+//           </div>
+//           <div class="card-item-detail">
+//             <p class="code m-0"><b>Code:</b> ${prod.code}</p>
+//             <p class="stock m-0"><b>Stock:</b> ${prod.stock}</p>
+//           </div>
+//           <div class="btnContainer">
+//             <a
+//               href="#"
+//               class="btn btn-primary btn-sm btnEdit"
+//               data-id=${prod._id}
+//               data-bs-toggle="modal"
+//               data-bs-target="#exampleModal"
+//               onclick="setModalTitle(this.getAttribute('data-id'))"
+//             ><i class="bi bi-pencil me-1"></i>Editar</a>
+//             <a
+//               href="#"
+//               class="btn btn-danger btn-sm ms-2 btnDelete"
+//               data-id=${prod._id}
+//             ><i class="bi bi-trash3 me-1"></i>Eliminar</a>
+//           </div>
+//         </div>
+//       </div>
+//       <div
+//       class="modal fade"
+//       id="exampleModal"
+//       tabindex="-1"
+//       aria-labelledby="exampleModalLabel"
+//       aria-hidden="true"
+//     >
+//       <div class="modal-dialog">
+//         <div class="modal-content">
+//           <div class="modal-header" id="modalHeader">
+//             <h2 class="modal-title fs-5" id="exampleModalLabel">Editar
+//               Producto
+//             </h2>
+//             <button
+//               type="button"
+//               class="btn-close"
+//               data-bs-dismiss="modal"
+//               aria-label="Close"
+//             ></button>
+//           </div>
+//           <div class="modal-body">
+//             <form id="addProductForm">
+//               <div class="row">
+//                 <div class="col-6">
+//                   <div class="form-floating mb-3">
+//                     <input
+//                       type="text"
+//                       class="form-control border-0 border-bottom border-dark"
+//                       id="input-editTitle"
+//                       placeholder="Nombre"
+//                     />
+//                     <label for="input-title"><i
+//                         class="bi bi-pencil-square me-1"
+//                       ></i>Nombre</label>
+//                   </div>
+//                 </div>
+//                 <div class="col-6">
+//                   <div class="form-floating">
+//                     <input
+//                       type="text"
+//                       class="form-control border-0 border-bottom border-dark"
+//                       id="input-editDescription"
+//                       placeholder="Descripcion"
+//                     />
+//                     <label for="input-description"><i
+//                         class="bi bi-file-bar-graph me-1"
+//                       ></i>Descripcion</label>
+//                   </div>
+//                 </div>
+//               </div>
+//               <div class="row">
+//                 <div class="col-4">
+//                   <div class="form-floating mb-3">
+//                     <input
+//                       type="text"
+//                       class="form-control border-0 border-bottom border-dark"
+//                       id="input-editCategory"
+//                       placeholder="Categoria"
+//                     />
+//                     <label for="input-categoria"><i class="bi bi-tag me-1"></i>Categoria</label>
+//                  </div>
+//                </div>
+//                 <div class="col-4">
+//                   <div class="form-floating mb-3">
+//                     <input
+//                       type="number"
+//                       class="form-control border-0 border-bottom border-dark"
+//                       id="input-editPrice"
+//                       placeholder="Precio"
+//                     />
+//                     <label for="input-price"><i
+//                         class="bi bi-currency-dollar me-1"
+//                       ></i>Precio</label>
+//                   </div>
+//                 </div>
+//                 <div class="col-4">
+//                   <div class="form-floating">
+//                     <input
+//                       type="text"
+//                       class="form-control border-0 border-bottom border-dark"
+//                       id="input-editThumbnail"
+//                       placeholder="Imagen"
+//                     />
+//                     <label for="input-thumbnail"><i
+//                         class="bi bi-card-image me-1"
+//                       ></i>Imagen</label>
+//                   </div>
+//                 </div>
+//               </div>
+//               <div class="row">
+//                 <div class="col-6">
+//                   <div class="form-floating mb-3">
+//                     <input
+//                       type="number"
+//                       class="form-control border-0 border-bottom border-dark"
+//                       id="input-editCode"
+//                       placeholder="Codigo"
+//                     />
+//                     <label for="input-code"><i
+//                         class="bi bi-qr-code me-1"
+//                       ></i>Codigo</label>
+//                   </div>
+//                 </div>
+//                 <div class="col-6">
+//                   <div class="form-floating">
+//                     <input
+//                       type="number"
+//                       class="form-control border-0 border-bottom border-dark"
+//                       id="input-editStock"
+//                       placeholder="Stock"
+//                     />
+//                     <label for="input-stock"><i
+//                         class="bi bi-list-ol me-1"
+//                       ></i>Stock</label>
+//                   </div>
+//                 </div>
+//               </div>
+//             </form>
+//           </div>
+//           <div class="modal-footer">
+//             <button
+//               type="button"
+//               class="btn btn-danger"
+//               data-bs-dismiss="modal"
+//             >Cancelar</button>
+//             <button
+//               type="button"
+//               class="btn btn-primary"
+//               id="btn-edit"
+//               onclick="saveChanges()"
+//             >Guardar</button>
+//           </div>
+//         </div>
+//       </div>
+//     </div>`;
+//     })
+//     .join("");
+// });

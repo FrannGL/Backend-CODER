@@ -9,5 +9,4 @@ cartsRouter.post("/:cid/products/:pid", checkCart, checkUser, cartsController.ad
 cartsRouter.put("/:cid/products/:pid", cartsController.updateProductQuantity);
 cartsRouter.delete("/:cid/products/:pid", cartsController.deleteProduct);
 cartsRouter.delete("/:cid", cartsController.emptyCart);
-
 cartsRouter.post("/:cid/purchase", checkCart, checkUser, ticketsController.create);
