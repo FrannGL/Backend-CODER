@@ -29,6 +29,8 @@ import { errorHandler } from "./middlewares/main.js";
 import CustomError from "./services/errors/custom-error.js";
 import Errors from "./services/errors/enums.js";
 import { logger } from "./utils/main.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
 
 // CONFIG BASICAS Y CONEXION A DB
 const app = express();
@@ -78,6 +80,21 @@ iniPassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
+// SWAGGER DOCUMENTATION
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Documentación Fuego Burgers API",
+      description: "Tienda Online de Hamburguesas",
+    },
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`],
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
+app.use("/api/doc", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
+
 // ENDPOINTS
 app.use("/api/products", productsApiRouter);
 app.use("/api/carts", cartsApiRouter);
@@ -86,21 +103,14 @@ app.use("/api/mockingproducts", mockingProductsRouter);
 app.use("/loggerTest", loggers);
 app.use("/api/tickets", apiTickets);
 app.use("/api/sessions", sessionsRouter);
-app.get(
-  "/api/sessions/github",
-  passport.authenticate("github", { scope: ["user:email"] }),
-);
-app.get(
-  "/api/sessions/githubcallback",
-  passport.authenticate("github", { failureRedirect: "/error" }),
-  (req, res) => {
-    req.session.user = {
-      firstName: req.user.firstName,
-      role: req.user.role,
-    };
-    res.redirect("/home");
-  },
-);
+app.get("/api/sessions/github", passport.authenticate("github", { scope: ["user:email"] }));
+app.get("/api/sessions/githubcallback", passport.authenticate("github", { failureRedirect: "/error" }), (req, res) => {
+  req.session.user = {
+    firstName: req.user.firstName,
+    role: req.user.role,
+  };
+  res.redirect("/home");
+});
 // PLANTILLAS
 app.use("/", login);
 app.use("/home", home);
