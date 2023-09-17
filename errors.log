@@ -96,3 +96,31 @@
 2023-09-04T01:11:43.485Z error: Invalid credentials
 2023-09-04T01:12:06.737Z error: User already exists
 2023-09-04T01:12:11.341Z error: Cannot read properties of null (reading 'products')
+2023-09-16T23:07:07.062Z error: products validation failed: title: Path `title` is required., description: Path `description` is required., category: Path `category` is required., code: Path `code` is required., price: Path `price` is required., stock: Path `stock` is required., thumbnail: Path `thumbnail` is required.
+2023-09-16T23:07:07.065Z error: Cannot read properties of undefined (reading '_id')
+2023-09-17T00:06:18.962Z error: Cast to ObjectId failed for value "nwhaMJX0ZwyerCRlrCHI1XtoP" (type string) at path "_id" for model "products"
+2023-09-17T00:06:18.963Z error: Cast to ObjectId failed for value "nwhaMJX0ZwyerCRlrCHI1XtoP" (type string) at path "_id" for model "products"
+2023-09-17T00:07:11.973Z error: Cast to ObjectId failed for value "nwhaMJX0ZwyerCRlrCHI1XtoP" (type string) at path "_id" for model "products"
+2023-09-17T00:07:11.975Z error: Cast to ObjectId failed for value "nwhaMJX0ZwyerCRlrCHI1XtoP" (type string) at path "_id" for model "products"
+2023-09-17T00:07:54.698Z error: Cast to ObjectId failed for value "nwhaMJX0ZwyerCRlrCHI1XtoP" (type string) at path "_id" for model "products"
+2023-09-17T00:07:54.699Z error: Cast to ObjectId failed for value "nwhaMJX0ZwyerCRlrCHI1XtoP" (type string) at path "_id" for model "products"
+2023-09-17T00:24:45.096Z error: Invalid credentials
+2023-09-17T00:24:45.099Z error: Invalid credentials
+2023-09-17T00:27:06.205Z error: Invalid credentials
+2023-09-17T00:27:06.208Z error: Invalid credentials
+2023-09-17T00:32:08.504Z error: Invalid credentials
+2023-09-17T00:32:08.506Z error: Invalid credentials
+2023-09-17T00:33:14.984Z error: Invalid credentials
+2023-09-17T00:33:14.987Z error: Invalid credentials
+2023-09-17T00:33:37.426Z error: Invalid credentials
+2023-09-17T00:33:37.429Z error: Invalid credentials
+2023-09-17T00:38:04.407Z error: Cannot destructure property 'firstName' of 'req.session.user' as it is undefined.
+2023-09-17T00:38:09.997Z error: Cannot destructure property 'firstName' of 'req.session.user' as it is undefined.
+2023-09-17T00:43:11.035Z error: Invalid credentials
+2023-09-17T00:43:11.038Z error: Invalid credentials
+2023-09-17T00:43:24.835Z error: Invalid credentials
+2023-09-17T00:43:24.851Z error: Invalid credentials
+2023-09-17T00:44:18.909Z error: Invalid credentials
+2023-09-17T00:44:18.911Z error: Invalid credentials
+2023-09-17T00:47:11.058Z error: Invalid credentials
+2023-09-17T00:47:11.061Z error: Invalid credentials
