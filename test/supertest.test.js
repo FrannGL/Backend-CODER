@@ -76,13 +76,15 @@ describe("TEST API", () => {
       expect(_body.payload).to.be.an.instanceof(Array);
     });
     it("POST", async () => {
-      const response = await requester.post("api/carts/BpK57ZOIQBmqd2wjRdLk5yxSy/products/65063bfab17d31351bc0594f");
+      const cartId = "nwhaMJX0ZwyerCRlrCHI1XtoP";
+      const prodId = "647b6a362a2deaefe1fc2846";
+      const response = await requester.post(`api/carts/${cartId}/products/${prodId}`);
       if (response.error) {
         throw new Error(response.error.message);
       }
-      const { status } = response;
+      const { status, _body } = response;
       expect(status).to.equal(200);
-      expect(_body.payload).to.have.property("_id");
+      expect(_body.payload.cart).to.have.property("_id");
     });
     it("PUT", async () => {
       const cartId = "nwhaMJX0ZwyerCRlrCHI1XtoP";
@@ -105,9 +107,10 @@ describe("TEST API", () => {
       const { status, _body } = response;
       expect(status).to.equal(200);
       expect(_body.message).to.have.eql("Cart updated successfully");
+      expect(_body.cart).to.have.property("_id");
     });
     it("DELETE", async () => {
-      const cartIdToDelete = "gcTRQdsS3WwukCWDYiDAgSfmf";
+      const cartIdToDelete = "nwhaMJX0ZwyerCRlrCHI1XtoP";
       const response = await requester.delete(`api/carts/${cartIdToDelete}`);
       if (response.error) {
         throw new Error(response.error.message);
