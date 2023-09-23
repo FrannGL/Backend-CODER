@@ -125,3 +125,23 @@
 2023-09-17T00:47:11.058Z error: Invalid credentials
 2023-09-17T00:47:11.061Z error: Invalid credentials
 2023-09-21T21:51:28.751Z error: Cast to ObjectId failed for value "jkj2jjj5j6jk2" (type string) at path "_id" for model "products"
+2023-09-23T21:21:24.590Z error: User already exists
+2023-09-23T21:21:24.594Z error: User already exists
+2023-09-23T21:24:10.979Z error: User already exists
+2023-09-23T21:24:10.982Z error: User already exists
+2023-09-23T21:24:53.842Z error: User already exists
+2023-09-23T21:24:53.845Z error: User already exists
+2023-09-23T21:25:46.644Z error: User already exists
+2023-09-23T21:25:46.646Z error: User already exists
+2023-09-23T21:26:13.843Z error: User already exists
+2023-09-23T21:26:13.845Z error: User already exists
+2023-09-23T21:26:57.274Z error: User already exists
+2023-09-23T21:26:57.276Z error: User already exists
+2023-09-23T21:27:35.600Z error: User already exists
+2023-09-23T21:27:35.603Z error: User already exists
+2023-09-23T21:27:56.274Z error: User already exists
+2023-09-23T21:27:56.276Z error: User already exists
+2023-09-23T21:28:18.928Z error: User already exists
+2023-09-23T21:28:18.930Z error: User already exists
+2023-09-23T21:28:46.066Z error: User already exists
+2023-09-23T21:28:46.068Z error: User already exists
