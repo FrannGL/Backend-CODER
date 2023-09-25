@@ -112,5 +112,15 @@ class UserService {
       throw e;
     }
   }
+
+  async postDocuments(uid, file) {
+    try {
+      const updatedUser = await usersModel.postDocuments(uid, file);
+      return updatedUser;
+    } catch (e) {
+      logger.error(e.message);
+      throw e;
+    }
+  }
 }
 export const userService = new UserService();

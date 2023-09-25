@@ -136,4 +136,4 @@ app.get("*", (req, res, next) => {
   }
 });
 
-app.use(errorHandler);
+// app.use(errorHandler);

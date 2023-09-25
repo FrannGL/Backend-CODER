@@ -19,6 +19,13 @@ const schema = new Schema({
     type: [String],
     default: [],
   },
+  documents: [
+    {
+      name: { type: String, required: true },
+      reference: { type: String, required: true },
+    },
+  ],
+  last_connection: { type: Date, default: null },
 });
 
 export const UsersMongoose = model("users", schema);

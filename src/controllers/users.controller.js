@@ -155,6 +155,27 @@ class UserController {
       res.status(404).json({ error: e.message });
     }
   }
+
+  async postDocuments(req, res) {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ status: "error", msg: "No se ha proporcionado un archivo." });
+      }
+
+      const { uid } = req.params;
+      const file = req.file;
+      const userUpdated = await userService.postDocuments(uid, file);
+
+      return res.status(200).render("login");
+    } catch (e) {
+      console.error(e.message);
+      return res.status(500).json({
+        status: "error",
+        msg: "Error al subir la imagen de perfil.",
+        error: e.message,
+      });
+    }
+  }
 }
 
 export const usersController = new UserController();
