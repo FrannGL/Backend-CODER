@@ -566,3 +566,14 @@ ul li {
   align-items: center;
   gap: 20px;
 }
+
+.editar-rol {
+  width: 120px;
+  height: auto;
+  padding: 0;
+  margin: 0;
+}
+
+.eliminar-usuario {
+  width: 150px;
+}

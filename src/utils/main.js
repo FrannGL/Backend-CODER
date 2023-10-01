@@ -149,6 +149,35 @@ export const logger = winston.createLogger({
   ],
 });
 
+// EMAIL CON MODEMAILER
+import nodemailer from "nodemailer";
+
+const transport = nodemailer.createTransport({
+  service: "gmail",
+  port: 587,
+  auth: {
+    user: process.env.GOOGLE_EMAIL,
+    pass: process.env.GOOGLE_PASS,
+  },
+});
+
+// Función para enviar correo electrónico con contenido HTML dinámico
+export async function sendEmail(to, subject, htmlContent) {
+  try {
+    const result = await transport.sendMail({
+      from: process.env.GOOGLE_EMAIL,
+      to: to,
+      subject: subject,
+      html: htmlContent,
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error al enviar el correo electrónico:", error);
+    throw error;
+  }
+}
+
 // MULTER
 import multer from "multer";
 import { __dirname } from "../app.js";

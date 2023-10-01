@@ -1,6 +1,7 @@
 import UsersDTO from "./DTO/users.dto.js";
 import { userService } from "../services/users.service.js";
 import { logger } from "../utils/main.js";
+import { sendEmail } from "../utils/main.js";
 
 class UserController {
   async read(req, res) {
@@ -9,6 +10,24 @@ class UserController {
       return res.status(200).json({
         status: "success",
         msg: "listado de usuarios",
+        payload: users,
+      });
+    } catch (e) {
+      logger.error(e.message);
+      return res.status(500).json({
+        status: "error",
+        msg: "something went wrong :(",
+        payload: {},
+      });
+    }
+  }
+
+  async readBasicInfo(req, res) {
+    try {
+      const users = await userService.readBasicInfo();
+      return res.status(200).json({
+        status: "success",
+        msg: "listado de usuarios (información básica)",
         payload: users,
       });
     } catch (e) {
@@ -123,6 +142,37 @@ class UserController {
     }
   }
 
+  async deleteInactiveUsers(req, res) {
+    try {
+      const deletedUsers = await userService.deleteInactiveUsers();
+
+      for (const user of deletedUsers) {
+        const to = user.email;
+        const subject = "Cuenta eliminada por inactividad";
+        const htmlContent = `
+        <div>
+          <h1>Hola ${user.firstName || "Usuario"},</h1>
+          <p>Tu cuenta ha sido eliminada debido a la inactividad durante los últimos 2 días.</p>
+          <p>Fuego Burgers</p>
+        </div>
+      `;
+        await sendEmail(to, subject, htmlContent);
+      }
+      return res.status(200).json({
+        status: "success",
+        msg: "Usuarios inactivos eliminados y notificados por correo electrónico",
+        payload: deletedUsers,
+      });
+    } catch (e) {
+      logger.error(e.message);
+      return res.status(500).json({
+        status: "error",
+        msg: "something went wrong :(",
+        payload: {},
+      });
+    }
+  }
+
   async loginUser(email, password) {
     try {
       const user = await userService.authenticateUser(email, password);
@@ -150,6 +200,17 @@ class UserController {
       const userId = req.params.uid;
       const user = await userService.premiumSwitch(userId);
       req.session.user.premium = user.premium;
+      res.status(200).json(user);
+    } catch (e) {
+      res.status(404).json({ error: e.message });
+    }
+  }
+
+  async rolSwitch(req, res) {
+    try {
+      const userId = req.params.uid;
+      const user = await userService.rolSwitch(userId);
+      req.session.user.role = user.role;
       res.status(200).json(user);
     } catch (e) {
       res.status(404).json({ error: e.message });

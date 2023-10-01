@@ -31,6 +31,15 @@ class UserService {
     }
   }
 
+  async readBasicInfo() {
+    try {
+      const users = await usersModel.readBasicInfo();
+      return users;
+    } catch (e) {
+      logger.error(e.message);
+    }
+  }
+
   async readById(_id) {
     try {
       const user = await usersModel.readById(_id);
@@ -60,6 +69,24 @@ class UserService {
       return userDeleted;
     } catch (e) {
       logger.error(e.message);
+    }
+  }
+
+  async deleteInactiveUsers() {
+    try {
+      const thresholdDays = 2; // Establece el umbral de días en 2
+      const currentDate = new Date();
+
+      // Encuentra a los usuarios inactivos que han estado inactivos durante más de dos días
+      const deletedUsers = await usersModel.findInactiveUsers(thresholdDays, currentDate);
+
+      // Elimina a los usuarios inactivos
+      await usersModel.deleteInactiveUsers(deletedUsers);
+
+      return deletedUsers;
+    } catch (e) {
+      logger.error(e.message);
+      throw e;
     }
   }
 
@@ -106,6 +133,25 @@ class UserService {
       }
       user.premium = !user.premium;
       const updatedUser = await this.update(userId, { premium: user.premium });
+      return updatedUser;
+    } catch (e) {
+      logger.error(e.message);
+      throw e;
+    }
+  }
+
+  async rolSwitch(userId) {
+    try {
+      const user = await this.readById(userId);
+      if (!user) {
+        throw new Error("Usuario inexistente");
+      }
+      if (user.role === "admin") {
+        user.role = "user";
+      } else if (user.role === "user") {
+        user.role = "admin";
+      }
+      const updatedUser = await this.update(userId, { role: user.role });
       return updatedUser;
     } catch (e) {
       logger.error(e.message);

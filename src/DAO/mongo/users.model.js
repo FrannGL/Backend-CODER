@@ -1,5 +1,6 @@
 import { UsersMongoose } from "../mongo/models/users.mongoose.js";
 import { logger } from "../../utils/main.js";
+import { subDays } from "date-fns";
 
 class UsersModel {
   async readOne(email) {
@@ -44,6 +45,24 @@ class UsersModel {
           purchase_made: true,
           last_connection: true,
           documents: true,
+        },
+      );
+      return users;
+    } catch (e) {
+      logger.error(e.message);
+    }
+  }
+
+  async readBasicInfo() {
+    try {
+      const users = await UsersMongoose.find(
+        {},
+        {
+          _id: false,
+          firstName: true,
+          lastName: true,
+          email: true,
+          role: true,
         },
       );
       return users;
@@ -97,6 +116,34 @@ class UsersModel {
       return deletedUser;
     } catch (e) {
       logger.error(e.message);
+    }
+  }
+
+  async findInactiveUsers(thresholdDays, currentDate) {
+    try {
+      // Encuentra a los usuarios inactivos que han estado inactivos durante más de dos días
+      const deletedUsers = await UsersMongoose.find({
+        last_connection: { $lt: subDays(currentDate, thresholdDays) },
+      });
+
+      console.log(deletedUsers);
+
+      return deletedUsers;
+    } catch (e) {
+      logger.error(e.message);
+      throw e;
+    }
+  }
+
+  async deleteInactiveUsers(usersToDelete) {
+    try {
+      // Elimina a los usuarios inactivos
+      await UsersMongoose.deleteMany({
+        _id: { $in: usersToDelete.map(user => user._id) },
+      });
+    } catch (e) {
+      logger.error(e.message);
+      throw e;
     }
   }
 

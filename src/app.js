@@ -18,6 +18,7 @@ import { home } from "./routes/home.router.js";
 import { loggers } from "./routes/loggers.router.js";
 import { login } from "./routes/login.router.js";
 import { mockingProductsRouter } from "./routes/mocking-products.router.js";
+import { sendEmailRouter } from "./routes/sendEmail.router.js";
 import { productsAdminRouter } from "./routes/products-admin-router.js";
 import { productsApiRouter } from "./routes/products-api.router.js";
 import { productsRouter } from "./routes/products.router.js";
@@ -101,6 +102,7 @@ app.use("/api/carts", cartsApiRouter);
 app.use("/api/users", usersApiRouter);
 app.use("/api/mockingproducts", mockingProductsRouter);
 app.use("/loggerTest", loggers);
+app.use("/send-email", sendEmailRouter);
 app.use("/api/tickets", apiTickets);
 app.use("/api/sessions", sessionsRouter);
 app.get("/api/sessions/github", passport.authenticate("github", { scope: ["user:email"] }));
@@ -136,4 +138,4 @@ app.get("*", (req, res, next) => {
   }
 });
 
-// app.use(errorHandler);
+app.use(errorHandler);
