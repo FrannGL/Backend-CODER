@@ -225,3 +225,4 @@
 2023-10-01T22:16:25.884Z error: role is not defined
 2023-10-01T22:16:55.896Z error: role is not defined
 2023-10-01T22:17:22.704Z error: role is not defined
+2023-10-01T22:24:22.415Z error: Cannot destructure property 'firstName' of 'req.session.user' as it is undefined.

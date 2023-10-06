@@ -1,55 +1,60 @@
-const socket = io();
+// ADMINISTRADOR DE PRODUCTOS  ----> CREAR PRODUCTO
 
-const inputTitle = document.getElementById("input-title");
-const inputDescription = document.getElementById("input-description");
-const inputCategory = document.getElementById("input-category");
-const inputPrice = document.getElementById("input-price");
-const inputThumbnail = document.getElementById("input-thumbnail");
-const inputCode = document.getElementById("input-code");
-const inputStock = document.getElementById("input-stock");
+const addProductForm = document.getElementById("addProductForm");
+const btnSubmit = document.getElementById("btnSubmit");
 
-const addProduct = document.getElementById("addProductForm");
-const deleteButtons = document.querySelectorAll(".btnDelete");
-const editButtons = document.querySelectorAll(".btnEdit");
-const cardId = document.getElementById("card-id");
-const container = document.getElementById("dinamic-list");
+addProductForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+  addProduct();
+});
 
-function setModalTitle(id) {
-  const modalTitle = document.getElementById("exampleModalLabel");
-  modalTitle.innerText = "Editar Producto con el ID " + id;
+function addProduct() {
+  const inputTitle = document.getElementById("input-title");
+  const inputDescription = document.getElementById("input-description");
+  const inputCategory = document.getElementById("input-category");
+  const inputPrice = document.getElementById("input-price");
+  const inputThumbnail = document.getElementById("input-thumbnail");
+  const inputCode = document.getElementById("input-code");
+  const inputStock = document.getElementById("input-stock");
+
+  const newProduct = {
+    title: inputTitle.value,
+    description: inputDescription.value,
+    category: inputCategory.value,
+    price: parseFloat(inputPrice.value),
+    thumbnail: inputThumbnail.value,
+    code: inputCode.value,
+    stock: parseInt(inputStock.value),
+  };
+
+  fetch("/api/products", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newProduct),
+  })
+    .then(response => {
+      if (response.ok) {
+        Swal.fire({
+          title: "Agregado",
+          text: "El producto ha sido creado correctamente.",
+          icon: "success",
+          timer: 3000,
+          showConfirmButton: true,
+        }).then(() => {
+          location.reload();
+        });
+      } else {
+        Swal.fire("Error", "No se pudo agregar el producto.", "error");
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
 }
 
 function saveChanges() {
-  const id = window.localStorage.getItem("id");
-
-  const inputEditTitle = document.getElementById("input-editTitle");
-  const inputEditDescription = document.getElementById("input-editDescription");
-  const inputEditCategory = document.getElementById("input-editCategory");
-  const inputEditPrice = document.getElementById("input-editPrice");
-  const inputEditThumbnail = document.getElementById("input-editThumbnail");
-  const inputEditCode = document.getElementById("input-editCode");
-  const inputEditStock = document.getElementById("input-editStock");
-
-  const newProduct = {
-    title: inputEditTitle.value,
-    description: inputEditDescription.value,
-    category: inputEditCategory.value,
-    price: inputEditPrice.value,
-    thumbnail: inputEditThumbnail.value,
-    code: inputEditCode.value,
-    stock: inputEditStock.value,
-  };
-
-  socket.emit("productModified", id, newProduct);
-
-  Swal.fire({
-    position: "center",
-    icon: "success",
-    title: "Producto Modificado",
-    showConfirmButton: true,
-    confirmButtonColor: "#0d6efd",
-    timer: 1500,
-  });
   const modalElement = document.getElementById("exampleModal");
   const modalInstance = bootstrap.Modal.getInstance(modalElement);
   modalInstance.hide();
@@ -62,7 +67,146 @@ function saveChanges() {
   });
 }
 
-// AUMENTAR O DISMINUIR CANTIDAD
+// ADMINISTRADOR DE PRODUCTOS  ----> EDITAR PRODUCTO
+
+// DETECTAR ID EN MODAL
+function setModalTitle(id) {
+  const modalTitle = document.getElementById("exampleModalLabel");
+  modalTitle.innerText = "Editar Producto con el ID " + id;
+}
+
+function editProduct(productId) {
+  Swal.fire({
+    title: "¿Estás seguro de editar este producto?",
+    text: "Esta acción modificará el producto.",
+    icon: "info",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, editar",
+    cancelButtonText: "Cancelar",
+  }).then(result => {
+    if (result.isConfirmed) {
+      const editTitle = document.getElementById("input-editTitle").value;
+      const editDescription = document.getElementById("input-editDescription").value;
+      const editCategory = document.getElementById("input-editCategory").value;
+      const editPrice = parseFloat(document.getElementById("input-editPrice").value);
+      const editThumbnail = document.getElementById("input-editThumbnail").value;
+      const editCode = document.getElementById("input-editCode").value;
+      const editStock = parseInt(document.getElementById("input-editStock").value);
+
+      const editedProduct = {
+        title: editTitle,
+        description: editDescription,
+        category: editCategory,
+        price: editPrice,
+        thumbnail: editThumbnail,
+        code: editCode,
+        stock: editStock,
+      };
+
+      fetch(`/api/products/${productId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editedProduct),
+      })
+        .then(response => {
+          if (response.ok) {
+            Swal.fire({
+              title: "Editado",
+              text: "El producto ha sido editado correctamente.",
+              icon: "success",
+              timer: 3000,
+              showConfirmButton: true,
+            }).then(() => {
+              location.reload();
+            });
+          } else {
+            Swal.fire("Error", "No se pudo editar el producto.", "error");
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+    }
+  });
+}
+
+// ADMINISTRADOR DE PRODUCTOS  ----> ELIMINAR PRODUCTO
+
+function deleteProduct(productId) {
+  Swal.fire({
+    title: "¿Estás seguro?",
+    text: "Esta acción no se puede deshacer.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+  }).then(result => {
+    if (result.isConfirmed) {
+      fetch(`/api/products/${productId}`, {
+        method: "DELETE",
+      })
+        .then(response => {
+          if (response.ok) {
+            Swal.fire({
+              title: "Eliminado",
+              text: "El producto ha sido eliminado.",
+              icon: "success",
+              timer: 3000,
+              showConfirmButton: true,
+            }).then(() => {
+              location.reload();
+            });
+          } else {
+            Swal.fire("Error", "No se pudo eliminar el producto.", "error");
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+    }
+  });
+}
+
+// ADMINISTRADOR DE PRODUCTOS  ----> FUNCION PARA RECORRER BOTONES Y GUARDAR CAMBIOS AL EDITAR / ELIMINAR
+
+document.addEventListener("DOMContentLoaded", function () {
+  const deleteButtons = document.querySelectorAll(".btnDelete");
+  const editButtons = document.querySelectorAll(".btnEdit");
+  let productIdToEdit = null;
+
+  deleteButtons.forEach(button => {
+    button.addEventListener("click", function (event) {
+      event.preventDefault();
+      const productId = this.getAttribute("data-id");
+      deleteProduct(productId);
+    });
+  });
+
+  editButtons.forEach(button => {
+    button.addEventListener("click", function (event) {
+      event.preventDefault();
+      const productId = this.getAttribute("data-id");
+      productIdToEdit = productId;
+    });
+  });
+
+  const btnSaveEdit = document.getElementById("btn-edit");
+  btnSaveEdit.addEventListener("click", function () {
+    if (productIdToEdit !== null) {
+      editProduct(productIdToEdit);
+    } else {
+      alert("No se ha seleccionado un producto para editar.");
+    }
+  });
+});
+
+// CARRITO DE COMPRAS -----> AUMENTAR O DISMINUIR CANTIDAD EN FRONT
 document.addEventListener("DOMContentLoaded", () => {
   const cartItems = document.querySelectorAll(".cartItem");
   const totalCartElement = document.querySelector(".totalCart span");
@@ -84,6 +228,8 @@ document.addEventListener("DOMContentLoaded", () => {
     cantidadElement.textContent = cantidad.toString();
     calcularSubtotal(cartItem);
   }
+
+  // CARRITO DE COMPRAS -----> AUMENTAR O DISMINUIR CANTIDAD EN BACKEND
 
   async function actualizarCantidadBackend(cartItem, cantidad) {
     const cartId = document.querySelector(".cartId").textContent;
@@ -459,62 +605,4 @@ editRoleButtons.forEach(button => {
       }
     });
   });
-});
-
-// ADMINISTRADOR DE PRODUCTOS
-
-addProduct.addEventListener("submit", e => {
-  e.preventDefault();
-  const newProduct = {
-    title: inputTitle.value,
-    description: inputDescription.value,
-    category: inputCategory.value,
-    price: inputPrice.value,
-    thumbnail: inputThumbnail.value,
-    code: inputCode.value,
-    stock: inputStock.value,
-  };
-  Swal.fire({
-    position: "center",
-    icon: "success",
-    title: "Producto Creado",
-    showConfirmButton: true,
-    confirmButtonColor: "#000",
-    timer: 1500,
-  });
-  socket.emit("new-product", newProduct);
-});
-
-container.addEventListener("click", event => {
-  if (event.target.classList.contains("btnEdit")) {
-    const button = event.target;
-    const cardId = button.getAttribute("data-id");
-    window.localStorage.setItem("id", cardId);
-
-    const modalElement = document.getElementById("exampleModal");
-    const modal = new bootstrap.Modal(modalElement);
-    modal.show();
-  }
-
-  if (event.target.classList.contains("btnDelete")) {
-    const button = event.target;
-    const cardId = button.dataset.id;
-
-    Swal.fire({
-      title: "¿Estás seguro?",
-      text: "Se eliminará el producto del array original",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#000",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si, borrar",
-      cancelButtonText: "Cancelar",
-    }).then(result => {
-      if (result.isConfirmed) {
-        const productId = cardId;
-        socket.emit("delete-product", productId);
-        Swal.fire("Hecho!", "Eliminaste el producto", "success");
-      }
-    });
-  }
 });

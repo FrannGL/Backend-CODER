@@ -2,6 +2,7 @@ import ProductsDTO from "./DTO/products.dto.js";
 import { productService } from "../services/products.service.js";
 import { cartService } from "../services/carts.service.js";
 import { logger } from "../utils/main.js";
+import { sendEmail } from "../utils/main.js";
 import env from "../config/enviroment.config.js";
 
 class ProductsController {
@@ -145,6 +146,7 @@ class ProductsController {
   async create(req, res) {
     try {
       const { title, description, category, price, thumbnail, code, stock } = req.body;
+      let productOwner = req.session.user.email;
       let product = new ProductsDTO({
         title,
         description,
@@ -153,6 +155,7 @@ class ProductsController {
         thumbnail,
         code,
         stock,
+        owner: productOwner,
       });
       const ProductCreated = await productService.create(product);
       return res.status(201).json({
@@ -232,6 +235,21 @@ class ProductsController {
       const result = await productService.delete(_id);
 
       if (result?.deletedCount > 0) {
+        const isPremium = req.session.user.premium;
+
+        if (isPremium) {
+          const userEmail = req.session.user.email;
+          const subject = "Producto Eliminado";
+          const htmlContent = `El producto con ID ${_id} ha sido eliminado de tu cuenta premium.`;
+
+          try {
+            await sendEmail(userEmail, subject, htmlContent);
+            logger.info(`Correo electrónico enviado a ${userEmail}: ${subject}`);
+          } catch (error) {
+            logger.error(`Error al enviar el correo electrónico a ${userEmail}:`, error);
+          }
+        }
+
         return res.status(200).json({
           status: "success",
           msg: "Producto Eliminado",
