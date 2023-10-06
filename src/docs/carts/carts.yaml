@@ -1,3 +1,7 @@
+openapi: 3.0.0
+info:
+  title: Documentación de la API de Carritos de Compra
+  version: 1.0.0
 paths:
   /api/carts:
     get:
@@ -10,28 +14,96 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#components/schemas/Cart"
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la respuesta (success en este caso)
+                  payload:
+                    type: array
+                    items:
+                      $ref: "#components/schemas/Cart"
+              example:
+                status: success
+                payload:
+                  - id: "rXkhi1VhHkN0Qg84MFadluaTU"
+                    products: []
+                    __v: 0
+                  - id: "zOTWOAXfvgqCVTWg2OUxNxRHc"
+                    products: []
+                    __v: 0
+                  # ... (otros objetos similares)
         "500":
           description: Error del servidor. Usualmente generando la query o falla la conexión a la DB
+  /api/carts/{cartId}/products/{productId}:
     post:
-      summary: Crea un nuevo carrito de compra
+      summary: Agrega un producto al carrito de compra mediante el ID del carrito y el ID del producto
       tags:
         - Carts
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#components/requestBodies/createCart"
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: ID del carrito de compra al que se desea agregar el producto
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          description: ID del producto a agregar al carrito
+          schema:
+            type: string
       responses:
         "201":
-          description: Carrito de compra creado exitosamente
+          description: Producto agregado exitosamente al carrito de compra
           content:
             application/json:
               schema:
-                $ref: "#components/schemas/Cart"
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la respuesta (success en este caso)
+                  payload:
+                    type: object
+                    properties:
+                      cart:
+                        type: object
+                        properties:
+                          _id:
+                            type: string
+                            description: ID del carrito de compra
+                          products:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                product:
+                                  type: string
+                                  description: ID del producto en el carrito
+                                quantity:
+                                  type: number
+                                  description: Cantidad del producto en el carrito
+                                _id:
+                                  type: string
+                                  description: ID del producto en el carrito (opcional)
+                          __v:
+                            type: integer
+                            description: Versión del documento (opcional)
+                      cartQuantity:
+                        type: integer
+                        description: Cantidad de carritos creados
+                example:
+                  status: success
+                  payload:
+                    cart:
+                      _id: "yq4XLXuLFL5WNBF7pVunNxQYl"
+                      products:
+                        - product: "647b6a0c2a2deaefe1fc283c"
+                          quantity: 1
+                          _id: "6520040582d80d8f338e2024"
+                      __v: 4
+                    cartQuantity: 1
   /api/carts/{cartId}:
     get:
       summary: Obtiene un carrito de compra por ID
@@ -43,7 +115,7 @@ paths:
           required: true
           description: ID del carrito de compra que se busca
           schema:
-            $type: string
+            type: string
       responses:
         "200":
           description: Carrito de compra encontrado
@@ -63,7 +135,7 @@ paths:
           required: true
           description: ID del carrito de compra que se busca
           schema:
-            $type: string
+            type: string
       requestBody:
         required: true
         content:
@@ -91,7 +163,7 @@ paths:
           required: true
           description: ID del carrito de compra que se desea eliminar
           schema:
-            $type: string
+            type: string
       responses:
         "204":
           description: Carrito de compra eliminado exitosamente
@@ -133,25 +205,6 @@ components:
           - product: "12345"
             quantity: 2
   requestBodies:
-    createCart:
-      type: object
-      properties:
-        items:
-          type: array
-          description: Lista de productos en el carrito
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                description: ID del producto a agregar al carrito
-              quantity:
-                type: number
-                description: Cantidad del producto a agregar al carrito
-      example:
-        products:
-          - id: "54321"
-            quantity: 3
     updateCart:
       type: object
       properties:

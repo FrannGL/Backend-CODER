@@ -70,13 +70,13 @@ class CartsController {
   async addProduct(req, res) {
     try {
       const { cid, pid } = req.params;
-      const userEmail = req.session.user.email;
-      const product = await productService.readById(pid);
+      // const userEmail = req.session.user.email;
+      // const product = await productService.readById(pid);
 
-      if (product.owner === userEmail) {
-        logger.error("No puedes agregar un producto que hayas creado.");
-        return res.status(403).json({ error: "No puedes agregar tu propio producto a tu carrito." });
-      }
+      // if (product.owner === userEmail) {
+      //   logger.error("No puedes agregar un producto que hayas creado.");
+      //   return res.status(403).json({ error: "No puedes agregar tu propio producto a tu carrito." });
+      // }
 
       const cart = await cartService.addProduct(cid, pid);
       res.status(200).json({

@@ -2,11 +2,10 @@ import express from "express";
 export const cartsApiRouter = express.Router();
 import { cartsController } from "../controllers/carts.controller.js";
 
-cartsApiRouter.post("/:cid/products/:pid", cartsController.addProduct);
-cartsApiRouter.post("/:cid/purcharse");
-cartsApiRouter.get("/", cartsController.read);
-cartsApiRouter.get("/:cid", cartsController.readById);
-cartsApiRouter.put("/:cid", cartsController.updateCart);
-cartsApiRouter.put("/:cid/products/:pid", cartsController.updateProductQuantity);
-cartsApiRouter.delete("/:cid", cartsController.emptyCart);
-cartsApiRouter.delete("/:cid/products/:pid", cartsController.deleteProduct);
+cartsApiRouter.post("/:cid/products/:pid", cartsController.addProduct); /* <---- AGREGAR PRODUCTO AL CARRITO */
+cartsApiRouter.get("/", cartsController.read); /* <---- RENDERIZAR TODOS LOS CARRITOS */
+cartsApiRouter.get("/:cid", cartsController.readById); /* <---- RENDERIZAR EL CARRITO POR ID */
+cartsApiRouter.put("/:cid", cartsController.updateCart); /* <---- ACTUALIZAR EL CARRITO */
+cartsApiRouter.put("/:cid/products/:pid", cartsController.updateProductQuantity); /* <---- ACTUALIZAR SOLO LA CANTIDAD DE UN PRODUCTO ESPECIFICO */
+cartsApiRouter.delete("/:cid", cartsController.emptyCart); /* <---- VACIAR CARRITO */
+cartsApiRouter.delete("/:cid/products/:pid", cartsController.deleteProduct); /* <---- ELIMINAR PRODUCTO DEL CARRITO */
