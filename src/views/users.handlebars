@@ -19,7 +19,7 @@
           {{/if}}
           <a href="/home"><img src="/images/logo.png" class="logo" alt="" /></a>
           <h2 class="tituloPrincipal">burguers a la parrilla</h2>
-          <table class="table table-dark table-striped-columns mt-3 w-50 text-center tableContainer">
+          <table class="table table-dark table-striped-columns mt-3 w-75 text-center tableContainer">
             <thead class="tableHead">
               <tr class="table-secondary tableRow">
                 <th scope="col">ID</th>
@@ -28,7 +28,8 @@
                 <th scope="col">AGE</th>
                 <th scope="col">EMAIL</th>
                 <th scope="col">ROL</th>
-                <th scope="col" style="width: 200px;">ACCIONES</th>
+                <th scope="col">LAST CONNECTION</th>
+                <th scope="col">ACCIONES</th>
               </tr>
             </thead>
             {{#each dataParse}}
@@ -40,7 +41,8 @@
                   <td>{{this.age}}</td>
                   <td>{{this.email}}</td>
                   <td>{{this.role}}</td>
-                  <td class="d-flex gap-3">
+                  <td>{{this.last_connection}}</td>
+                  <td class="d-flex justify-content-center w-100 gap-4">
                     <button class="btn btn btn-outline-primary btn-sm editar-rol" data-id="{{this.id}}">EDITAR ROL</button>
                     <button class="btn btn btn-outline-danger btn-sm eliminar-usuario" data-id="{{this.id}}">ELIMINAR
                       USUARIO</button>

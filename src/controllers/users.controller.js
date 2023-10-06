@@ -58,6 +58,8 @@ class UserController {
     try {
       const data = await userService.read();
       const dataParse = data.map(user => {
+        const lastConnection = new Date(user.last_connection);
+        const formattedLastConnection = lastConnection.toLocaleString();
         return {
           id: user._id,
           firstName: user.firstName,
@@ -66,6 +68,7 @@ class UserController {
           email: user.email,
           password: user.password,
           role: user.role,
+          last_connection: formattedLastConnection,
         };
       });
       const firstName = req.session.user.firstName;
