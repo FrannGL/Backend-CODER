@@ -92,7 +92,7 @@ class UserController {
           return res.status(201).json({
             status: "success",
             msg: "user uptaded",
-            payload: {},
+            payload: { userUpdated },
           });
         } else {
           return res.status(404).json({
@@ -121,12 +121,13 @@ class UserController {
   async delete(req, res) {
     try {
       const { _id } = req.params;
+      const userDeleted = await userService.readById(_id);
       const result = await userService.delete(_id);
       if (result?.deletedCount > 0) {
         return res.status(200).json({
           status: "success",
           msg: "user deleted",
-          payload: {},
+          payload: { userDeleted },
         });
       } else {
         return res.status(404).json({
@@ -203,7 +204,13 @@ class UserController {
       const userId = req.params.uid;
       const user = await userService.premiumSwitch(userId);
       req.session.user.premium = user.premium;
-      res.status(200).json(user);
+
+      const responseMessage = `Se ha actualizado correctamente la propiedad premium del usuario a ${req.session.user.premium}`;
+
+      res.status(200).json({
+        message: responseMessage,
+        user: user,
+      });
     } catch (e) {
       res.status(404).json({ error: e.message });
     }
@@ -214,7 +221,13 @@ class UserController {
       const userId = req.params.uid;
       const user = await userService.rolSwitch(userId);
       req.session.user.role = user.role;
-      res.status(200).json(user);
+
+      const responseMessage = `Se ha actualizado correctamente la propiedad rol del usuario a ${req.session.user.role}`;
+
+      res.status(200).json({
+        message: responseMessage,
+        user: user,
+      });
     } catch (e) {
       res.status(404).json({ error: e.message });
     }
@@ -228,9 +241,9 @@ class UserController {
 
       const { uid } = req.params;
       const file = req.file;
-      const userUpdated = await userService.postDocuments(uid, file);
+      await userService.postDocuments(uid, file);
 
-      return res.status(200).render("login");
+      return res.status(200).render("current");
     } catch (e) {
       console.error(e.message);
       return res.status(500).json({
