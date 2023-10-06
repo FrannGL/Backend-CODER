@@ -231,3 +231,7 @@
 2023-10-06T11:51:28.870Z error: Cannot destructure property 'firstName' of 'req.session.user' as it is undefined.
 2023-10-06T11:51:51.879Z error: User already exists
 2023-10-06T11:51:51.879Z error: User already exists
+2023-10-06T15:38:01.465Z error: Cannot read properties of undefined (reading 'email')
+2023-10-06T15:55:48.829Z error: Cannot read properties of undefined (reading 'premium')
+2023-10-06T15:56:23.291Z error: Cannot read properties of undefined (reading 'premium')
+2023-10-06T15:57:24.498Z error: Cannot read properties of undefined (reading 'premium')

@@ -8,6 +8,29 @@ import env from "../config/enviroment.config.js";
 class ProductsController {
   async read(req, res) {
     try {
+      const products = await productService.read();
+      if (!products) {
+        logger.error(`Error al leer los products`);
+        res.status(200).json({
+          status: "error",
+          msg: `Error al leer los products`,
+        });
+      }
+      res.status(200).json({
+        status: "success",
+        payload: products,
+      });
+    } catch (e) {
+      logger.error(e.message);
+      return res.status(500).json({
+        status: "error",
+        msg: "Error en el servidor",
+        payload: {},
+      });
+    }
+  }
+  async readWithPagination(req, res) {
+    try {
       const { limit, pagina, category, orderBy } = req.query;
       const data = await productService.readWithPagination(limit, pagina, category, orderBy);
       const { totalDocs, totalPages, page, hasPrevPage, hasNextPage, prevPage, nextPage } = data;
@@ -146,7 +169,7 @@ class ProductsController {
   async create(req, res) {
     try {
       const { title, description, category, price, thumbnail, code, stock } = req.body;
-      let productOwner = req.session.user.email;
+      // let productOwner = req.session.user.email;
       let product = new ProductsDTO({
         title,
         description,
@@ -155,7 +178,7 @@ class ProductsController {
         thumbnail,
         code,
         stock,
-        owner: productOwner,
+        // owner: productOwner,
       });
       const ProductCreated = await productService.create(product);
       return res.status(201).json({

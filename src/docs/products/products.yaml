@@ -1,100 +1,296 @@
 paths:
   /api/products:
     get:
-      summary: Obtiene todos los productos
+      summary: Obtiene todos los productos disponibles
       tags:
         - Products
       responses:
         "200":
-          description: Los productos fueron devueltos satisfactoriamente
+          description: Productos devueltos exitosamente
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#components/schemas/Product"
+                $ref: "#/components/schemas/ProductListResponse"
+              examples:
+                successResponse:
+                  summary: Respuesta exitosa
+                  value:
+                    status: success
+                    payload:
+                      - _id: "647b6a0c2a2deaefe1fc283c"
+                        title: "TRADI"
+                        description: "Doble medallón de carne vacuna, doble cheddar, lechuga, tomate, cebolla, salsa mc, pan de papa"
+                        price: 3000
+                        thumbnail: "./images/img3.jpg"
+                        code: 1003
+                        stock: 97
+                        __v: 0
+                        category: "Linea Clasica"
+                        owner: "francoivangalluccio@gmail.com"
+                      - _id: "647b6a152a2deaefe1fc283e"
+                        title: "3x3"
+                        description: "Triple medallón de carne vacuna, triple cheddar, pan de papa"
+                        price: 2300
+                        thumbnail: "./images/img4.jpg"
+                        code: 1004
+                        stock: 72
+                        __v: 0
+                        category: "Linea Bajonera"
+                        owner: "francoivangalluccio@gmail.com"
+                      - _id: "647b6a2f2a2deaefe1fc2844"
+                        title: "CRIOLLA"
+                        description: "Doble medallón de carne vacuna, doble provoleta, salsa criolla, tomates cherrys, mayochimi, pan de papa"
+                        price: 2350
+                        thumbnail: "./images/img7.jpg"
+                        code: 1007
+                        stock: 99
+                        __v: 0
+                        category: "Linea Bajonera"
+                        owner: "francoivangalluccio@gmail.com"
         "500":
           description: Error del servidor. Usualmente generando la query o falla la conexión a la DB
     post:
       summary: Crea un nuevo producto
       tags:
         - Products
+      security:
+        - bearerAuth: [] # Asegura que el usuario esté autenticado
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#components/requestBodies/createProduct"
+              $ref: "#/components/requestBodies/createProduct"
       responses:
         "201":
           description: Producto creado exitosamente
           content:
             application/json:
               schema:
-                $ref: "#components/schemas/Product"
-  /api/products/{pid}:
+                $ref: "#/components/schemas/ProductResponse"
+              examples:
+                successResponse:
+                  summary: Respuesta exitosa
+                  value:
+                    status: success
+                    msg: Producto Creado
+                    payload:
+                      _id: "65202a558200b2e032fc4cd6"
+                      title: "Producto de prueba"
+                      description: "Esta es una descripción de prueba"
+                      category: "Electrónica"
+                      price: 29.99
+                      thumbnail: "https://ejemplo.com/imagen.jpg"
+                      code: 1234
+                      stock: 10
+        "400":
+          description: Error de solicitud. Puede ser debido a datos de entrada incorrectos.
+        "401":
+          description: No autorizado. Solo los administradores o usuarios premium pueden realizar esta acción.
+        "500":
+          description: Error del servidor. Usualmente, falla en la creación del producto o no pasa la validacion de campos requeridos.
+  /api/products/paginate:
     get:
-      summary: Obtiene un Producto
+      summary: Obtiene una lista de productos paginados
       tags:
         - Products
       parameters:
-        - name: pid
+        - name: limit
+          in: query
+          required: false
+          description: Cantidad máxima de productos por página (por defecto 5)
+          schema:
+            type: integer
+            default: 5
+        - name: pagina
+          in: query
+          required: false
+          description: Número de página (por defecto 1)
+          schema:
+            type: integer
+            default: 1
+      responses:
+        "200":
+          description: Productos devueltos exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedProductListResponse"
+              examples:
+                successResponse:
+                  summary: Respuesta exitosa
+                  value:
+                    status: success
+                    msg: Mostrando los 5 productos
+                    payload:
+                      - _id: "647b6a0c2a2deaefe1fc283c"
+                        title: "TRADI"
+                        description: "Doble medallón de carne vacuna, doble cheddar, lechuga, tomate, cebolla, salsa mc, pan de papa"
+                        price: 3000
+                        thumbnail: "./images/img3.jpg"
+                        code: 1003
+                        stock: 97
+                        __v: 0
+                        category: "Linea Clasica"
+                        owner: "francoivangalluccio@gmail.com"
+                      - _id: "647b6a152a2deaefe1fc283e"
+                        title: "3x3"
+                        description: "Triple medallón de carne vacuna, triple cheddar, pan de papa"
+                        price: 2300
+                        thumbnail: "./images/img4.jpg"
+                        code: 1004
+                        stock: 72
+                        __v: 0
+                        category: "Linea Bajonera"
+                        owner: "francoivangalluccio@gmail.com"
+                      - _id: "647b6a2f2a2deaefe1fc2844"
+                        title: "CRIOLLA"
+                        description: "Doble medallón de carne vacuna, doble provoleta, salsa criolla, tomates cherrys, mayochimi, pan de papa"
+                        price: 2350
+                        thumbnail: "./images/img7.jpg"
+                        code: 1007
+                        stock: 99
+                        __v: 0
+                        category: "Linea Bajonera"
+                        owner: "francoivangalluccio@gmail.com"
+                      - _id: "647b6a362a2deaefe1fc2846"
+                        title: "KING ONION"
+                        description: "Doble medallón de carne vacuna, doble cheddar, bacon, aros de cebolla, salsa secreta, pan de papa"
+                        price: 2350
+                        thumbnail: "./images/img8.jpg"
+                        code: 1008
+                        stock: 99
+                        __v: 0
+                        category: "Linea Bajonera"
+                        owner: "adminCoder@coder.com"
+                      - _id: "647b6a402a2deaefe1fc2848"
+                        title: "KING BLUE CHESSE"
+                        description: "Doble medallón de carne vacuna, queso azul, muzzarella, morrones asados, pan de papa"
+                        price: 2350
+                        thumbnail: "./images/img9.jpg"
+                        code: 1009
+                        stock: 97
+                        __v: 0
+                        category: "Linea Premium"
+                        owner: "adminCoder@coder.com"
+                    totalDocs: 20
+                    totalPages: 4
+                    prevPage: null
+                    nextPage: 2
+                    page: 1
+                    hasPrevPage: false
+                    hasNextPage: true
+                    prevLink: null
+                    nextLink: "/api/products?limit=5&pagina=2"
+  /api/products/{productId}:
+    get:
+      summary: Obtiene un producto por su ID
+      tags:
+        - Products
+      parameters:
+        - name: productId
           in: path
           required: true
           description: ID del producto que se busca
           schema:
-            $type: string
+            type: string
       responses:
         "200":
           description: Producto encontrado
           content:
             application/json:
               schema:
-                $ref: "#components/schemas/Product"
+                $ref: "#/components/schemas/ProductResponse"
+              examples:
+                successResponse:
+                  summary: Respuesta exitosa
+                  value:
+                    status: success
+                    msg: Mostrando el producto con id 647b6a152a2deaefe1fc283e
+                    payload:
+                      productById:
+                        _id: "647b6a152a2deaefe1fc283e"
+                        title: "3x3"
+                        description: "Triple medallón de carne vacuna, triple cheddar, pan de papa"
+                        price: 2300
+                        thumbnail: "./images/img4.jpg"
+                        code: 1004
+                        stock: 72
+                        __v: 0
+                        category: "Linea Bajonera"
+                        owner: "adminCoder@coder.com"
         "500":
-          description: Error del servidor. Usualmente generando la query o falla la conexión a la DB
+          description: Error del servidor. Usualmente falla la búsqueda por error de ID
     put:
       summary: Actualizar un producto a partir del ID
       tags:
         - Products
+      security:
+        - bearerAuth: [] # Asegura que el usuario esté autenticado
       parameters:
-        - name: pid
+        - name: productId
           in: path
           required: true
           description: ID del producto que se busca
           schema:
-            $type: string
+            type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#components/requestBodies/updateProduct" # Aquí se agrega el requestBody updateProduct
+              $ref: "#components/schemas/UpdateProductRequest"
       responses:
         "200":
-          description: El producto fue actualizado correctamente
+          description: Producto actualizado exitosamente
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#components/schemas/Product"
+                $ref: "#/components/schemas/SuccessResponse"
+              examples:
+                successResponse:
+                  summary: Respuesta exitosa
+                  value:
+                    status: "success"
+                    msg: "Product updated"
+                    payload: "Has actualizado el producto con ID 65202c35121ca31b7bcb502a"
+        "400":
+          description: Error de solicitud. Puede ser debido a datos de entrada incorrectos.
+        "401":
+          description: No autorizado. Solo los administradores o usuarios premium pueden realizar esta acción.
         "500":
-          description: Error del servidor. Usualmente falla la búsqueda por ID o no pasa la validación de campos requeridos
+          description: Error del servidor. Usualmente, falla en la actualización del producto.
     delete:
       summary: Elimina un producto por ID
       tags:
         - Products
+      security:
+        - bearerAuth: [] # Asegura que el usuario esté autenticado
       parameters:
-        - name: pid
+        - name: productId
           in: path
           required: true
           description: ID del producto que se desea eliminar
           schema:
-            $type: string
+            type: string
       responses:
-        "204":
+        "200":
           description: Producto eliminado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+              examples:
+                successResponse:
+                  summary: Respuesta exitosa
+                  value:
+                    status: "success"
+                    msg: "Producto Eliminado"
+                    payload: "Has eliminado el producto con ID 65202e7ca80d1742cdc67b09"
+        "401":
+          description: No autorizado. Solo los administradores o usuarios premium pueden realizar esta acción.
+        "500":
+          description: Error del servidor. Usualmente, falla en la eliminación del producto.
 components:
   schemas:
     Success:

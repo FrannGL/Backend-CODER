@@ -4,7 +4,8 @@ import { productsController } from "../controllers/products.controller.js";
 import { checkAdmin } from "../middlewares/main.js";
 
 productsApiRouter.post("/", checkAdmin, productsController.create);
+productsApiRouter.get("/paginate", productsController.readWithPagination);
 productsApiRouter.get("/", productsController.read);
 productsApiRouter.get("/:_id", productsController.readById);
-productsApiRouter.put("/:_id", productsController.update);
-productsApiRouter.delete("/:_id", productsController.delete);
+productsApiRouter.put("/:_id", checkAdmin, productsController.update);
+productsApiRouter.delete("/:_id", checkAdmin, productsController.delete);

@@ -40,9 +40,13 @@ class CartsModel {
     }
   }
 
-  async updateCart(cartId, productIndex) {
+  async updateCart(cartId, products) {
     try {
-      const cart = await CartsMongoose.findByIdAndUpdate(cartId, { productIndex }, { new: true });
+      const cart = await CartsMongoose.findByIdAndUpdate(
+        cartId,
+        { $push: { products: { $each: products } } },
+        { new: true },
+      );
       return cart;
     } catch (error) {
       throw new Error("Error updating cart in database");
