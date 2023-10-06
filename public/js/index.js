@@ -1,208 +1,165 @@
-// ADMINISTRADOR DE PRODUCTOS  ----> CREAR PRODUCTO
+// ELIMINAR UN USUARIO DESDE EL FRONT
 
-const addProductForm = document.getElementById("addProductForm");
-const btnSubmit = document.getElementById("btnSubmit");
+const deleteUser = document.querySelectorAll(".eliminar-usuario");
+deleteUser.forEach(button => {
+  button.addEventListener("click", async () => {
+    const userId = button.getAttribute("data-id");
 
-addProductForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-  addProduct();
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Esta acción eliminará al usuario.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then(async result => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch(`/api/users/${userId}`, {
+            method: "DELETE",
+          });
+
+          if (response.ok) {
+            Swal.fire({
+              title: "Usuario eliminado",
+              text: "El usuario ha sido eliminado con éxito.",
+              icon: "success",
+              confirmButtonColor: "#3085d6",
+              timer: 3000,
+              showConfirmButton: true,
+            }).then(() => {
+              location.reload();
+            });
+          } else {
+            console.error("Error al eliminar el usuario.");
+          }
+        } catch (error) {
+          console.error("Error de red:", error);
+        }
+      }
+    });
+  });
 });
 
-function addProduct() {
-  const inputTitle = document.getElementById("input-title");
-  const inputDescription = document.getElementById("input-description");
-  const inputCategory = document.getElementById("input-category");
-  const inputPrice = document.getElementById("input-price");
-  const inputThumbnail = document.getElementById("input-thumbnail");
-  const inputCode = document.getElementById("input-code");
-  const inputStock = document.getElementById("input-stock");
+// CAMBIAR ROL A UN USUARIO DESDE EL ROL
 
-  const newProduct = {
-    title: inputTitle.value,
-    description: inputDescription.value,
-    category: inputCategory.value,
-    price: parseFloat(inputPrice.value),
-    thumbnail: inputThumbnail.value,
-    code: inputCode.value,
-    stock: parseInt(inputStock.value),
-  };
+const editRoleButtons = document.querySelectorAll(".editar-rol");
+editRoleButtons.forEach(button => {
+  button.addEventListener("click", async () => {
+    const userId = button.getAttribute("data-id");
 
-  fetch("/api/products", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newProduct),
-  })
-    .then(response => {
-      if (response.ok) {
-        Swal.fire({
-          title: "Agregado",
-          text: "El producto ha sido creado correctamente.",
-          icon: "success",
-          timer: 3000,
-          showConfirmButton: true,
-        }).then(() => {
-          location.reload();
-        });
-      } else {
-        Swal.fire("Error", "No se pudo agregar el producto.", "error");
+    Swal.fire({
+      title: "¿Estás seguro de cambiar el rol del usuario?",
+      text: "Esta acción cambiará el rol del usuario.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, cambiar rol",
+      cancelButtonText: "Cancelar",
+    }).then(async result => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch(`/api/users/role/${userId}`, {
+            method: "GET",
+          });
+
+          if (response.ok) {
+            Swal.fire({
+              title: "Rol Actualizado.",
+              text: "El usuario ha sido actualizado con éxito.",
+              icon: "success",
+              confirmButtonColor: "#3085d6",
+              timer: 3000,
+              showConfirmButton: true,
+            }).then(() => {
+              location.reload();
+            });
+          } else {
+            console.error("Error al editar el usuario.");
+          }
+        } catch (error) {
+          console.error("Error de red:", error);
+        }
       }
-    })
-    .catch(error => {
-      console.error("Error:", error);
     });
-}
-
-function saveChanges() {
-  const modalElement = document.getElementById("exampleModal");
-  const modalInstance = bootstrap.Modal.getInstance(modalElement);
-  modalInstance.hide();
-  modalElement.addEventListener("hidden.bs.modal", () => {
-    const backdropElement = document.querySelector(".modal-backdrop");
-    if (backdropElement) {
-      backdropElement.parentNode.removeChild(backdropElement);
-    }
-    document.body.style.overflow = "auto";
   });
-}
+});
 
-// ADMINISTRADOR DE PRODUCTOS  ----> EDITAR PRODUCTO
+// CARRITO DE COMPRAS -----> AGREGAR AL CARRITO
 
-// DETECTAR ID EN MODAL
-function setModalTitle(id) {
-  const modalTitle = document.getElementById("exampleModalLabel");
-  modalTitle.innerText = "Editar Producto con el ID " + id;
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const addToCartButtons = document.querySelectorAll(".btnCart");
+  const cartLink = document.getElementById("cartLink");
+  const cartId = cartLink.getAttribute("href").split("/").pop();
+  const userRole = document.getElementById("role").textContent;
 
-function editProduct(productId) {
-  Swal.fire({
-    title: "¿Estás seguro de editar este producto?",
-    text: "Esta acción modificará el producto.",
-    icon: "info",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, editar",
-    cancelButtonText: "Cancelar",
-  }).then(result => {
-    if (result.isConfirmed) {
-      const editTitle = document.getElementById("input-editTitle").value;
-      const editDescription = document.getElementById("input-editDescription").value;
-      const editCategory = document.getElementById("input-editCategory").value;
-      const editPrice = parseFloat(document.getElementById("input-editPrice").value);
-      const editThumbnail = document.getElementById("input-editThumbnail").value;
-      const editCode = document.getElementById("input-editCode").value;
-      const editStock = parseInt(document.getElementById("input-editStock").value);
-
-      const editedProduct = {
-        title: editTitle,
-        description: editDescription,
-        category: editCategory,
-        price: editPrice,
-        thumbnail: editThumbnail,
-        code: editCode,
-        stock: editStock,
-      };
-
-      fetch(`/api/products/${productId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(editedProduct),
-      })
-        .then(response => {
-          if (response.ok) {
-            Swal.fire({
-              title: "Editado",
-              text: "El producto ha sido editado correctamente.",
-              icon: "success",
-              timer: 3000,
-              showConfirmButton: true,
-            }).then(() => {
-              location.reload();
-            });
-          } else {
-            Swal.fire("Error", "No se pudo editar el producto.", "error");
-          }
-        })
-        .catch(error => {
-          console.error("Error:", error);
+  addToCartButtons.forEach(button => {
+    button.addEventListener("click", async () => {
+      const productId = button.getAttribute("data-product-id");
+      const productOwner = button.getAttribute("data-owner");
+      const roleSpan = document.getElementById("role");
+      const userSession = roleSpan.getAttribute("data-user");
+      if (userRole === "user" && productOwner === userSession) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "No puedes agregar productos que tu hayas creado.",
+          showConfirmButton: true,
+          confirmButtonColor: "#000",
+          timer: 3000,
         });
-    }
-  });
-}
-
-// ADMINISTRADOR DE PRODUCTOS  ----> ELIMINAR PRODUCTO
-
-function deleteProduct(productId) {
-  Swal.fire({
-    title: "¿Estás seguro?",
-    text: "Esta acción no se puede deshacer.",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, eliminar",
-    cancelButtonText: "Cancelar",
-  }).then(result => {
-    if (result.isConfirmed) {
-      fetch(`/api/products/${productId}`, {
-        method: "DELETE",
-      })
-        .then(response => {
-          if (response.ok) {
-            Swal.fire({
-              title: "Eliminado",
-              text: "El producto ha sido eliminado.",
-              icon: "success",
-              timer: 3000,
-              showConfirmButton: true,
-            }).then(() => {
-              location.reload();
-            });
-          } else {
-            Swal.fire("Error", "No se pudo eliminar el producto.", "error");
-          }
-        })
-        .catch(error => {
-          console.error("Error:", error);
+      } else if (userRole === "admin" && productOwner === userSession) {
+        Swal.fire({
+          title: "Solo los usuarios pueden agregar Productos al Carrito",
+          icon: "warning",
+          confirmButtonText: "Aceptar",
+          confirmButtonColor: "#000",
+          onAfterClose: () => {
+            window.location.href = "/home";
+          },
+          timer: 3000,
         });
-    }
-  });
-}
+        setTimeout(() => {
+          window.location.href = "/home";
+        }, 3000);
+      }
+      try {
+        const response = await fetch(`/cart/${cartId}/products/${productId}`, {
+          method: "POST",
+        });
 
-// ADMINISTRADOR DE PRODUCTOS  ----> FUNCION PARA RECORRER BOTONES Y GUARDAR CAMBIOS AL EDITAR / ELIMINAR
+        if (response.ok) {
+          if (userRole === "user") {
+            Toastify({
+              text: "Producto Agregado al Carrito",
+              duration: 3000,
+              newWindow: true,
+              close: true,
+              gravity: "bottom",
+              position: "left",
+              stopOnFocus: true,
+              style: {
+                background: "#000",
+              },
+            }).showToast();
 
-document.addEventListener("DOMContentLoaded", function () {
-  const deleteButtons = document.querySelectorAll(".btnDelete");
-  const editButtons = document.querySelectorAll(".btnEdit");
-  let productIdToEdit = null;
-
-  deleteButtons.forEach(button => {
-    button.addEventListener("click", function (event) {
-      event.preventDefault();
-      const productId = this.getAttribute("data-id");
-      deleteProduct(productId);
+            const cartQuantityElement = document.querySelector("#cartLink span");
+            if (cartQuantityElement) {
+              const currentQuantity = parseInt(cartQuantityElement.innerText);
+              const newQuantity = currentQuantity + 1;
+              cartQuantityElement.innerText = newQuantity;
+            }
+          }
+        } else {
+          console.error("Error al agregar el producto al carrito.");
+        }
+      } catch (error) {
+        console.error("Error de red:", error);
+      }
     });
-  });
-
-  editButtons.forEach(button => {
-    button.addEventListener("click", function (event) {
-      event.preventDefault();
-      const productId = this.getAttribute("data-id");
-      productIdToEdit = productId;
-    });
-  });
-
-  const btnSaveEdit = document.getElementById("btn-edit");
-  btnSaveEdit.addEventListener("click", function () {
-    if (productIdToEdit !== null) {
-      editProduct(productIdToEdit);
-    } else {
-      alert("No se ha seleccionado un producto para editar.");
-    }
   });
 });
 
@@ -302,7 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
   actualizarTotalCart();
 });
 
-// ELIMINAR DEL CARRITO
+// CARRITO DE COMPRAS ------> ELIMINAR PRODUCTO DEL CARRITO
 document.addEventListener("DOMContentLoaded", () => {
   const deleteButtons = document.querySelectorAll(".bi-trash");
   const cartIdElement = document.querySelector(".cartId");
@@ -314,8 +271,6 @@ document.addEventListener("DOMContentLoaded", () => {
       button.addEventListener("click", async () => {
         const productId = button.getAttribute("data-product-id");
         const cartId = button.getAttribute("data-cart-id");
-        // console.log(`Producto a eliminar del carrito. ID: ${productId}`);
-        // console.log(`El carrito tiene el ID: ${cartId}`);
 
         await (async () => {
           const result = await Swal.fire({
@@ -342,19 +297,17 @@ document.addEventListener("DOMContentLoaded", () => {
               });
 
               if (response.ok) {
-                // console.log("Producto eliminado del carrito con éxito.");
                 location.reload();
               } else {
-                // console.error("Error al eliminar el producto del carrito.");
               }
-            } catch (error) {
-              // console.error("Error de red:", error);
-            }
+            } catch (error) {}
           }
         })();
       });
     });
   }
+
+  // CARRITO DE COMPRAS ------> VACIAR TODO EL CARRITO
 
   const vaciarCarritoButton = document.getElementById("carrito-acciones-vaciar");
   vaciarCarritoButton.addEventListener("click", async () => {
@@ -377,98 +330,20 @@ document.addEventListener("DOMContentLoaded", () => {
           });
 
           if (response.ok) {
-            // console.log("Carrito vaciado con éxito.");
             Swal.fire("Hecho!", "Has vaciado el carrito", "success");
             setTimeout(() => {
               location.reload();
               window.location.href = "/products";
             }, 1500);
           } else {
-            // console.error("Error al vaciar el carrito.");
           }
-        } catch (error) {
-          // console.error("Error de red:", error);
-        }
+        } catch (error) {}
       }
     });
   });
 });
 
-// AGREGAR AL CARRITO
-document.addEventListener("DOMContentLoaded", () => {
-  const addToCartButtons = document.querySelectorAll(".btnCart");
-  const cartLink = document.getElementById("cartLink");
-  const cartId = cartLink.getAttribute("href").split("/").pop();
-  const userRole = document.getElementById("role").textContent;
-
-  addToCartButtons.forEach(button => {
-    button.addEventListener("click", async () => {
-      const productId = button.getAttribute("data-product-id");
-      const productOwner = button.getAttribute("data-owner");
-      const roleSpan = document.getElementById("role");
-      const userSession = roleSpan.getAttribute("data-user");
-      if (userRole === "user" && productOwner === userSession) {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "No puedes agregar productos que tu hayas creado.",
-          showConfirmButton: true,
-          confirmButtonColor: "#000",
-          timer: 3000,
-        });
-      } else if (userRole === "admin" && productOwner === userSession) {
-        Swal.fire({
-          title: "Solo los usuarios pueden agregar Productos al Carrito",
-          icon: "warning",
-          confirmButtonText: "Aceptar",
-          confirmButtonColor: "#000",
-          onAfterClose: () => {
-            window.location.href = "/home";
-          },
-          timer: 3000,
-        });
-        setTimeout(() => {
-          window.location.href = "/home";
-        }, 3000);
-      }
-      try {
-        const response = await fetch(`/cart/${cartId}/products/${productId}`, {
-          method: "POST",
-        });
-
-        if (response.ok) {
-          if (userRole === "user") {
-            Toastify({
-              text: "Producto Agregado al Carrito",
-              duration: 3000,
-              newWindow: true,
-              close: true,
-              gravity: "bottom",
-              position: "left",
-              stopOnFocus: true,
-              style: {
-                background: "#000",
-              },
-            }).showToast();
-
-            const cartQuantityElement = document.querySelector("#cartLink span");
-            if (cartQuantityElement) {
-              const currentQuantity = parseInt(cartQuantityElement.innerText);
-              const newQuantity = currentQuantity + 1;
-              cartQuantityElement.innerText = newQuantity;
-            }
-          }
-        } else {
-          console.error("Error al agregar el producto al carrito.");
-        }
-      } catch (error) {
-        console.error("Error de red:", error);
-      }
-    });
-  });
-});
-
-// GUARDAR COMPRA
+// CARRITO DE COMPRAS -------> GUARDAR COMPRA
 document.addEventListener("DOMContentLoaded", function () {
   const comprarButton = document.getElementById("carrito-acciones-comprar");
   const userEmail = document.getElementById("email").textContent;
@@ -515,94 +390,213 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// ELIMINAR UN USUARIO DESDE EL FRONT
+// ADMINISTRADOR DE PRODUCTOS  ----> CREAR PRODUCTO
 
-const deleteUser = document.querySelectorAll(".eliminar-usuario");
-deleteUser.forEach(button => {
-  button.addEventListener("click", async () => {
-    const userId = button.getAttribute("data-id");
+const addProductForm = document.getElementById("addProductForm");
+const btnSubmit = document.getElementById("btnSubmit");
 
-    Swal.fire({
-      title: "¿Estás seguro?",
-      text: "Esta acción eliminará al usuario.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-    }).then(async result => {
-      if (result.isConfirmed) {
-        try {
-          const response = await fetch(`/api/users/${userId}`, {
-            method: "DELETE",
-          });
-
-          if (response.ok) {
-            Swal.fire({
-              title: "Usuario eliminado",
-              text: "El usuario ha sido eliminado con éxito.",
-              icon: "success",
-              confirmButtonColor: "#3085d6",
-              timer: 3000,
-              showConfirmButton: true,
-            }).then(() => {
-              location.reload();
-            });
-          } else {
-            console.error("Error al eliminar el usuario.");
-          }
-        } catch (error) {
-          console.error("Error de red:", error);
-        }
-      }
-    });
-  });
+addProductForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+  addProduct();
 });
 
-// CAMBIAR ROL A UN USUARIO DESDE EL ROL
+function addProduct() {
+  const inputTitle = document.getElementById("input-title");
+  const inputDescription = document.getElementById("input-description");
+  const inputCategory = document.getElementById("input-category");
+  const inputPrice = document.getElementById("input-price");
+  const inputThumbnail = document.getElementById("input-thumbnail");
+  const inputCode = document.getElementById("input-code");
+  const inputStock = document.getElementById("input-stock");
 
-const editRoleButtons = document.querySelectorAll(".editar-rol");
-editRoleButtons.forEach(button => {
-  button.addEventListener("click", async () => {
-    const userId = button.getAttribute("data-id");
-    console.log(userId);
+  const newProduct = {
+    title: inputTitle.value,
+    description: inputDescription.value,
+    category: inputCategory.value,
+    price: parseFloat(inputPrice.value),
+    thumbnail: inputThumbnail.value,
+    code: inputCode.value,
+    stock: parseInt(inputStock.value),
+  };
 
-    // Mostrar una confirmación usando SweetAlert
-    Swal.fire({
-      title: "¿Estás seguro de cambiar el rol del usuario?",
-      text: "Esta acción cambiará el rol del usuario.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Sí, cambiar rol",
-      cancelButtonText: "Cancelar",
-    }).then(async result => {
-      if (result.isConfirmed) {
-        try {
-          const response = await fetch(`/api/users/role/${userId}`, {
-            method: "GET", // Cambiar a PUT o el método correcto para cambiar el rol
-          });
+  fetch("/api/products", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newProduct),
+  })
+    .then(response => {
+      if (response.ok) {
+        Swal.fire({
+          title: "Producto Creado",
+          text: "El producto ha sido creado correctamente.",
+          icon: "success",
+          timer: 3000,
+          showConfirmButton: true,
+          confirmButtonColor: "#3085d6",
+        }).then(() => {
+          location.reload();
+        });
+      } else {
+        Swal.fire("Error", "No se pudo agregar el producto.", "error");
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+}
 
+function saveChanges() {
+  const modalElement = document.getElementById("exampleModal");
+  const modalInstance = bootstrap.Modal.getInstance(modalElement);
+  modalInstance.hide();
+  modalElement.addEventListener("hidden.bs.modal", () => {
+    const backdropElement = document.querySelector(".modal-backdrop");
+    if (backdropElement) {
+      backdropElement.parentNode.removeChild(backdropElement);
+    }
+    document.body.style.overflow = "auto";
+  });
+}
+
+// ADMINISTRADOR DE PRODUCTOS  ----> EDITAR PRODUCTO
+
+// DETECTAR ID EN MODAL
+function setModalTitle(id) {
+  const modalTitle = document.getElementById("exampleModalLabel");
+  modalTitle.innerText = "Editar Producto con el ID " + id;
+}
+
+function editProduct(productId) {
+  Swal.fire({
+    title: "¿Estás seguro de editar este producto?",
+    text: "Esta acción modificará el producto.",
+    icon: "info",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, editar",
+    cancelButtonText: "Cancelar",
+  }).then(result => {
+    if (result.isConfirmed) {
+      const editTitle = document.getElementById("input-editTitle").value;
+      const editDescription = document.getElementById("input-editDescription").value;
+      const editCategory = document.getElementById("input-editCategory").value;
+      const editPrice = parseFloat(document.getElementById("input-editPrice").value);
+      const editThumbnail = document.getElementById("input-editThumbnail").value;
+      const editCode = document.getElementById("input-editCode").value;
+      const editStock = parseInt(document.getElementById("input-editStock").value);
+
+      const editedProduct = {
+        title: editTitle,
+        description: editDescription,
+        category: editCategory,
+        price: editPrice,
+        thumbnail: editThumbnail,
+        code: editCode,
+        stock: editStock,
+      };
+
+      fetch(`/api/products/${productId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editedProduct),
+      })
+        .then(response => {
           if (response.ok) {
             Swal.fire({
-              title: "Rol Actualizado.",
-              text: "El usuario ha sido actualizado con éxito.",
+              title: "Editado",
+              text: "El producto ha sido editado correctamente.",
               icon: "success",
-              confirmButtonColor: "#3085d6",
               timer: 3000,
               showConfirmButton: true,
+              confirmButtonColor: "#3085d6",
             }).then(() => {
               location.reload();
             });
           } else {
-            console.error("Error al editar el usuario.");
+            Swal.fire("Error", "No se pudo editar el producto.", "error");
           }
-        } catch (error) {
-          console.error("Error de red:", error);
-        }
-      }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+    }
+  });
+}
+
+// ADMINISTRADOR DE PRODUCTOS  ----> ELIMINAR PRODUCTO
+
+function deleteProduct(productId) {
+  Swal.fire({
+    title: "¿Estás seguro?",
+    text: "Esta acción no se puede deshacer.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+  }).then(result => {
+    if (result.isConfirmed) {
+      fetch(`/api/products/${productId}`, {
+        method: "DELETE",
+      })
+        .then(response => {
+          if (response.ok) {
+            Swal.fire({
+              title: "Eliminado",
+              text: "El producto ha sido eliminado.",
+              icon: "success",
+              timer: 3000,
+              showConfirmButton: true,
+              confirmButtonColor: "#3085d6",
+            }).then(() => {
+              location.reload();
+            });
+          } else {
+            Swal.fire("Error", "No se pudo eliminar el producto.", "error");
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+    }
+  });
+}
+
+// ADMINISTRADOR DE PRODUCTOS  ----> FUNCION PARA RECORRER BOTONES Y GUARDAR CAMBIOS AL EDITAR / ELIMINAR
+
+document.addEventListener("DOMContentLoaded", function () {
+  const deleteButtons = document.querySelectorAll(".btnDelete");
+  const editButtons = document.querySelectorAll(".btnEdit");
+  let productIdToEdit = null;
+
+  deleteButtons.forEach(button => {
+    button.addEventListener("click", function (event) {
+      event.preventDefault();
+      const productId = this.getAttribute("data-id");
+      deleteProduct(productId);
     });
+  });
+
+  editButtons.forEach(button => {
+    button.addEventListener("click", function (event) {
+      event.preventDefault();
+      const productId = this.getAttribute("data-id");
+      productIdToEdit = productId;
+    });
+  });
+
+  const btnSaveEdit = document.getElementById("btn-edit");
+  btnSaveEdit.addEventListener("click", function () {
+    if (productIdToEdit !== null) {
+      editProduct(productIdToEdit);
+    } else {
+      alert("No se ha seleccionado un producto para editar.");
+    }
   });
 });
