@@ -7,6 +7,7 @@ sessionsRouter.get("/login", sessionsController.viewLogin);
 sessionsRouter.get("/register", sessionsController.viewRegister);
 sessionsRouter.get("/logout", sessionsController.logout);
 sessionsRouter.get("/current", sessionsController.current);
+sessionsRouter.get("/currentUser", sessionsController.currentUser);
 sessionsRouter.post(
   "/login",
   passport.authenticate("login", { failureRedirect: "/error" }),

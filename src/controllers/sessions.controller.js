@@ -57,6 +57,34 @@ class SessionsController {
       if (!req.session || !req.session.user) {
         return res.status(401).json({ error: "Usuario no autenticado" });
       }
+      const { firstName, lastName, age, email, role, premium } = req.session.user;
+      const userDTO = new UsersDTO({
+        firstName,
+        lastName,
+        age,
+        email,
+        role,
+        premium,
+      });
+      const user = {
+        firstName: userDTO.firstName,
+        lastName: userDTO.lastName,
+        age: userDTO.age,
+        email: userDTO.email,
+        role: userDTO.role,
+        premium: userDTO.premium,
+      };
+      return res.status(200).json({ user: user });
+    } catch (e) {
+      logger.info(e);
+    }
+  }
+
+  async currentUser(req, res) {
+    try {
+      if (!req.session || !req.session.user) {
+        return res.status(401).json({ error: "Usuario no autenticado" });
+      }
       const { _id, firstName, lastName, age, email, role, premium, last_connection, documents } = req.session.user;
       const userDTO = new UsersDTO({
         _id,

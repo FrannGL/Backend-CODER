@@ -169,7 +169,7 @@ class ProductsController {
   async create(req, res) {
     try {
       const { title, description, category, price, thumbnail, code, stock } = req.body;
-      // let productOwner = req.session.user.email;
+      let productOwner = req.session.user.email;
       let product = new ProductsDTO({
         title,
         description,
@@ -178,7 +178,7 @@ class ProductsController {
         thumbnail,
         code,
         stock,
-        // owner: productOwner,
+        owner: productOwner,
       });
       const ProductCreated = await productService.create(product);
       return res.status(201).json({
