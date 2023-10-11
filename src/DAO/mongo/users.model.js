@@ -125,9 +125,6 @@ class UsersModel {
       const deletedUsers = await UsersMongoose.find({
         last_connection: { $lt: subDays(currentDate, thresholdDays) },
       });
-
-      console.log(deletedUsers);
-
       return deletedUsers;
     } catch (e) {
       logger.error(e.message);

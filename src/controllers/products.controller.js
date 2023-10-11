@@ -259,6 +259,7 @@ class ProductsController {
 
       if (result?.deletedCount > 0) {
         const isPremium = req.session.user.premium;
+        console.log(isPremium);
 
         if (isPremium) {
           const userEmail = req.session.user.email;

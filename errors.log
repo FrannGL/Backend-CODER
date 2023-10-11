@@ -249,3 +249,105 @@
 2023-10-06T22:42:50.757Z error: User already exists
 2023-10-06T22:44:40.410Z error: User already exists
 2023-10-06T22:44:40.412Z error: User already exists
+2023-10-11T22:21:02.029Z error: User already exists
+2023-10-11T22:21:02.031Z error: User already exists
+2023-10-11T22:23:48.126Z error: User already exists
+2023-10-11T22:23:48.130Z error: User already exists
+2023-10-11T22:25:31.007Z error: User already exists
+2023-10-11T22:25:31.010Z error: User already exists
+2023-10-11T22:26:58.053Z error: User already exists
+2023-10-11T22:26:58.054Z error: User already exists
+2023-10-11T22:27:39.053Z error: User already exists
+2023-10-11T22:27:39.056Z error: User already exists
+2023-10-11T22:27:40.869Z error: Cannot read properties of undefined (reading 'premium')
+2023-10-11T22:28:30.115Z error: User already exists
+2023-10-11T22:28:30.118Z error: User already exists
+2023-10-11T22:28:31.950Z error: Cannot read properties of undefined (reading 'premium')
+2023-10-11T22:29:25.001Z error: User already exists
+2023-10-11T22:29:25.003Z error: User already exists
+2023-10-11T22:29:45.443Z error: User already exists
+2023-10-11T22:29:45.446Z error: User already exists
+2023-10-11T22:30:50.311Z error: User already exists
+2023-10-11T22:30:50.313Z error: User already exists
+2023-10-11T22:33:44.961Z error: User already exists
+2023-10-11T22:33:44.964Z error: User already exists
+2023-10-11T22:34:32.999Z error: User already exists
+2023-10-11T22:34:33.001Z error: User already exists
+2023-10-11T22:34:33.727Z error: Cannot read properties of undefined (reading 'premium')
+2023-10-11T22:39:05.078Z error: User already exists
+2023-10-11T22:39:05.081Z error: User already exists
+2023-10-11T22:39:39.102Z error: User already exists
+2023-10-11T22:39:39.105Z error: User already exists
+2023-10-11T22:40:06.779Z error: User already exists
+2023-10-11T22:40:06.782Z error: User already exists
+2023-10-11T22:40:25.606Z error: El producto con ID 6527215c800c74ccae37b16e no existe
+2023-10-11T22:41:00.358Z error: User already exists
+2023-10-11T22:41:00.360Z error: User already exists
+2023-10-11T22:41:01.118Z error: Cannot read properties of undefined (reading 'premium')
+2023-10-11T22:41:05.801Z error: El producto con ID 6527218f499346e6ec0a62c1 no existe
+2023-10-11T22:41:25.668Z error: User already exists
+2023-10-11T22:41:25.670Z error: User already exists
+2023-10-11T22:41:26.405Z error: Cannot read properties of undefined (reading 'premium')
+2023-10-11T22:42:43.627Z error: User already exists
+2023-10-11T22:42:43.629Z error: User already exists
+2023-10-11T22:43:13.006Z error: User already exists
+2023-10-11T22:43:13.008Z error: User already exists
+2023-10-11T22:44:30.316Z error: User already exists
+2023-10-11T22:44:30.318Z error: User already exists
+2023-10-11T22:46:38.023Z error: User already exists
+2023-10-11T22:46:38.026Z error: User already exists
+2023-10-11T22:47:55.856Z error: User already exists
+2023-10-11T22:47:55.859Z error: User already exists
+2023-10-11T22:48:21.812Z error: User already exists
+2023-10-11T22:48:21.815Z error: User already exists
+2023-10-11T22:48:22.571Z error: Cannot read properties of undefined (reading 'premium')
+2023-10-11T22:50:05.514Z error: User already exists
+2023-10-11T22:50:05.517Z error: User already exists
+2023-10-11T22:50:06.272Z error: Cannot read properties of undefined (reading 'premium')
+2023-10-11T22:51:35.992Z error: User already exists
+2023-10-11T22:51:35.994Z error: User already exists
+2023-10-11T22:52:09.584Z error: User already exists
+2023-10-11T22:52:09.587Z error: User already exists
+2023-10-11T22:52:26.132Z error: User already exists
+2023-10-11T22:52:26.134Z error: User already exists
+2023-10-11T22:52:50.299Z error: User already exists
+2023-10-11T22:52:50.302Z error: User already exists
+2023-10-11T22:53:08.943Z error: User already exists
+2023-10-11T22:53:08.945Z error: User already exists
+2023-10-11T22:53:28.056Z error: User already exists
+2023-10-11T22:53:28.059Z error: User already exists
+2023-10-11T22:54:59.844Z error: User already exists
+2023-10-11T22:54:59.846Z error: User already exists
+2023-10-11T22:55:01.265Z error: Cannot read properties of undefined (reading 'premium')
+2023-10-11T22:56:55.330Z error: User already exists
+2023-10-11T22:56:55.332Z error: User already exists
+2023-10-11T22:56:56.838Z error: Cannot read properties of undefined (reading 'premium')
+2023-10-11T22:57:17.604Z error: User already exists
+2023-10-11T22:57:17.606Z error: User already exists
+2023-10-11T22:57:19.049Z error: Cannot read properties of undefined (reading 'premium')
+2023-10-11T22:59:21.164Z error: Cannot read properties of undefined (reading 'email')
+2023-10-11T22:59:38.205Z error: User already exists
+2023-10-11T22:59:38.207Z error: User already exists
+2023-10-11T23:00:09.912Z error: User already exists
+2023-10-11T23:00:09.915Z error: User already exists
+2023-10-11T23:00:11.360Z error: Cannot read properties of undefined (reading 'premium')
+2023-10-11T23:02:01.508Z error: User already exists
+2023-10-11T23:02:01.511Z error: User already exists
+2023-10-11T23:02:02.231Z error: Cannot read properties of undefined (reading 'premium')
+2023-10-11T23:05:23.280Z error: User already exists
+2023-10-11T23:05:23.283Z error: User already exists
+2023-10-11T23:05:23.989Z error: Cannot read properties of undefined (reading 'premium')
+2023-10-11T23:07:56.845Z error: User already exists
+2023-10-11T23:07:56.847Z error: User already exists
+2023-10-11T23:11:22.045Z error: User already exists
+2023-10-11T23:11:22.047Z error: User already exists
+2023-10-11T23:11:41.567Z error: User already exists
+2023-10-11T23:11:41.570Z error: User already exists
+2023-10-11T23:12:16.372Z error: User already exists
+2023-10-11T23:12:16.374Z error: User already exists
+2023-10-11T23:12:34.423Z error: User already exists
+2023-10-11T23:12:34.427Z error: User already exists
+2023-10-11T23:13:24.352Z error: User already exists
+2023-10-11T23:13:24.355Z error: User already exists
+2023-10-11T23:13:50.268Z error: User already exists
+2023-10-11T23:13:50.270Z error: User already exists

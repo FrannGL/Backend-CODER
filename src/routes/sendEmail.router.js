@@ -13,9 +13,7 @@ sendEmailRouter.get("/", async (req, res) => {
       </div>
     `;
 
-    const result = await sendEmail(to, subject, htmlContent);
-
-    console.log(result);
+    await sendEmail(to, subject, htmlContent);
     res.send("Correo electrónico enviado con éxito.");
   } catch (error) {
     console.error("Error al enviar el correo electrónico:", error);

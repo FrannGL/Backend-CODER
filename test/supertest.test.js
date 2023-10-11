@@ -1,6 +1,5 @@
 import chai from "chai";
 import supertest from "supertest";
-import { faker } from "@faker-js/faker";
 
 const expect = chai.expect;
 const requester = supertest("http://192.168.1.182:8080/");
@@ -47,7 +46,10 @@ describe("TEST API", () => {
     });
 
     it("CURRENT USER", async () => {
-      const { _body } = await requester.get("api/sessions/current").set("Cookie", [`${cookieName}=${cookieValue}`]);
+      const { _body } = await requester
+        .get("api/sessions/current")
+        .set("Cookie", [`${cookieName}=${cookieValue}`])
+        .set("x-test-request", "true");
 
       expect(_body.user.email).to.be.eql(mockUser.email);
     });
@@ -75,7 +77,8 @@ describe("TEST API", () => {
       const response = await requester
         .post("api/products")
         .send(productMock)
-        .set("Cookie", [`${cookieName}=${cookieValue}`]);
+        .set("Cookie", [`${cookieName}=${cookieValue}`])
+        .set("x-test-request", "true");
       if (response.error) {
         throw new Error(response.error.message);
       }
@@ -94,7 +97,10 @@ describe("TEST API", () => {
         code: 1003,
         stock: 100,
       };
-      const response = await requester.put(`api/products/${productIdToUpdate}`).send(updatedProductData);
+      const response = await requester
+        .put(`api/products/${productIdToUpdate}`)
+        .send(updatedProductData)
+        .set("x-test-request", "true");
       if (response.error) {
         throw new Error(response.error.message);
       }
@@ -103,8 +109,11 @@ describe("TEST API", () => {
       expect(_body.payload).to.have.eql(`Has actualizado el producto con ID ${productIdToUpdate}`);
     });
     it("DELETE", async () => {
-      const productIdToDelete = "650cd80e3809043e196269c9";
-      const response = await requester.delete(`api/products/${productIdToDelete}`);
+      const productIdToDelete = "65272be3d96fa427ea3566de";
+      const response = await requester
+        .delete(`api/products/${productIdToDelete}`)
+        .set("Cookie", [`${cookieName}=${cookieValue}`])
+        .set("x-test-request", "true");
       if (response.error) {
         throw new Error(response.error.message);
       }
@@ -125,9 +134,9 @@ describe("TEST API", () => {
       expect(_body.payload).to.be.an.instanceof(Array);
     });
     it("POST", async () => {
-      const cartId = "nwhaMJX0ZwyerCRlrCHI1XtoP";
-      const prodId = "647b6a362a2deaefe1fc2846";
-      const response = await requester.post(`api/carts/${cartId}/products/${prodId}`);
+      const cartId = "ToIthONHr1Xm07DlvaADPma9b";
+      const prodId = "647b6a402a2deaefe1fc2848";
+      const response = await requester.post(`api/carts/${cartId}/products/${prodId}`).set("x-test-request", "true");
       if (response.error) {
         throw new Error(response.error.message);
       }
@@ -136,7 +145,7 @@ describe("TEST API", () => {
       expect(_body.payload.cart).to.have.property("_id");
     });
     it("PUT", async () => {
-      const cartId = "nwhaMJX0ZwyerCRlrCHI1XtoP";
+      const cartId = "ToIthONHr1Xm07DlvaADPma9b";
       const updatedCartData = {
         products: [
           {
@@ -149,7 +158,7 @@ describe("TEST API", () => {
           },
         ],
       };
-      const response = await requester.put(`api/carts/${cartId}`).send(updatedCartData);
+      const response = await requester.put(`api/carts/${cartId}`).send(updatedCartData).set("x-test-request", "true");
       if (response.error) {
         throw new Error(response.error.message);
       }
@@ -159,7 +168,7 @@ describe("TEST API", () => {
       expect(_body.cart).to.have.property("_id");
     });
     it("DELETE", async () => {
-      const cartIdToDelete = "nwhaMJX0ZwyerCRlrCHI1XtoP";
+      const cartIdToDelete = "ToIthONHr1Xm07DlvaADPma9b";
       const response = await requester.delete(`api/carts/${cartIdToDelete}`);
       if (response.error) {
         throw new Error(response.error.message);
